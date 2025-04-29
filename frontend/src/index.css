@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-furia-dark text-white m-0 min-h-screen;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+
+  button, a {
+    @apply transition-all duration-300;
+  }
+}
+
+@layer components {
+  .furia-card {
+    @apply bg-furia-darker rounded-2xl shadow-neon p-4 transition-all duration-300 hover:shadow-neon-lg;
+  }
+
+  .furia-button {
+    @apply bg-furia-purple hover:bg-furia-purple-light text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-neon;
+  }
+
+  .furia-input {
+    @apply bg-furia-darker border border-furia-gray rounded-xl py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-furia-purple focus:border-transparent transition-all duration-300;
+  }
+
+  .furia-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .furia-section {
+    @apply py-6 md:py-12;
+  }
+
+  .furia-gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-furia-purple to-furia-purple-light;
+  }
+} 
