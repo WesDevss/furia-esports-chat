@@ -66,12 +66,12 @@ const LiveMatchPage: React.FC = () => {
           teams: {
             home: {
               name: 'FURIA',
-              logo: '/furia-logo.jpeg',
+              logo: '/team-logos/furia-logo.jpeg',
               score: 12
             },
             away: {
               name: 'NAVI',
-              logo: '/navi-logo.svg',
+              logo: '/team-logos/navi-logo.png',
               score: 10
             }
           },
