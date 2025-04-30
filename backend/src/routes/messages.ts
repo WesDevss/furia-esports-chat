@@ -1,6 +1,6 @@
 import express from 'express';
-import { Message } from '../models/Message';
-import { isValidObjectId } from 'mongoose';
+import { mockData } from '../index';
+import { Message, PollVote } from '../types';
 
 const router = express.Router();
 
@@ -9,33 +9,41 @@ const router = express.Router();
  * @desc    Get all messages (with pagination)
  * @access  Public
  */
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 50;
-    const matchId = req.query.matchId;
+    const matchId = req.query.matchId as string;
     
-    const query: any = {};
+    let filteredMessages = [...mockData.messages];
     
-    if (matchId && isValidObjectId(matchId)) {
-      query.matchId = matchId;
+    if (matchId) {
+      filteredMessages = filteredMessages.filter(msg => msg.matchId === matchId);
     }
     
-    const messages = await Message.find(query)
-      .populate('user', 'username')
-      .sort({ timestamp: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit);
+    // Sort by timestamp (newest first)
+    filteredMessages.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
     
-    const total = await Message.countDocuments(query);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const paginatedMessages = filteredMessages.slice(startIndex, endIndex);
     
-    res.json({
-      messages,
-      totalPages: Math.ceil(total / limit),
+    // Populate user data
+    const messagesWithUser = paginatedMessages.map(message => {
+      const user = mockData.users.find(u => u._id === message.user);
+      return {
+        ...message,
+        user: user ? { _id: user._id, username: user.username } : { _id: 'unknown', username: 'Anonymous' }
+      };
+    });
+    
+    return res.json({
+      messages: messagesWithUser,
+      totalPages: Math.ceil(filteredMessages.length / limit),
       currentPage: page
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -44,22 +52,24 @@ router.get('/', async (req, res) => {
  * @desc    Get message by ID
  * @access  Public
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', (req, res) => {
   try {
-    if (!isValidObjectId(req.params.id)) {
-      return res.status(400).json({ message: 'Invalid message ID' });
-    }
-    
-    const message = await Message.findById(req.params.id)
-      .populate('user', 'username');
+    const message = mockData.messages.find(m => m._id === req.params.id);
     
     if (!message) {
       return res.status(404).json({ message: 'Message not found' });
     }
     
-    res.json(message);
+    // Populate user data
+    const user = mockData.users.find(u => u._id === message.user);
+    const messageWithUser = {
+      ...message,
+      user: user ? { _id: user._id, username: user.username } : { _id: 'unknown', username: 'Anonymous' }
+    };
+    
+    return res.json(messageWithUser);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -68,7 +78,7 @@ router.get('/:id', async (req, res) => {
  * @desc    Create a new message
  * @access  Private
  */
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   try {
     const { user, content, type, matchId, pollOptions } = req.body;
     
@@ -76,38 +86,44 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'User and content are required' });
     }
     
-    if (!isValidObjectId(user)) {
+    // Check if user exists
+    const userExists = mockData.users.some(u => u._id === user);
+    if (!userExists) {
       return res.status(400).json({ message: 'Invalid user ID' });
     }
     
-    if (matchId && !isValidObjectId(matchId)) {
-      return res.status(400).json({ message: 'Invalid match ID' });
+    // Check if match exists if matchId is provided
+    if (matchId) {
+      const matchExists = mockData.matches.some(m => m._id === matchId);
+      if (!matchExists) {
+        return res.status(400).json({ message: 'Invalid match ID' });
+      }
     }
     
-    const messageData: any = {
+    const newMessage: Message = {
+      _id: Date.now().toString(),
       user,
       content,
       type: type || 'text',
-      timestamp: new Date()
+      timestamp: new Date(),
+      reactions: [],
+      ...(matchId && { matchId }),
+      ...(type === 'poll' && pollOptions && Array.isArray(pollOptions) && { pollOptions })
     };
     
-    if (matchId) {
-      messageData.matchId = matchId;
-    }
+    // Add to mock data
+    mockData.messages.push(newMessage);
     
-    if (type === 'poll' && pollOptions && Array.isArray(pollOptions)) {
-      messageData.pollOptions = pollOptions;
-    }
+    // Populate user data
+    const userData = mockData.users.find(u => u._id === user);
+    const populatedMessage = {
+      ...newMessage,
+      user: { _id: userData?._id || 'unknown', username: userData?.username || 'Anonymous' }
+    };
     
-    const message = new Message(messageData);
-    await message.save();
-    
-    const populatedMessage = await Message.findById(message._id)
-      .populate('user', 'username');
-    
-    res.status(201).json(populatedMessage);
+    return res.status(201).json(populatedMessage);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -116,7 +132,7 @@ router.post('/', async (req, res) => {
  * @desc    Add a reaction to a message
  * @access  Private
  */
-router.post('/:id/react', async (req, res) => {
+router.post('/:id/react', (req, res) => {
   try {
     const { userId, reaction } = req.body;
     
@@ -124,21 +140,36 @@ router.post('/:id/react', async (req, res) => {
       return res.status(400).json({ message: 'User ID and reaction are required' });
     }
     
-    if (!isValidObjectId(req.params.id) || !isValidObjectId(userId)) {
-      return res.status(400).json({ message: 'Invalid ID format' });
+    // Check if user exists
+    const userExists = mockData.users.some(u => u._id === userId);
+    if (!userExists) {
+      return res.status(400).json({ message: 'Invalid user ID' });
     }
     
-    const message = await Message.findById(req.params.id);
-    
-    if (!message) {
+    // Find message
+    const messageIndex = mockData.messages.findIndex(m => m._id === req.params.id);
+    if (messageIndex === -1) {
       return res.status(404).json({ message: 'Message not found' });
     }
     
-    await message.addReaction(userId, reaction);
+    const message = mockData.messages[messageIndex];
     
-    res.json(message);
+    // Check if user already reacted
+    if (!message.reactions) message.reactions = [];
+    const existingReaction = message.reactions.findIndex(r => r.userId === userId);
+    
+    if (existingReaction !== -1) {
+      // Update existing reaction
+      message.reactions[existingReaction].reaction = reaction;
+      message.reactions[existingReaction].type = reaction;
+    } else {
+      // Add new reaction
+      message.reactions.push({ userId, reaction, type: reaction });
+    }
+    
+    return res.json(message);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -147,7 +178,7 @@ router.post('/:id/react', async (req, res) => {
  * @desc    Vote in a poll message
  * @access  Private
  */
-router.post('/:id/vote', async (req, res) => {
+router.post('/:id/vote', (req, res) => {
   try {
     const { userId, option } = req.body;
     
@@ -155,28 +186,42 @@ router.post('/:id/vote', async (req, res) => {
       return res.status(400).json({ message: 'User ID and option are required' });
     }
     
-    if (!isValidObjectId(req.params.id)) {
-      return res.status(400).json({ message: 'Invalid message ID' });
-    }
-    
-    const message = await Message.findById(req.params.id);
-    
-    if (!message) {
+    // Find message
+    const messageIndex = mockData.messages.findIndex(m => m._id === req.params.id);
+    if (messageIndex === -1) {
       return res.status(404).json({ message: 'Message not found' });
     }
+    
+    const message = mockData.messages[messageIndex];
     
     if (message.type !== 'poll') {
       return res.status(400).json({ message: 'This message is not a poll' });
     }
     
-    await message.vote(userId, option);
+    // Initialize pollVotes if not exists
+    if (!message.pollVotes) message.pollVotes = [];
     
-    res.json(message);
+    // Check if user already voted
+    const existingVote = message.pollVotes.findIndex((vote: PollVote) => vote.userId === userId);
+    if (existingVote !== -1) {
+      return res.status(400).json({ message: 'User has already voted' });
+    }
+    
+    // Check if option is valid
+    const validOption = message.pollOptions?.includes(option);
+    if (!validOption) {
+      return res.status(400).json({ message: 'Invalid poll option' });
+    }
+    
+    // Add vote
+    message.pollVotes.push({ userId, option });
+    
+    return res.json(message);
   } catch (error: any) {
     if (error.message === 'User has already voted' || error.message === 'Invalid poll option') {
       return res.status(400).json({ message: error.message });
     }
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 

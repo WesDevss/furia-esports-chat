@@ -8,6 +8,7 @@ Uma plataforma de chat interativa para fãs da FURIA CS:GO, permitindo acompanha
 - Acompanhamento de partidas ao vivo
 - Sistema de gamificação para engajamento
 - Integração com IA para respostas personalizadas
+- FURIBOT alimentado pela API do ChatGPT para responder perguntas sobre o time
 - Enquetes e votações durante as partidas
 - Rankings de fãs
 - Notificações de eventos importantes
@@ -24,41 +25,50 @@ Uma plataforma de chat interativa para fãs da FURIA CS:GO, permitindo acompanha
 ### Backend
 - Node.js com Express
 - Socket.IO para comunicação em tempo real
-- MongoDB para banco de dados
-- OpenAI GPT para interações inteligentes
+- OpenAI API para o assistente inteligente FURIBOT
+- Dados mockados (sem necessidade de banco de dados)
 - JWT para autenticação
 
 ## 📦 Instalação
 
-### Frontend
 ```bash
-cd frontend
-npm install
+# Instalar todas as dependências
+npm run install:all
+
+# Iniciar o projeto (frontend e backend)
 npm start
 ```
 
-### Backend
-```bash
-cd backend
-npm install
-npm run dev
-```
+### Modo de Desenvolvimento com Dados Mockados
+
+Este projeto agora utiliza dados mockados para desenvolvimento, eliminando a necessidade de configurar um banco de dados MongoDB. Todos os dados são armazenados em memória durante a execução da aplicação.
 
 ## 🔧 Configuração
 
 1. Clone o repositório
-2. Configure as variáveis de ambiente no arquivo `.env`
-3. Instale as dependências do frontend e backend
-4. Inicie os serviços
+2. Configure as variáveis de ambiente no arquivo `.env` (opcional para desenvolvimento local)
+3. Instale as dependências com `npm run install:all`
+4. Inicie os serviços com `npm start`
 
 ## 📝 Documentação
 
-A documentação completa está disponível na pasta `docs/` do projeto.
+A documentação completa está disponível na pasta `docs/` do projeto e inclui:
+
+- [Arquitetura](./docs/architecture.md): Visão geral da arquitetura do sistema
+- [API](./docs/api.md): Documentação completa da API
+- [Componentes](./docs/components.md): Detalhes dos componentes de frontend
+- [Fluxos de Usuário](./docs/user-flows.md): Diagramas de fluxo de usuário
+- [Contribuição](./docs/contributing.md): Como contribuir para o projeto
+- [Deployment](./docs/deployment.md): Instruções para deploy em produção
+
+## 🎥 Apresentação
+
+Um vídeo de demonstração de aproximadamente 3 minutos está disponível, mostrando como os fãs podem interagir e acompanhar o time através do FURIA Chat. Você pode assistir ao vídeo [neste link](https://www.youtube.com/seu-link-do-video).
 
 ## 🤝 Contribuição
 
-Contribuições são bem-vindas! Por favor, leia o arquivo CONTRIBUTING.md para detalhes sobre nosso código de conduta e processo de submissão de pull requests.
+Contribuições são bem-vindas! Por favor, leia o arquivo [docs/contributing.md](./docs/contributing.md) para detalhes sobre nosso código de conduta e processo de submissão de pull requests.
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE.md para mais detalhes. 
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes. 

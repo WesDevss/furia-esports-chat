@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { Match } from '../types';
 
 interface IMap {
   name: string;
@@ -154,4 +155,7 @@ MatchSchema.methods.voteInPoll = async function(
   await this.save();
 };
 
-export const Match = mongoose.model<IMatch>('Match', MatchSchema); 
+export const MatchModel = mongoose.model<IMatch>('Match', MatchSchema);
+
+// Export the Match interface from types.ts
+export { Match }; 

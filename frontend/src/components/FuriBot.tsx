@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Bot, MessageSquare, User, RefreshCw, X } from 'lucide-react';
+import { getFuriaInformation } from '../services/openai';
 
 interface FuriBotProps {
   onSendMessage: (message: string) => void;
   isOpen: boolean;
   onClose: () => void;
+}
+
+interface Message {
+  id: string;
+  content: string;
+  sender: 'user' | 'bot';
+  timestamp: Date;
 }
 
 // Types for bot memory
@@ -13,51 +21,54 @@ interface BotMemory {
   favoritePlayer?: string;
   preferredGame?: string;
   lastInteraction?: Date;
-  knownStats?: Record<string, any>;
   previousQueries?: string[];
 }
 
-// Mock stats data - in a real app this would come from an API
-const mockStatsData = {
-  yuurih: {
-    today: { kills: 22, deaths: 15, assists: 7, rating: 1.28 },
-    lastMatch: { kills: 18, deaths: 12, assists: 5, rating: 1.32 },
-    tournament: { kills: 87, deaths: 62, assists: 30, rating: 1.24 }
-  },
-  kscerato: {
-    today: { kills: 19, deaths: 13, assists: 6, rating: 1.31 },
-    lastMatch: { kills: 21, deaths: 14, assists: 8, rating: 1.40 },
-    tournament: { kills: 92, deaths: 59, assists: 32, rating: 1.33 }
-  },
-  fall3n: {
-    today: { kills: 16, deaths: 14, assists: 4, rating: 1.15 },
-    lastMatch: { kills: 14, deaths: 12, assists: 3, rating: 1.17 },
-    tournament: { kills: 76, deaths: 70, assists: 22, rating: 1.10 }
-  }
-};
-
 const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose }) => {
   const [userInput, setUserInput] = useState('');
-  const [botResponse, setBotResponse] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '0',
+      content: 'Olá! Sou o FURIBOT, assistente oficial da FURIA. Como posso ajudar hoje?',
+      sender: 'bot',
+      timestamp: new Date()
+    }
+  ]);
   const [isLoading, setIsLoading] = useState(false);
   const [memory, setMemory] = useState<BotMemory>(() => {
     // Try to load memory from localStorage
     const savedMemory = localStorage.getItem('furibot_memory');
     return savedMemory ? JSON.parse(savedMemory) : {};
   });
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Save memory to localStorage whenever it changes
     localStorage.setItem('furibot_memory', JSON.stringify(memory));
   }, [memory]);
 
+  useEffect(() => {
+    // Scroll to bottom when messages change
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   const saveToMemory = (key: keyof BotMemory, value: any) => {
     setMemory(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userInput.trim()) return;
+
+    // Add user message to chat
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: userInput,
+      sender: 'user',
+      timestamp: new Date()
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
 
     // Track query in memory
     saveToMemory('previousQueries', [
@@ -66,83 +77,56 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose }) => 
     ]);
     saveToMemory('lastInteraction', new Date());
 
-    processInput(userInput);
-    setUserInput('');
-  };
-
-  const processInput = (input: string) => {
     setIsLoading(true);
     
-    // In a real app, this would call an API or use a natural language processing library
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Get response from ChatGPT
+      const response = await getFuriaInformation(userInput);
       
-      // Check for stat queries
-      const lowerInput = input.toLowerCase();
+      // Add bot response to chat
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: response,
+        sender: 'bot',
+        timestamp: new Date()
+      };
       
-      // Check for player stats queries
-      if (lowerInput.includes('stat') || lowerInput.includes('kills') || lowerInput.includes('k/d')) {
-        const players = ['yuurih', 'kscerato', 'fall3n'];
+      setMessages(prev => [...prev, botMessage]);
+      
+      // Check if the user mentioned specific things we want to remember
+      const lowerInput = userInput.toLowerCase();
+      
+      if (lowerInput.includes('jogador favorito') || lowerInput.includes('favorite player')) {
+        const players = ['yuurih', 'kscerato', 'art', 'fall3n', 'chelo', 'saffee'];
         const playerMatch = players.find(player => lowerInput.includes(player.toLowerCase()));
-        
         if (playerMatch) {
           saveToMemory('favoritePlayer', playerMatch);
-          const playerStats = mockStatsData[playerMatch as keyof typeof mockStatsData];
-          
-          if (lowerInput.includes('hoje') || lowerInput.includes('today')) {
-            setBotResponse(`Estatísticas de ${playerMatch} hoje: 
-              ${playerStats.today.kills} kills, ${playerStats.today.deaths} deaths, 
-              ${playerStats.today.assists} assists, Rating: ${playerStats.today.rating}`);
-          } else if (lowerInput.includes('último') || lowerInput.includes('ultima') || lowerInput.includes('last match')) {
-            setBotResponse(`Estatísticas de ${playerMatch} na última partida: 
-              ${playerStats.lastMatch.kills} kills, ${playerStats.lastMatch.deaths} deaths, 
-              ${playerStats.lastMatch.assists} assists, Rating: ${playerStats.lastMatch.rating}`);
-          } else {
-            setBotResponse(`Estatísticas de ${playerMatch} no torneio: 
-              ${playerStats.tournament.kills} kills, ${playerStats.tournament.deaths} deaths, 
-              ${playerStats.tournament.assists} assists, Rating: ${playerStats.tournament.rating}`);
+        }
+      }
+      
+      if (lowerInput.includes('jogo favorito') || lowerInput.includes('favorite game')) {
+        const games = ['cs', 'cs2', 'counter-strike', 'valorant', 'league', 'lol', 'apex'];
+        for (const game of games) {
+          if (lowerInput.includes(game)) {
+            saveToMemory('preferredGame', game);
+            break;
           }
-          return;
         }
       }
+    } catch (error) {
+      // Add error message
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: 'Desculpe, estou tendo problemas para processar sua pergunta. Por favor, tente novamente mais tarde.',
+        sender: 'bot',
+        timestamp: new Date()
+      };
       
-      // Check for team preferences
-      if (lowerInput.includes('time favorito') || lowerInput.includes('favorite team')) {
-        if (lowerInput.includes('furia')) {
-          saveToMemory('favoriteTeam', 'FURIA');
-          setBotResponse('Ótima escolha! FURIA é meu time favorito também! 🔥');
-        } else {
-          setBotResponse('Legal, mas você sabe que o FURIA é o melhor time, certo? 😉');
-        }
-        return;
-      }
-      
-      // Check for game preferences
-      const games = ['cs', 'cs2', 'counter-strike', 'valorant', 'league', 'lol', 'apex'];
-      for (const game of games) {
-        if (lowerInput.includes(game)) {
-          saveToMemory('preferredGame', game);
-          setBotResponse(`Percebi que você gosta de ${game}. Posso te manter atualizado sobre o desempenho da FURIA em ${game}!`);
-          return;
-        }
-      }
-      
-      // Personal response using memory
-      if (memory.favoritePlayer && lowerInput.includes('jogador')) {
-        setBotResponse(`Pelo que me lembro, você gosta do ${memory.favoritePlayer}. Ele tem se destacado nos últimos jogos!`);
-        return;
-      }
-      
-      // Default responses
-      const defaultResponses = [
-        'Estou aqui para ajudar com informações sobre a FURIA! O que você gostaria de saber?',
-        'Você pode me perguntar sobre estatísticas de jogadores, próximas partidas ou resultados recentes.',
-        'FURIA está sempre melhorando, assim como eu! Posso responder sobre estatísticas ou jogos.',
-        'Vamos FURIA! Posso te ajudar com informações sobre o time ou jogadores.'
-      ];
-      
-      setBotResponse(defaultResponses[Math.floor(Math.random() * defaultResponses.length)]);
-    }, 600);
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+      setUserInput('');
+    }
   };
 
   if (!isOpen) return null;
@@ -165,33 +149,17 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose }) => 
 
       {/* Chat area */}
       <div className="h-80 overflow-y-auto p-3 bg-gray-900 dark:bg-black">
-        {/* Welcome message */}
-        <div className="flex mb-4">
-          <div className="bg-furia-purple rounded-lg p-3 max-w-[80%]">
-            <p className="text-white">
-              Olá! Sou o FURIBOT, assistente oficial da FURIA. Como posso ajudar hoje?
-              {memory.favoritePlayer && ` Vejo que você gosta do ${memory.favoritePlayer}!`}
-            </p>
-          </div>
-        </div>
-
-        {/* Bot response */}
-        {botResponse && (
-          <div className="flex mb-4">
-            <div className="bg-furia-purple rounded-lg p-3 max-w-[80%]">
-              <p className="text-white">{botResponse}</p>
+        {/* Messages */}
+        {messages.map((message) => (
+          <div key={message.id} className={`flex mb-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div className={`rounded-lg p-3 max-w-[80%] ${message.sender === 'user' ? 'bg-gray-700' : 'bg-furia-purple'}`}>
+              <p className="text-white">{message.content}</p>
+              <span className="text-xs text-gray-400 mt-1 block">
+                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
             </div>
           </div>
-        )}
-
-        {/* User message - show the last query if available */}
-        {memory.previousQueries && memory.previousQueries.length > 0 && (
-          <div className="flex justify-end mb-4">
-            <div className="bg-gray-700 rounded-lg p-3 max-w-[80%]">
-              <p className="text-white">{memory.previousQueries[memory.previousQueries.length - 1]}</p>
-            </div>
-          </div>
-        )}
+        ))}
 
         {/* Loading indicator */}
         {isLoading && (
@@ -201,6 +169,8 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose }) => 
             </div>
           </div>
         )}
+        
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input area */}
@@ -212,6 +182,7 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose }) => 
             onChange={(e) => setUserInput(e.target.value)}
             className="flex-1 bg-gray-700 dark:bg-gray-800 text-white rounded-l-md px-3 py-2 focus:outline-none"
             placeholder="Pergunte algo sobre a FURIA..."
+            disabled={isLoading}
           />
           <button
             type="submit"

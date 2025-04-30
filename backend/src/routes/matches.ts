@@ -1,7 +1,5 @@
 import express from 'express';
-import { Match } from '../models/Match';
-import { Message } from '../models/Message';
-import { isValidObjectId } from 'mongoose';
+import { mockData } from '../index';
 
 const router = express.Router();
 
@@ -10,12 +8,11 @@ const router = express.Router();
  * @desc    Get all matches
  * @access  Public
  */
-router.get('/', async (req, res) => {
+router.get('/', (_req, res) => {
   try {
-    const matches = await Match.find();
-    res.json(matches);
+    return res.json(mockData.matches);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -24,12 +21,12 @@ router.get('/', async (req, res) => {
  * @desc    Get all live matches
  * @access  Public
  */
-router.get('/live', async (req, res) => {
+router.get('/live', (_req, res) => {
   try {
-    const matches = await Match.find({ status: 'live' });
-    res.json(matches);
+    const matches = mockData.matches.filter(match => match.status === 'live');
+    return res.json(matches);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -38,16 +35,16 @@ router.get('/live', async (req, res) => {
  * @desc    Get all upcoming matches
  * @access  Public
  */
-router.get('/upcoming', async (req, res) => {
+router.get('/upcoming', (_req, res) => {
   try {
-    const matches = await Match.find({ 
-      status: 'scheduled',
-      startTime: { $gt: new Date() }
-    }).sort({ startTime: 1 });
+    const now = new Date();
+    const matches = mockData.matches
+      .filter(match => match.status === 'scheduled' && match.startTime && match.startTime > now)
+      .sort((a, b) => (a.startTime as Date).getTime() - (b.startTime as Date).getTime());
     
-    res.json(matches);
+    return res.json(matches);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -56,21 +53,17 @@ router.get('/upcoming', async (req, res) => {
  * @desc    Get match by ID
  * @access  Public
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', (req, res) => {
   try {
-    if (!isValidObjectId(req.params.id)) {
-      return res.status(400).json({ message: 'Invalid match ID' });
-    }
-    
-    const match = await Match.findById(req.params.id);
+    const match = mockData.matches.find(m => m._id === req.params.id);
     
     if (!match) {
       return res.status(404).json({ message: 'Match not found' });
     }
     
-    res.json(match);
+    return res.json(match);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -79,7 +72,7 @@ router.get('/:id', async (req, res) => {
  * @desc    Create a new match
  * @access  Private (Admin)
  */
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   try {
     const { opponent, tournament, startTime, maps } = req.body;
     
@@ -87,18 +80,19 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'Opponent, tournament and start time are required' });
     }
     
-    const match = new Match({
+    const newMatch = {
+      _id: Date.now().toString(),
       opponent,
       tournament,
       startTime: new Date(startTime),
-      status: 'scheduled',
+      status: 'scheduled' as const,
       maps: maps || []
-    });
+    };
     
-    await match.save();
-    res.status(201).json(match);
+    mockData.matches.push(newMatch);
+    return res.status(201).json(newMatch);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -107,31 +101,29 @@ router.post('/', async (req, res) => {
  * @desc    Update match details
  * @access  Private (Admin)
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', (req, res) => {
   try {
-    if (!isValidObjectId(req.params.id)) {
-      return res.status(400).json({ message: 'Invalid match ID' });
-    }
+    const { opponent, tournament, startTime, status, maps } = req.body;
     
-    const { opponent, tournament, startTime, endTime, status, maps } = req.body;
+    const matchIndex = mockData.matches.findIndex(m => m._id === req.params.id);
     
-    const match = await Match.findById(req.params.id);
-    
-    if (!match) {
+    if (matchIndex === -1) {
       return res.status(404).json({ message: 'Match not found' });
     }
+    
+    const match = mockData.matches[matchIndex];
     
     if (opponent) match.opponent = opponent;
     if (tournament) match.tournament = tournament;
     if (startTime) match.startTime = new Date(startTime);
-    if (endTime) match.endTime = new Date(endTime);
-    if (status && ['scheduled', 'live', 'completed'].includes(status)) match.status = status;
+    if (status && ['scheduled', 'live', 'finished'].includes(status)) {
+      match.status = status as 'scheduled' | 'live' | 'finished';
+    }
     if (maps && Array.isArray(maps)) match.maps = maps;
     
-    await match.save();
-    res.json(match);
+    return res.json(match);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -140,43 +132,45 @@ router.put('/:id', async (req, res) => {
  * @desc    Update map score
  * @access  Private (Admin)
  */
-router.patch('/:id/update-score', async (req, res) => {
+router.patch('/:id/update-score', (req, res) => {
   try {
-    if (!isValidObjectId(req.params.id)) {
-      return res.status(400).json({ message: 'Invalid match ID' });
-    }
-    
     const { mapIndex, furiaScore, opponentScore } = req.body;
     
     if (mapIndex === undefined || furiaScore === undefined || opponentScore === undefined) {
       return res.status(400).json({ message: 'Map index, Furia score and opponent score are required' });
     }
     
-    const match = await Match.findById(req.params.id);
+    const matchIndex = mockData.matches.findIndex(m => m._id === req.params.id);
     
-    if (!match) {
+    if (matchIndex === -1) {
       return res.status(404).json({ message: 'Match not found' });
     }
     
-    await match.updateScore(mapIndex, furiaScore, opponentScore);
+    const match = mockData.matches[matchIndex];
+    
+    if (!match.maps || mapIndex >= match.maps.length) {
+      return res.status(400).json({ message: 'Invalid map index' });
+    }
+    
+    match.maps[mapIndex].furiaScore = furiaScore;
+    match.maps[mapIndex].opponentScore = opponentScore;
     
     // Create a match-update message
-    const message = new Message({
-      user: req.body.userId, // Admin user ID
+    const newMessage = {
+      _id: Date.now().toString(),
+      user: req.body.userId || 'system', 
       content: `Placar atualizado: FURIA ${furiaScore} vs ${opponentScore} ${match.opponent} (Mapa: ${match.maps[mapIndex].name})`,
       type: 'match-update',
       matchId: match._id,
-      timestamp: new Date()
-    });
+      timestamp: new Date(),
+      reactions: []
+    };
     
-    await message.save();
+    mockData.messages.push(newMessage);
     
-    res.json(match);
-  } catch (error: any) {
-    if (error.message === 'Invalid map index') {
-      return res.status(400).json({ message: error.message });
-    }
-    res.status(500).json({ message: 'Server error', error });
+    return res.json(match);
+  } catch (error) {
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -185,83 +179,49 @@ router.patch('/:id/update-score', async (req, res) => {
  * @desc    Add a highlight
  * @access  Private (Admin)
  */
-router.patch('/:id/add-highlight', async (req, res) => {
+router.patch('/:id/add-highlight', (req, res) => {
   try {
-    if (!isValidObjectId(req.params.id)) {
-      return res.status(400).json({ message: 'Invalid match ID' });
-    }
-    
     const { description, type, player } = req.body;
     
     if (!description || !type || !player) {
       return res.status(400).json({ message: 'Description, type and player are required' });
     }
     
-    const match = await Match.findById(req.params.id);
+    const matchIndex = mockData.matches.findIndex(m => m._id === req.params.id);
     
-    if (!match) {
+    if (matchIndex === -1) {
       return res.status(404).json({ message: 'Match not found' });
     }
     
-    await match.addHighlight(description, type, player);
+    const match = mockData.matches[matchIndex];
+    
+    if (!match.highlights) match.highlights = [];
+    
+    const highlight = {
+      description,
+      type,
+      player,
+      timestamp: new Date()
+    };
+    
+    match.highlights.push(highlight);
     
     // Create a match-update message for the highlight
-    const message = new Message({
-      user: req.body.userId, // Admin user ID
+    const newMessage = {
+      _id: Date.now().toString(),
+      user: req.body.userId || 'system',
       content: `${type.toUpperCase()}: ${player} - ${description}`,
       type: 'match-update',
       matchId: match._id,
-      timestamp: new Date()
-    });
+      timestamp: new Date(),
+      reactions: []
+    };
     
-    await message.save();
+    mockData.messages.push(newMessage);
     
-    res.json(match);
+    return res.json(match);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
-  }
-});
-
-/**
- * @route   PATCH /api/matches/:id/create-poll
- * @desc    Create a poll for a match
- * @access  Private (Admin)
- */
-router.patch('/:id/create-poll', async (req, res) => {
-  try {
-    if (!isValidObjectId(req.params.id)) {
-      return res.status(400).json({ message: 'Invalid match ID' });
-    }
-    
-    const { question, options, duration } = req.body;
-    
-    if (!question || !options || !Array.isArray(options) || options.length < 2) {
-      return res.status(400).json({ message: 'Question and at least 2 options are required' });
-    }
-    
-    const match = await Match.findById(req.params.id);
-    
-    if (!match) {
-      return res.status(404).json({ message: 'Match not found' });
-    }
-    
-    await match.createPoll(question, options, duration || 10); // Default 10 minutes duration
-    
-    // Create a poll message
-    const message = new Message({
-      user: req.body.userId, // Admin user ID
-      content: question,
-      type: 'poll',
-      matchId: match._id,
-      pollOptions: options,
-      timestamp: new Date()
-    });
-    
-    await message.save();
-    
-    res.json(match);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -270,30 +230,39 @@ router.patch('/:id/create-poll', async (req, res) => {
  * @desc    Get messages for a specific match
  * @access  Public
  */
-router.get('/:id/messages', async (req, res) => {
+router.get('/:id/messages', (req, res) => {
   try {
-    if (!isValidObjectId(req.params.id)) {
-      return res.status(400).json({ message: 'Invalid match ID' });
-    }
+    const matchId = req.params.id;
     
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 50;
     
-    const messages = await Message.find({ matchId: req.params.id })
-      .populate('user', 'username')
-      .sort({ timestamp: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit);
+    // Filter messages by matchId
+    const matchMessages = mockData.messages.filter(msg => msg.matchId === matchId);
     
-    const total = await Message.countDocuments({ matchId: req.params.id });
+    // Sort by timestamp (newest first)
+    matchMessages.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
     
-    res.json({
-      messages,
-      totalPages: Math.ceil(total / limit),
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const paginatedMessages = matchMessages.slice(startIndex, endIndex);
+    
+    // Populate user data
+    const messagesWithUser = paginatedMessages.map(message => {
+      const user = mockData.users.find(u => u._id === message.user);
+      return {
+        ...message,
+        user: user ? { _id: user._id, username: user.username } : { _id: 'unknown', username: 'Anonymous' }
+      };
+    });
+    
+    return res.json({
+      messages: messagesWithUser,
+      totalPages: Math.ceil(matchMessages.length / limit),
       currentPage: page
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    return res.status(500).json({ message: 'Server error', error });
   }
 });
 

@@ -68,6 +68,11 @@ const Footer: React.FC = () => {
               <li>
                 <Link to="/quiz" className="text-gray-400 hover:text-furia-purple transition-colors">Quiz</Link>
               </li>
+              <li>
+                <a href="https://wa.me/5511993404466" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-furia-purple transition-colors">
+                  Contato Inteligente (beta)
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -79,7 +84,7 @@ const Footer: React.FC = () => {
                 <a href="https://furia.gg/cs" className="text-gray-400 hover:text-furia-purple transition-colors">CS:GO</a>
               </li>
               <li>
-                <a href="https://furia.gg/valorant" className="text-gray-400 hover:text-furia-purple transition-colors">VALORANT</a>
+                <a href="https://www.vlr.gg/team/2406/furia" className="text-gray-400 hover:text-furia-purple transition-colors">VALORANT</a>
               </li>
               <li>
                 <a href="https://furia.gg/r6" className="text-gray-400 hover:text-furia-purple transition-colors">Rainbow Six</a>

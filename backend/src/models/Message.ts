@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { Message } from '../types';
 
 export interface IMessage extends Document {
   user: Schema.Types.ObjectId;
@@ -133,4 +134,7 @@ messageSchema.methods.vote = function (userId: string, option: string) {
   return this.save();
 };
 
-export const Message = mongoose.model<IMessage>('Message', messageSchema); 
+export const MessageModel = mongoose.model<IMessage>('Message', messageSchema);
+
+// Export the Message interface from types.ts
+export { Message }; 

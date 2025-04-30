@@ -1,6 +1,20 @@
 {
+  "name": "furia-chat",
+  "version": "1.0.0",
+  "description": "Uma plataforma de chat interativa para fãs da FURIA CS:GO",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:frontend": "cd frontend && npm run dev",
+    "start:backend": "cd backend && npm run dev",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "build": "cd frontend && npm run build && cd ../backend && npm run build"
+  },
   "dependencies": {
     "lucide-react": "^0.503.0",
     "react-hot-toast": "^2.5.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }

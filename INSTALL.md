@@ -6,7 +6,6 @@ Este documento fornece instruções detalhadas para configurar e executar o proj
 
 - Node.js (versão 16 ou superior)
 - npm (gerenciador de pacotes do Node.js)
-- MongoDB (versão 4.4 ou superior)
 - Git
 
 ## Configuração do Ambiente
@@ -17,59 +16,68 @@ git clone https://github.com/seu-usuario/furia-chat.git
 cd furia-chat
 ```
 
-2. Instale as dependências do backend:
+2. Instale todas as dependências:
 ```bash
-cd backend
-npm install
+npm run install:all
 ```
+Este comando instalará as dependências do projeto raiz, do frontend e do backend.
 
-3. Instale as dependências do frontend:
-```bash
-cd ../frontend
-npm install
-```
-
-4. Configure as variáveis de ambiente:
-
-Para o backend, crie um arquivo `.env` na pasta `backend` com o seguinte conteúdo:
-```
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/furia-chat
-JWT_SECRET=seu-segredo-jwt
-NODE_ENV=development
-CORS_ORIGIN=http://localhost:3000
-OPENAI_API_KEY=sua-chave-api-openai
-```
+3. Configure as variáveis de ambiente (opcional para desenvolvimento local):
 
 Para o frontend, crie um arquivo `.env` na pasta `frontend` com o seguinte conteúdo:
 ```
-VITE_API_URL=http://localhost:5000
-VITE_SOCKET_URL=http://localhost:5000
+VITE_API_URL=http://localhost:5002
+VITE_SOCKET_URL=http://localhost:5002
 VITE_APP_NAME=FURIA Chat
 ```
 
-## Executando o Projeto
-
-1. Inicie o MongoDB:
-```bash
-mongod
+Para o backend, crie um arquivo `.env` na pasta `backend` com o seguinte conteúdo:
+```
+PORT=5002
+NODE_ENV=development
+OPENAI_API_KEY=sua-chave-api-aqui
 ```
 
-2. Inicie o servidor backend:
+**Nota sobre a API do ChatGPT**: O FURIBOT utiliza a API do ChatGPT para fornecer respostas inteligentes sobre o time FURIA. Para utilizar essa funcionalidade, você precisará:
+
+1. Obter uma chave da API do OpenAI em https://platform.openai.com
+2. Adicionar a chave no arquivo `.env` do backend conforme mostrado acima
+3. Se não desejar usar a API do ChatGPT, o FURIBOT funcionará com respostas predefinidas
+
+## Executando o Projeto
+
+1. Inicie o projeto completo:
+```bash
+npm start
+```
+Este comando iniciará tanto o backend quanto o frontend.
+
+2. Ou inicie os serviços separadamente:
+
+Para o backend:
 ```bash
 cd backend
 npm run dev
 ```
 
-3. Em outro terminal, inicie o frontend:
+Para o frontend:
 ```bash
 cd frontend
 npm run dev
 ```
 
-4. Acesse a aplicação:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:5000
+3. Acesse a aplicação:
+- Frontend: http://localhost:3000 (ou a porta indicada pelo Vite)
+- Backend API: http://localhost:5002
+
+## Modo de Desenvolvimento com Dados Mockados
+
+Este projeto utiliza dados mockados para desenvolvimento, eliminando a necessidade de configurar um banco de dados MongoDB. Todas as informações são armazenadas em memória durante a execução da aplicação, o que simplifica significativamente o processo de configuração.
+
+Os dados mockados incluem:
+- Usuários
+- Mensagens
+- Partidas
 
 ## Estrutura do Projeto
 
@@ -84,10 +92,8 @@ furia-chat/
 │   └── public/
 ├── backend/           # Servidor Node.js
 │   ├── src/
-│   │   ├── models/
 │   │   ├── routes/
-│   │   ├── controllers/
-│   │   └── services/
+│   │   └── types/
 │   └── dist/
 └── docs/             # Documentação
 ```
@@ -107,30 +113,16 @@ Para desenvolvimento, você pode usar os seguintes comandos:
 
 ### Backend
 ```bash
-npm run dev        # Inicia o servidor em modo desenvolvimento
-npm run build     # Compila o TypeScript
-npm run start     # Inicia o servidor em produção
+npm run dev       # Inicia o servidor em modo desenvolvimento
+npm run build    # Compila o TypeScript
+npm run start    # Inicia o servidor em produção
 ```
 
 ### Frontend
 ```bash
 npm run dev       # Inicia o servidor de desenvolvimento
 npm run build    # Cria a versão de produção
-npm run preview  # Visualiza a versão de produção localmente
-```
-
-## Testes
-
-Para executar os testes:
-
-### Backend
-```bash
-npm run test
-```
-
-### Frontend
-```bash
-npm run test
+npm run serve    # Visualiza a versão de produção localmente
 ```
 
 ## Contribuição

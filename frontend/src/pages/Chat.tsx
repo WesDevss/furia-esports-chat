@@ -19,7 +19,7 @@ const Chat: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:5002');
+    const newSocket = io('http://localhost:5004');
     setSocket(newSocket);
 
     return () => {
