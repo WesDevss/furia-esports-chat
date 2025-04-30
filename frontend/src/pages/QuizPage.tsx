@@ -35,13 +35,13 @@ const QuizPage: React.FC = () => {
     },
     {
       id: 4,
-      question: 'Quem é o atual capitão da equipe de CS:GO da FURIA?',
+      question: 'Quem é o atual capitão da equipe de CS2 da FURIA?',
       options: ['yuurih', 'KSCERATO', 'arT', 'saffee'],
       answer: 2
     },
     {
       id: 5,
-      question: 'Qual foi o melhor resultado da FURIA em um Major de CS:GO?',
+      question: 'Qual foi o melhor resultado da FURIA em um Major de CS2?',
       options: ['Campeão', 'Vice-campeão', 'Top 4', 'Top 8'],
       answer: 2
     },

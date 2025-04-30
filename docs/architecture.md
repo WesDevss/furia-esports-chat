@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-O FURIA Chat é uma aplicação web de chat em tempo real que permite aos fãs da FURIA CS:GO interagir entre si e acompanhar partidas ao vivo. A arquitetura do sistema é dividida em frontend e backend, usando uma abordagem de comunicação baseada em eventos para garantir a experiência em tempo real.
+O FURIA Chat é uma aplicação web de chat em tempo real que permite aos fãs da FURIA CS2 interagir entre si e acompanhar partidas ao vivo. A arquitetura do sistema é dividida em frontend e backend, usando uma abordagem de comunicação baseada em eventos para garantir a experiência em tempo real.
 
 ```
 ┌─────────────┐      ┌─────────────┐      ┌─────────────┐

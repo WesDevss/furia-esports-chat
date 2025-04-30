@@ -1,7 +1,7 @@
 {
   "name": "furia-chat",
   "version": "1.0.0",
-  "description": "Uma plataforma de chat interativa para fãs da FURIA CS:GO",
+  "description": "Uma plataforma de chat interativa para fãs da FURIA CS2",
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",

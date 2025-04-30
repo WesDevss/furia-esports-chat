@@ -1,6 +1,6 @@
 # FURIA Chat - Plataforma de Interação para Fãs
 
-Uma plataforma de chat interativa para fãs da FURIA CS:GO, permitindo acompanhamento em tempo real, interações sociais e gamificação.
+Uma plataforma de chat interativa para fãs da FURIA CS2, permitindo acompanhamento em tempo real, interações sociais e gamificação.
 
 ## 🚀 Funcionalidades
 

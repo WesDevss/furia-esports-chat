@@ -81,9 +81,9 @@ const API_CONFIG = {
 const respostasAlternativas = {
   saudacao: "Olá! Sou o FURIBOT, assistente oficial da FURIA. Como posso ajudar você hoje?",
   sobreTime: "A FURIA é uma das principais organizações de esports do Brasil, conhecida por sua dedicação e sucesso no cenário competitivo.",
-  sobreJogadores: "O time atual da FURIA conta com grandes nomes do CS:GO, incluindo KSCERATO, yuurih, arT, drop e VINI.",
-  sobreTorneios: "A FURIA participa dos principais torneios de CS:GO, incluindo Majors, ESL Pro League e BLAST Premier.",
-  sobreHistoria: "A FURIA foi fundada em 2017 e rapidamente se tornou uma das principais forças do CS:GO brasileiro.",
+  sobreJogadores: "O time atual da FURIA conta com grandes nomes do CS2, incluindo KSCERATO, yuurih, arT, drop e VINI.",
+  sobreTorneios: "A FURIA participa dos principais torneios de CS2, incluindo Majors, ESL Pro League e BLAST Premier.",
+  sobreHistoria: "A FURIA foi fundada em 2017 e rapidamente se tornou uma das principais forças do CS2 brasileiro.",
   sobreTreino: "A FURIA mantém um rigoroso regime de treinamento, com bootcamps e preparação física e mental.",
   sobreConquistas: "A FURIA já conquistou diversos títulos importantes, incluindo vitórias em torneios internacionais.",
   sobreFuria: "FURIA acima de tudo! Somos uma organização apaixonada por esports e comprometida com a excelência.",

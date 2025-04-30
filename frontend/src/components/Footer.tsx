@@ -81,7 +81,7 @@ const Footer: React.FC = () => {
             <h3 className="text-white font-bold mb-4">Times</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="https://furia.gg/cs" className="text-gray-400 hover:text-furia-purple transition-colors">CS:GO</a>
+                <a href="https://furia.gg/cs" className="text-gray-400 hover:text-furia-purple transition-colors">CS2</a>
               </li>
               <li>
                 <a href="https://www.vlr.gg/team/2406/furia" className="text-gray-400 hover:text-furia-purple transition-colors">VALORANT</a>
