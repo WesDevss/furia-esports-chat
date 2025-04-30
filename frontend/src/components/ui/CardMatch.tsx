@@ -44,8 +44,18 @@ const CardMatch: React.FC<CardMatchProps> = ({
 
       <div className="flex items-center justify-between mb-4">
         <div className="flex flex-col items-center">
-          <img src={homeTeam.logo} alt={homeTeam.name} className="w-12 h-12 object-contain mb-2" />
-          <span className="font-bold text-sm">{homeTeam.name}</span>
+          <div className="w-16 h-16 relative">
+            <img 
+              src={homeTeam.logo || '/team-logos/furia-logo.jpeg'} 
+              alt={homeTeam.name} 
+              className="w-full h-full object-contain" 
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = '/team-logos/furia-logo.jpeg';
+              }}
+            />
+          </div>
+          <span className="font-bold text-sm mt-2">{homeTeam.name}</span>
         </div>
 
         <div className="flex flex-col items-center">
@@ -54,8 +64,18 @@ const CardMatch: React.FC<CardMatchProps> = ({
         </div>
 
         <div className="flex flex-col items-center">
-          <img src={awayTeam.logo} alt={awayTeam.name} className="w-12 h-12 object-contain mb-2" />
-          <span className="font-bold text-sm">{awayTeam.name}</span>
+          <div className="w-16 h-16 relative">
+            <img 
+              src={awayTeam.logo} 
+              alt={awayTeam.name} 
+              className="w-full h-full object-contain"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = '/team-logos/furia-logo.jpeg';
+              }}
+            />
+          </div>
+          <span className="font-bold text-sm mt-2">{awayTeam.name}</span>
         </div>
       </div>
 

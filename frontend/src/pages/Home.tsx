@@ -27,11 +27,33 @@ const Home: React.FC = () => {
   const upcomingMatches = [
     {
       id: '1',
-      homeTeam: { name: 'FURIA', logo: furiaLogoUrl },
-      awayTeam: { name: 'FaZe', logo: 'https://via.placeholder.com/40' },
-      matchDate: '27/04/2024',
-      matchTime: '19:00',
-      tournament: 'ESL Pro League'
+      homeTeam: {
+        name: 'FURIA',
+        logo: '/team-logos/furia-logo.jpeg'
+      },
+      awayTeam: {
+        name: 'NAVI',
+        logo: '/team-logos/navi-logo.png'
+      },
+      matchTime: '15:00',
+      matchDate: '25/03/2024',
+      tournament: 'Major Rio 2024',
+      isLive: true
+    },
+    {
+      id: '2',
+      homeTeam: {
+        name: 'FURIA',
+        logo: '/team-logos/furia-logo.jpeg'
+      },
+      awayTeam: {
+        name: 'FaZe Clan',
+        logo: '/team-logos/faze-logo.png'
+      },
+      matchTime: '18:30',
+      matchDate: '26/03/2024',
+      tournament: 'ESL Pro League',
+      isLive: false
     }
   ];
   
@@ -39,8 +61,8 @@ const Home: React.FC = () => {
   const recentResults = [
     {
       id: '1',
-      homeTeam: { name: 'FURIA', logo: furiaLogoUrl, score: 16 },
-      awayTeam: { name: 'NAVI', logo: 'https://via.placeholder.com/40', score: 12 },
+      homeTeam: { name: 'FURIA', logo: '/team-logos/furia-logo.jpeg', score: 16 },
+      awayTeam: { name: 'NAVI', logo: '/team-logos/navi-logo.png', score: 12 },
       tournament: 'BLAST Premier',
       matchDate: 'hoje'
     }
@@ -201,10 +223,11 @@ const Home: React.FC = () => {
               key={match.id}
               homeTeam={match.homeTeam}
               awayTeam={match.awayTeam}
-              matchDate={match.matchDate}
               matchTime={match.matchTime}
+              matchDate={match.matchDate}
               tournament={match.tournament}
-              delay={idx}
+              isLive={match.isLive}
+              delay={idx * 0.1}
             />
           ))}
           

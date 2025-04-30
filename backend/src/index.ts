@@ -140,7 +140,8 @@ const initMockData = () => {
     {
       _id: '1',
       opponent: 'NAVI',
-      tournament: 'Major Rio 2023',
+      opponentLogo: '/team-logos/navi-logo.png',
+      tournament: 'Major Rio 2024',
       status: 'live',
       maps: [
         { name: 'Inferno', furiaScore: 13, opponentScore: 10 },
@@ -152,7 +153,8 @@ const initMockData = () => {
     },
     {
       _id: '2',
-      opponent: 'Liquid',
+      opponent: 'FaZe Clan',
+      opponentLogo: '/team-logos/faze-logo.png',
       tournament: 'ESL Pro League',
       status: 'scheduled',
       maps: [],

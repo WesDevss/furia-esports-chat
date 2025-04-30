@@ -29,6 +29,7 @@ export interface Highlight {
 export interface Match {
   _id: string;
   opponent: string;
+  opponentLogo?: string;
   tournament: string;
   status: 'scheduled' | 'live' | 'finished';
   maps: Map[];
