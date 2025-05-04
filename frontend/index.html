@@ -2,12 +2,36 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/jpeg" href="/furia-logo.jpeg" />
+    <link rel="icon" type="image/svg+xml" href="./furia-logo.jpeg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FURIA Chat</title>
+    <style>
+      body {
+        background-color: #121212;
+        color: white;
+        font-family: 'Arial', sans-serif;
+      }
+      #loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+      }
+      #loading h1 {
+        color: #8d50f8;
+        margin-bottom: 20px;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="root">
+      <div id="loading">
+        <h1>Carregando FURIA Chat...</h1>
+        <p>Se esta mensagem continuar aparecendo, pode haver um problema com a aplicação.</p>
+      </div>
+    </div>
+    <script type="module" src="./src/main.tsx"></script>
   </body>
 </html> 
