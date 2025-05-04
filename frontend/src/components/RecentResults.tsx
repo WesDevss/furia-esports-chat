@@ -119,29 +119,24 @@ const RecentResults: React.FC<RecentResultsProps> = ({ showMapDetails = false })
             <div className="flex items-center justify-between mb-2">
               {/* Home Team */}
               <div className="flex items-center">
-                <div className="relative w-8 h-8 flex-shrink-0">
-                  <img
-                    src={match.homeTeam.logo}
-                    alt={match.homeTeam.name}
-                    className="w-8 h-8 object-contain"
+                <div className="flex items-center">
+                  <img 
+                    src={match.homeTeam.logo} 
+                    alt={match.homeTeam.name} 
+                    className="w-8 h-8 mr-2 object-contain"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = `https://via.placeholder.com/32?text=${match.homeTeam.name.charAt(0)}`;
                     }}
                   />
-                  {match.homeTeam.name === 'FURIA' && (
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-furia-purple rounded-full flex items-center justify-center text-[6px] font-bold shadow-lg">
-                      BR
-                    </div>
-                  )}
+                  <span className={`text-sm font-medium ${match.homeTeam.name === 'FURIA' ? 'text-furia-purple' : ''}`}>
+                    {match.homeTeam.name}
+                  </span>
                 </div>
-                <span className={`ml-2 text-sm font-medium ${match.homeTeam.name === 'FURIA' ? 'text-furia-purple' : ''}`}>
-                  {match.homeTeam.name}
-                </span>
               </div>
 
               {/* Score */}
-              <div className="flex items-center mx-2 text-lg font-bold">
+              <div className="flex items-center mx-2 text-xl font-bold">
                 <span className={match.homeTeam.score > match.awayTeam.score ? 'text-green-500' : ''}>
                   {match.homeTeam.score}
                 </span>
@@ -153,24 +148,19 @@ const RecentResults: React.FC<RecentResultsProps> = ({ showMapDetails = false })
 
               {/* Away Team */}
               <div className="flex items-center">
-                <span className={`mr-2 text-sm font-medium ${match.awayTeam.name === 'FURIA' ? 'text-furia-purple' : ''}`}>
-                  {match.awayTeam.name}
-                </span>
-                <div className="relative w-8 h-8 flex-shrink-0">
-                  <img
-                    src={match.awayTeam.logo}
-                    alt={match.awayTeam.name}
-                    className="w-8 h-8 object-contain"
+                <div className="flex items-center">
+                  <span className={`text-sm font-medium ${match.awayTeam.name === 'FURIA' ? 'text-furia-purple' : ''}`}>
+                    {match.awayTeam.name}
+                  </span>
+                  <img 
+                    src={match.awayTeam.logo} 
+                    alt={match.awayTeam.name} 
+                    className="w-8 h-8 ml-2 object-contain"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = `https://via.placeholder.com/32?text=${match.awayTeam.name.charAt(0)}`;
                     }}
                   />
-                  {match.awayTeam.name === 'FURIA' && (
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-furia-purple rounded-full flex items-center justify-center text-[6px] font-bold shadow-lg">
-                      BR
-                    </div>
-                  )}
                 </div>
               </div>
             </div>

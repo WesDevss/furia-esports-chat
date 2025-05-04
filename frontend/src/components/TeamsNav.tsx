@@ -18,11 +18,11 @@ const TeamsNav: React.FC = () => {
     },
     {
       game: 'Rainbow Six',
-      url: 'https://siege.gg/teams/568-furia'
+      url: 'https://siege.gg/teams/285-furia-esports'
     },
     {
       game: 'Apex Legends',
-      url: 'https://apex.tracker.gg/apex/profile/origin/furia/overview'
+      url: 'https://liquipedia.net/apexlegends/FURIA'
     }
   ];
 

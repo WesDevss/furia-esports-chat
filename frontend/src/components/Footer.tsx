@@ -87,10 +87,10 @@ const Footer: React.FC = () => {
                 <a href="https://www.vlr.gg/team/2406/furia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-furia-purple transition-colors">VALORANT</a>
               </li>
               <li>
-                <a href="https://siege.gg/teams/568-furia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-furia-purple transition-colors">Rainbow Six</a>
+                <a href="https://siege.gg/teams/285-furia-esports" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-furia-purple transition-colors">Rainbow Six</a>
               </li>
               <li>
-                <a href="https://apex.tracker.gg/apex/profile/origin/furia/overview" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-furia-purple transition-colors">Apex Legends</a>
+                <a href="https://liquipedia.net/apexlegends/FURIA" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-furia-purple transition-colors">Apex Legends</a>
               </li>
             </ul>
           </div>

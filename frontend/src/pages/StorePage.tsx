@@ -18,65 +18,69 @@ const StorePage: React.FC = () => {
   const products: Product[] = [
     {
       id: '1',
-      name: 'Camisa Oficial FURIA 2023',
-      price: 299.90,
-      image: 'https://via.placeholder.com/300',
+      name: 'Camiseta Oficial FURIA | Adidas Preta',
+      price: 359.00,
+      image: '/store-products/camisa-furia-2025.jpeg',
       category: 'jerseys',
       isNew: true
     },
     {
       id: '2',
-      name: 'Moletom FURIA Estampado',
-      price: 189.90,
-      image: 'https://via.placeholder.com/300',
-      category: 'clothing'
+      name: 'Moletom Furia x Champion Lockup Off White',
+      price: 399.99,
+      image: '/store-products/moletom-furia.jpeg',
+      category: 'clothing',
+      isNew: true
     },
     {
       id: '3',
-      name: 'Camiseta FURIA Logo',
-      price: 99.90,
-      image: 'https://via.placeholder.com/300',
-      category: 'clothing',
-      isSale: true,
-      salePrice: 79.90
+      name: 'Camiseta Oversized Furia Ultras Preta',
+      price: 129.00,
+      image: '/store-products/camiseta-oversized-furia.jpeg',
+      category: 'jerseys',
+      isNew: true
     },
     {
       id: '4',
-      name: 'Boné FURIA Snapback',
-      price: 89.90,
-      image: 'https://via.placeholder.com/300',
-      category: 'accessories'
+      name: 'Boné Furia Preto',
+      price: 119.00,
+      image: '/store-products/bone-furia-preto.jpeg',
+      category: 'accessories',
+      isNew: true
     },
     {
       id: '5',
-      name: 'Mousepad FURIA Pro',
-      price: 119.90,
-      image: 'https://via.placeholder.com/300',
+      name: 'Sacochila Furia Preta',
+      price: 179.00,
+      image: '/store-products/sacochila-furia-preto.jpeg',
       category: 'accessories',
       isNew: true
     },
     {
       id: '6',
-      name: 'Camisa Oficial FURIA Away',
-      price: 299.90,
-      image: 'https://via.placeholder.com/300',
+      name: 'Camiseta Furia | Adidas Preta',
+      price: 299.00,
+      image: '/store-products/camiseta-adidas-furia.jpeg',
       category: 'jerseys',
-      isSale: true,
-      salePrice: 239.90
+      isNew: true
     },
     {
       id: '7',
-      name: 'Casaco FURIA Winter',
-      price: 329.90,
-      image: 'https://via.placeholder.com/300',
-      category: 'clothing'
+      name: 'Cropped Furia Clutch Branco',
+      price: 119.00,
+      image: '/store-products/cropped-furia-branco.jpeg',
+      category: 'clothing',
+      isSale: true,
+      salePrice: 71.40
     },
     {
       id: '8',
-      name: 'Garrafa FURIA',
-      price: 59.90,
-      image: 'https://via.placeholder.com/300',
-      category: 'accessories'
+      name: 'Meia Furia Magic Panthera Preta',
+      price: 89.00,
+      image: '/store-products/meia-furia.jpeg',
+      category: 'accessories',
+      isSale: true,
+      salePrice: 53.40
     }
   ];
 
@@ -96,7 +100,7 @@ const StorePage: React.FC = () => {
         </div>
         <div className="mt-4 md:mt-0">
           <a 
-            href="https://furiagg.com/loja" 
+            href="https://www.furia.gg/" 
             target="_blank" 
             rel="noopener noreferrer"
             className="bg-furia-purple text-white px-6 py-3 rounded-md font-medium hover:bg-furia-purple/90 transition-colors"
@@ -170,6 +174,86 @@ const StorePage: React.FC = () => {
               <button className="w-full mt-4 bg-furia-dark hover:bg-furia-dark/80 text-white py-2 rounded transition-colors">
                 Ver produto
               </button>
+              {product.id === '1' && (
+                <a 
+                  href="https://www.furia.gg/produto/camiseta-oficial-furia-adidas-preta-150265"
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-full mt-2 bg-furia-purple hover:bg-furia-purple/90 text-white py-2 rounded transition-colors text-center block"
+                >
+                  Comprar oficial
+                </a>
+              )}
+              {product.id === '2' && (
+                <a 
+                  href="https://www.furia.gg/produto/moletom-furia-x-champion-lockup-off-white-150175"
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-full mt-2 bg-furia-purple hover:bg-furia-purple/90 text-white py-2 rounded transition-colors text-center block"
+                >
+                  Comprar oficial
+                </a>
+              )}
+              {product.id === '6' && (
+                <a 
+                  href="https://www.furia.gg/produto/camiseta-furia-adidas-preta-150263"
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-full mt-2 bg-furia-purple hover:bg-furia-purple/90 text-white py-2 rounded transition-colors text-center block"
+                >
+                  Comprar oficial
+                </a>
+              )}
+              {product.id === '3' && (
+                <a 
+                  href="https://www.furia.gg/produto/camiseta-oversized-furia-ultras-preta-150262"
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-full mt-2 bg-furia-purple hover:bg-furia-purple/90 text-white py-2 rounded transition-colors text-center block"
+                >
+                  Comprar oficial
+                </a>
+              )}
+              {product.id === '4' && (
+                <a 
+                  href="https://www.furia.gg/produto/bone-furia-preto-150142"
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-full mt-2 bg-furia-purple hover:bg-furia-purple/90 text-white py-2 rounded transition-colors text-center block"
+                >
+                  Comprar oficial
+                </a>
+              )}
+              {product.id === '5' && (
+                <a 
+                  href="https://www.furia.gg/produto/sacochila-furia-preta-150267"
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-full mt-2 bg-furia-purple hover:bg-furia-purple/90 text-white py-2 rounded transition-colors text-center block"
+                >
+                  Comprar oficial
+                </a>
+              )}
+              {product.id === '7' && (
+                <a 
+                  href="https://www.furia.gg/produto/cropped-furia-clutch-branco-150196"
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-full mt-2 bg-furia-purple hover:bg-furia-purple/90 text-white py-2 rounded transition-colors text-center block"
+                >
+                  Comprar oficial
+                </a>
+              )}
+              {product.id === '8' && (
+                <a 
+                  href="https://www.furia.gg/produto/meia-furia-magic-panthera-preta-150213"
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-full mt-2 bg-furia-purple hover:bg-furia-purple/90 text-white py-2 rounded transition-colors text-center block"
+                >
+                  Comprar oficial
+                </a>
+              )}
             </div>
           </div>
         ))}

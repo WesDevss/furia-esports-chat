@@ -4,9 +4,8 @@ import { ExternalLink } from 'lucide-react';
 interface StatLink {
   game: string;
   url: string;
-  icon: string;
+  emoji: string;
   bgColor: string;
-  iconFallbackColor: string;
 }
 
 const TeamStatsLinks: React.FC = () => {
@@ -14,30 +13,26 @@ const TeamStatsLinks: React.FC = () => {
     {
       game: 'CS2',
       url: 'https://draft5.gg/equipe/330-FURIA',
-      icon: '/game-icons/cs2.png',
-      bgColor: 'bg-[#1e2327]',
-      iconFallbackColor: '#1e2327'
+      emoji: '🔫',
+      bgColor: 'bg-[#1e2327]'
     },
     {
       game: 'VALORANT',
       url: 'https://www.vlr.gg/team/2406/furia',
-      icon: '/game-icons/valorant.png',
-      bgColor: 'bg-[#fa4454]/10',
-      iconFallbackColor: '#fa4454'
+      emoji: '🎯',
+      bgColor: 'bg-[#fa4454]/10'
     },
     {
       game: 'Rainbow Six',
-      url: 'https://siege.gg/teams/568-furia',
-      icon: '/game-icons/rainbow6.png',
-      bgColor: 'bg-[#2b74b8]/10',
-      iconFallbackColor: '#2b74b8'
+      url: 'https://siege.gg/teams/285-furia-esports',
+      emoji: '🛡️',
+      bgColor: 'bg-[#2b74b8]/10'
     },
     {
       game: 'Apex Legends',
-      url: 'https://apex.tracker.gg/apex/profile/origin/furia/overview',
-      icon: '/game-icons/apex.png',
-      bgColor: 'bg-[#da292a]/10',
-      iconFallbackColor: '#da292a'
+      url: 'https://liquipedia.net/apexlegends/FURIA',
+      emoji: '🏆',
+      bgColor: 'bg-[#da292a]/10'
     }
   ];
 
@@ -56,18 +51,7 @@ const TeamStatsLinks: React.FC = () => {
             className={`${link.bgColor} hover:bg-furia-purple/20 p-3 rounded-lg flex items-center justify-between transition-all`}
           >
             <div className="flex items-center">
-              <div className="w-8 h-8 mr-3 flex-shrink-0 bg-gray-800 rounded-full p-1">
-                <img 
-                  src={link.icon} 
-                  alt={link.game} 
-                  className="w-full h-full object-contain"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = `https://via.placeholder.com/32/${link.iconFallbackColor.replace('#', '')}/FFFFFF?text=${link.game.charAt(0)}`;
-                  }}
-                />
-              </div>
-              <span className="font-medium">{link.game}</span>
+              <span className="font-medium">{link.emoji} {link.game}</span>
             </div>
             <ExternalLink size={16} className="text-furia-purple" />
           </a>

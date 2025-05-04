@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, BarChart2, User, MessageCircle, Clock, Trophy } from 'lucide-react';
+import { ChevronRight, BarChart2, User, MessageCircle, Clock, Trophy, Send } from 'lucide-react';
 import FuriBot from '../components/FuriBot';
 import LiveMatchScoreDisplay from '../components/LiveMatchScoreDisplay';
 
@@ -306,23 +306,133 @@ const LiveMatchPage: React.FC = () => {
         
         {/* Chat panel (visible on desktop or when chat tab is active) */}
         {(activeTab === 'chat' || window.innerWidth >= 1024) && (
-          <div className="bg-gray-800 dark:bg-gray-900 rounded-xl overflow-hidden">
-            <div className="p-4 border-b border-gray-700">
-              <h2 className="font-bold flex items-center gap-2">
-                <MessageCircle className="h-5 w-5 text-furia-purple" />
-                Chat da partida
-              </h2>
+          <div className="bg-[#111827] rounded-xl overflow-hidden lg:col-span-2 h-[500px] flex flex-col">
+            <div className="py-2 px-4 border-b border-gray-800 flex items-center">
+              <MessageCircle className="h-5 w-5 text-furia-purple mr-2" />
+              <h2 className="font-bold text-sm">Chat da partida</h2>
             </div>
             
-            <div className="h-[500px] p-4 flex items-center justify-center">
-              <div className="text-center">
-                <p className="mb-2">Chat disponível para usuários autenticados</p>
-                <button 
-                  onClick={() => setIsFuriBotOpen(true)}
-                  className="bg-furia-purple hover:bg-purple-700 rounded px-4 py-2 mt-4"
-                >
-                  Abrir FURIBOT
-                </button>
+            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700">
+              <div className="px-2">
+                <div className="pt-2 pb-1 px-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 mr-2">
+                      <div className="bg-red-500 rounded-full h-6 w-6 flex items-center justify-center">
+                        <span className="text-xs font-bold text-white">M</span>
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center">
+                        <span className="text-red-400 text-sm font-medium mr-1">Moderador</span>
+                        <span className="bg-red-900 text-xs px-1.5 py-0.5 rounded text-white">MOD</span>
+                      </div>
+                      <p className="text-sm text-white mt-1">Pessoal, respeitem as regras do chat. Sem spam!</p>
+                      <span className="text-xs text-gray-500 block">14:23</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="py-1 px-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 mr-2">
+                      <div className="bg-gray-600 rounded-full h-6 w-6 flex items-center justify-center">
+                        <span className="text-xs font-bold text-white">P</span>
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center">
+                        <span className="text-white text-sm font-medium mr-1">PantheraBR</span>
+                        <span className="bg-furia-purple text-xs px-1.5 py-0.5 rounded text-white">Membro</span>
+                      </div>
+                      <p className="text-sm text-white mt-1">Alguém viu o último round? O que aconteceu?</p>
+                      <span className="text-xs text-gray-500 block">14:25</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="py-1 px-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 mr-2">
+                      <div className="bg-furia-purple rounded-full h-6 w-6 flex items-center justify-center">
+                        <span className="text-xs font-bold text-white">G</span>
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center">
+                        <span className="text-white text-sm font-medium mr-1">GustavoFuria</span>
+                        <span className="bg-gray-700 text-xs px-1.5 py-0.5 rounded text-white">Torcedor</span>
+                      </div>
+                      <p className="text-sm text-white mt-1">Esse time tá jogando muito hoje! 😍</p>
+                      <span className="text-xs text-gray-500 block">14:28</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="py-1 px-2">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 mr-2">
+                      <div className="bg-green-500 rounded-full h-6 w-6 flex items-center justify-center">
+                        <span className="text-xs font-bold text-white">A</span>
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center">
+                        <span className="text-white text-sm font-medium mr-1">Almeida22</span>
+                        <span className="bg-gray-700 text-xs px-1.5 py-0.5 rounded text-white">Torcedor</span>
+                      </div>
+                      <p className="text-sm text-white mt-1">art está imparável hoje!</p>
+                      <span className="text-xs text-gray-500 block">14:30</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-auto border-t border-gray-800">
+              <div className="px-4 pt-2 pb-1">
+                <div className="flex items-center">
+                  <div className="h-2 w-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                  <span className="text-xs text-gray-400">3 pessoas digitando...</span>
+                </div>
+              </div>
+              
+              <div className="px-4 pb-2">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 mr-2">
+                    <div className="bg-furia-purple rounded-full h-7 w-7 flex items-center justify-center">
+                      <User size={14} className="text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1 relative">
+                    <input
+                      type="text"
+                      placeholder="Digite sua mensagem..."
+                      className="w-full bg-gray-800 border border-gray-700 text-sm rounded-full py-1.5 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-furia-purple focus:border-furia-purple"
+                    />
+                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center">
+                      <button className="text-gray-400 hover:text-furia-purple p-1 transition-colors">
+                        <Send size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="px-3 pb-3">
+                <div className="flex space-x-2 overflow-x-auto pb-1 scrollbar-none">
+                  <button className="bg-gray-800 text-xs text-gray-300 px-3 py-1 rounded-full whitespace-nowrap hover:bg-furia-purple/20 transition-colors">
+                    GG!
+                  </button>
+                  <button className="bg-gray-800 text-xs text-gray-300 px-3 py-1 rounded-full whitespace-nowrap hover:bg-furia-purple/20 transition-colors">
+                    Vamos FURIA!
+                  </button>
+                  <button className="bg-gray-800 text-xs text-gray-300 px-3 py-1 rounded-full whitespace-nowrap hover:bg-furia-purple/20 transition-colors">
+                    Boa jogada!
+                  </button>
+                  <button className="bg-gray-800 text-xs text-gray-300 px-3 py-1 rounded-full whitespace-nowrap hover:bg-furia-purple/20 transition-colors">
+                    Incrível!
+                  </button>
+                </div>
               </div>
             </div>
           </div>

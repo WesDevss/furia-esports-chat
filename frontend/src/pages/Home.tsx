@@ -144,8 +144,8 @@ const Home: React.FC = () => {
               <Link to="/quiz" className="bg-furia-dark hover:bg-furia-gray/50 p-3 rounded-xl text-center transition-all">
                 Quiz
               </Link>
-              <Link to="/videos" className="bg-furia-dark hover:bg-furia-gray/50 p-3 rounded-xl text-center transition-all">
-                Vídeos
+              <Link to="/store" className="bg-furia-dark hover:bg-furia-gray/50 p-3 rounded-xl text-center transition-all">
+                Loja
               </Link>
             </div>
           </Card>
@@ -228,7 +228,7 @@ const Home: React.FC = () => {
             <div className="relative h-[180px] rounded-xl overflow-hidden transition-transform hover:scale-[1.02]">
               <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent z-10"></div>
               <img 
-                src="https://via.placeholder.com/400x180" 
+                src="/game-icons/furia-adidas.jpeg" 
                 alt="FURIA Store" 
                 className="w-full h-full object-cover"
               />

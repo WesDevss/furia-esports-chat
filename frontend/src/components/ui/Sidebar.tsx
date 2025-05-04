@@ -36,7 +36,6 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '', logoSrc }) => {
     { path: '/calendar', label: 'Calendário', icon: <CalendarDays size={20} /> },
     { path: '/results', label: 'Resultados', icon: <Trophy size={20} /> },
     { path: '/players', label: 'Jogadores', icon: <User size={20} /> },
-    { path: '/videos', label: 'Vídeos', icon: <Video size={20} /> },
     { path: '/store', label: 'Loja', icon: <ShoppingBag size={20} /> },
   ];
 
