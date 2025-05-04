@@ -5,15 +5,24 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: './',
+  base: '/',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    sourcemap: true
+    sourcemap: true,
+    minify: 'terser',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
-  }
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+  },
 }) 

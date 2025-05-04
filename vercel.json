@@ -2,10 +2,11 @@
   "buildCommand": "cd frontend && npm install --legacy-peer-deps && npm run build",
   "outputDirectory": "frontend/dist",
   "framework": "vite",
+  "installCommand": "npm install",
+  "regions": ["iad1"],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
+    { "handle": "filesystem" },
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 } 
