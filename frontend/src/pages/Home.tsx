@@ -6,19 +6,10 @@ import {
   CardMatch, 
   CardResult, 
   CardPlayer, 
-  CardQuiz, 
-  ChatBox 
+  CardQuiz 
 } from '../components/ui';
 import { ChevronRight } from 'lucide-react';
 import HomeNewsList from '../components/HomeNewsList';
-
-// Corrigindo tipagem para corresponder à definição no ChatBox
-interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'bot';
-  timestamp: Date;
-}
 
 const Home: React.FC = () => {
   const furiaLogoUrl = '/furia-logo.jpeg';
@@ -81,21 +72,6 @@ const Home: React.FC = () => {
       { label: 'Maps', value: '245' },
     ]
   };
-  
-  // Mensagens de exemplo para o chat
-  const chatMessages: Message[] = [
-    {
-      id: '1',
-      text: 'Olá, sou o FURIBOT! Como posso te ajudar hoje?',
-      sender: 'bot',
-      timestamp: new Date(Date.now() - 60000)
-    }
-  ];
-
-  // Handler para enviar mensagem no chat
-  const handleSendMessage = (message: string) => {
-    console.log('Mensagem enviada:', message);
-  };
 
   return (
     <div className="space-y-8 max-w-6xl mx-auto px-4">
@@ -145,13 +121,8 @@ const Home: React.FC = () => {
       
       {/* Layout em Grid com 3 colunas */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        {/* Coluna 1: ChatBot e Menu rápido */}
+        {/* Coluna 1: Menu rápido */}
         <div className="md:col-span-4 space-y-6">
-          <ChatBox 
-            messages={chatMessages} 
-            onSendMessage={handleSendMessage} 
-          />
-          
           <Card title="Menu Rápido">
             <div className="grid grid-cols-2 gap-2">
               <Link to="/news" className="bg-furia-dark hover:bg-furia-gray/50 p-3 rounded-xl text-center transition-all">
@@ -250,25 +221,21 @@ const Home: React.FC = () => {
             <Link to="/store" className="text-sm text-furia-purple">Ver produtos</Link>
           </div>
           
-          <div className="bg-furia-dark rounded-xl overflow-hidden shadow-md">
-            <img 
-              src="https://via.placeholder.com/400x200?text=FURIA+Store" 
-              alt="FURIA Store"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold mb-2">Nova Coleção 2024</h3>
-              <p className="text-gray-400 text-sm mb-3">
-                Conheça os novos produtos da FURIA e represente seu time favorito com estilo.
-              </p>
-              <Link 
-                to="/store" 
-                className="inline-block bg-furia-purple hover:bg-furia-purple-dark text-white px-4 py-2 rounded-lg text-sm transition-colors"
-              >
-                Comprar Agora
-              </Link>
+          {/* Loja Card */}
+          <Link to="/store">
+            <div className="relative h-[180px] rounded-xl overflow-hidden transition-transform hover:scale-[1.02]">
+              <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent z-10"></div>
+              <img 
+                src="https://via.placeholder.com/400x180" 
+                alt="FURIA Store" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-0 left-0 p-4 z-20">
+                <h3 className="text-xl font-bold">Nova Coleção</h3>
+                <p className="text-gray-300">Garanta a sua agora</p>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

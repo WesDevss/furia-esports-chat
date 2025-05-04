@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { MessageCircle, Trophy, Star, XCircle, Gift } from 'lucide-react';
-import FuriBot from '../components/FuriBot';
+import { FuriBotContext } from '../App';
+import FuriBotButton from '../components/FuriBotButton';
 
 interface Message {
   id: string;
@@ -40,7 +41,9 @@ const ChatPage: React.FC = () => {
   });
   const [missions, setMissions] = useState<Mission[]>([]);
   const [showMissions, setShowMissions] = useState(false);
-  const [isFuriBotOpen, setIsFuriBotOpen] = useState(false);
+  
+  // Usar o contexto global em vez do estado local
+  const { openFuriBot } = useContext(FuriBotContext);
 
   // Fetch messages effect
   useEffect(() => {
@@ -126,24 +129,10 @@ const ChatPage: React.FC = () => {
     try {
       // Check if this is a message to FURIBOT
       if (content.toLowerCase().includes('@furibot')) {
-        // Show FURIBOT interface
-        setIsFuriBotOpen(true);
+        // Show FURIBOT interface usando o contexto global
+        openFuriBot();
         return;
       }
-      
-      // In a real app, this would send a POST request to the API
-      // const response = await fetch('http://localhost:5002/api/messages', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     user: currentUser._id,
-      //     content,
-      //     type: 'text',
-      //     timestamp: new Date()
-      //   }),
-      // });
       
       // Mock response for now
       const newMessage: Message = {
@@ -401,27 +390,9 @@ const ChatPage: React.FC = () => {
           </div>
           
           {/* FURIBOT shortcut */}
-          <button
-            onClick={() => setIsFuriBotOpen(true)}
-            className="w-full bg-furia-purple hover:bg-purple-700 rounded-lg p-3 flex items-center gap-3 transition duration-200"
-          >
-            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
-              <Gift className="h-6 w-6 text-furia-purple" />
-            </div>
-            <div className="text-left">
-              <h3 className="font-bold text-white">FURIBOT</h3>
-              <p className="text-xs text-gray-200">Pergunte sobre estatísticas e jogadores</p>
-            </div>
-          </button>
+          <FuriBotButton variant="card" />
         </div>
       </div>
-
-      {/* FURIBOT component */}
-      <FuriBot 
-        isOpen={isFuriBotOpen} 
-        onClose={() => setIsFuriBotOpen(false)} 
-        onSendMessage={handleFuriBotMessage} 
-      />
     </div>
   );
 };

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bot, MessageSquare, User, RefreshCw, X } from 'lucide-react';
+import { Bot, MessageSquare, User, RefreshCw, X, MessageCircle } from 'lucide-react';
 import { getFuriaInformation } from '../services/openai';
 
 interface FuriBotProps {
   onSendMessage: (message: string) => void;
   isOpen: boolean;
   onClose: () => void;
+  onToggle: () => void;
 }
 
 interface Message {
@@ -24,16 +25,9 @@ interface BotMemory {
   previousQueries?: string[];
 }
 
-const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose }) => {
+const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onToggle }) => {
   const [userInput, setUserInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '0',
-      content: 'Olá! Sou o FURIBOT, assistente oficial da FURIA. Como posso ajudar hoje?',
-      sender: 'bot',
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [memory, setMemory] = useState<BotMemory>(() => {
     // Try to load memory from localStorage
@@ -48,9 +42,11 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose }) => 
   }, [memory]);
 
   useEffect(() => {
-    // Scroll to bottom when messages change
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    // Scroll to bottom when messages change or when opened
+    if (isOpen) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isOpen]);
 
   const saveToMemory = (key: keyof BotMemory, value: any) => {
     setMemory(prev => ({ ...prev, [key]: value }));
@@ -129,71 +125,100 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose }) => 
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed bottom-20 right-4 w-80 bg-gray-800 dark:bg-gray-900 rounded-lg shadow-xl border border-gray-700 overflow-hidden z-50">
-      {/* Header */}
-      <div className="bg-furia-purple p-3 flex items-center justify-between">
-        <div className="flex items-center">
-          <Bot className="h-6 w-6 text-white mr-2" />
-          <h3 className="text-white font-bold">FURIBOT</h3>
+    <>
+      {/* Botão flutuante para abrir o chat (sempre visível) */}
+      <button 
+        onClick={onToggle}
+        className="fixed bottom-8 right-8 bg-furia-purple hover:bg-furia-purple/90 text-white p-4 rounded-full shadow-lg z-50 transition-all duration-300 hover:scale-110 flex items-center justify-center"
+        aria-label="Abrir FURIBOT"
+      >
+        <div className="relative">
+          <Bot className="h-6 w-6" />
+          <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-900"></span>
         </div>
-        <button 
-          onClick={onClose}
-          className="text-gray-300 hover:text-white"
-        >
-          <X className="h-5 w-5" />
-        </button>
-      </div>
+      </button>
 
-      {/* Chat area */}
-      <div className="h-80 overflow-y-auto p-3 bg-gray-900 dark:bg-black">
-        {/* Messages */}
-        {messages.map((message) => (
-          <div key={message.id} className={`flex mb-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`rounded-lg p-3 max-w-[80%] ${message.sender === 'user' ? 'bg-gray-700' : 'bg-furia-purple'}`}>
-              <p className="text-white">{message.content}</p>
-              <span className="text-xs text-gray-400 mt-1 block">
-                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
+      {/* Chat box - mostrado apenas quando isOpen é true */}
+      {isOpen && (
+        <div className="fixed bottom-8 right-8 w-80 bg-gray-800 dark:bg-gray-900 rounded-lg shadow-xl border border-gray-700 overflow-hidden z-50 animate-slide-up">
+          {/* Header */}
+          <div className="bg-furia-purple p-3 flex items-center justify-between">
+            <div className="flex items-center">
+              <Bot className="h-6 w-6 text-white mr-2" />
+              <h3 className="text-white font-bold">FURIBOT</h3>
+              <span className="ml-2 h-2 w-2 rounded-full bg-green-400"></span>
+              <span className="ml-1 text-xs text-gray-300">Online</span>
             </div>
+            <button 
+              onClick={onClose}
+              className="text-gray-300 hover:text-white"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
-        ))}
 
-        {/* Loading indicator */}
-        {isLoading && (
-          <div className="flex mb-4">
-            <div className="bg-gray-700 rounded-lg p-3">
-              <RefreshCw className="h-5 w-5 text-furia-purple animate-spin" />
+          {/* Chat area */}
+          <div className="h-80 overflow-y-auto p-3 bg-gray-900 dark:bg-black">
+            {messages.length > 0 ? (
+              <>
+                {/* Messages */}
+                {messages.map((message) => (
+                  <div key={message.id} className={`flex mb-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`rounded-lg p-3 max-w-[80%] ${message.sender === 'user' ? 'bg-gray-700' : 'bg-furia-purple'}`}>
+                      <p className="text-white">{message.content}</p>
+                      <span className="text-xs text-gray-400 mt-1 block">
+                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center text-gray-500">
+                  <MessageCircle className="h-10 w-10 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">Digite uma mensagem para iniciar a conversa</p>
+                </div>
+              </div>
+            )}
+
+            {/* Loading indicator */}
+            {isLoading && (
+              <div className="flex mb-4">
+                <div className="bg-gray-700 rounded-lg p-3">
+                  <RefreshCw className="h-5 w-5 text-furia-purple animate-spin" />
+                </div>
+              </div>
+            )}
+            
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input area */}
+          <form onSubmit={handleSubmit} className="p-3 border-t border-gray-700">
+            <div className="flex">
+              <input
+                type="text"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                className="flex-1 bg-gray-700 dark:bg-gray-800 text-white rounded-l-md px-3 py-2 focus:outline-none"
+                placeholder="Pergunte algo sobre a FURIA..."
+                disabled={isLoading}
+                autoFocus
+              />
+              <button
+                type="submit"
+                className="bg-furia-purple text-white px-4 py-2 rounded-r-md hover:bg-purple-700 transition duration-200"
+                disabled={isLoading}
+              >
+                <MessageSquare className="h-5 w-5" />
+              </button>
             </div>
-          </div>
-        )}
-        
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input area */}
-      <form onSubmit={handleSubmit} className="p-3 border-t border-gray-700">
-        <div className="flex">
-          <input
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            className="flex-1 bg-gray-700 dark:bg-gray-800 text-white rounded-l-md px-3 py-2 focus:outline-none"
-            placeholder="Pergunte algo sobre a FURIA..."
-            disabled={isLoading}
-          />
-          <button
-            type="submit"
-            className="bg-furia-purple text-white px-4 py-2 rounded-r-md hover:bg-purple-700 transition duration-200"
-            disabled={isLoading}
-          >
-            <MessageSquare className="h-5 w-5" />
-          </button>
+          </form>
         </div>
-      </form>
-    </div>
+      )}
+    </>
   );
 };
 
