@@ -45,4 +45,9 @@ Thumbs.db
 *.tsbuildinfo
 
 # Vite
-.vite/ 
+.vite/
+
+# Arquivos com segredos e configurações locais
+*env-setup.txt
+*.pem
+*.key 
