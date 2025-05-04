@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bot, MessageSquare, User, RefreshCw, X, MessageCircle } from 'lucide-react';
+import { Bot, MessageSquare, User, RefreshCw, X, MessageCircle, Trophy, Info, Star } from 'lucide-react';
 import { getFuriaInformation } from '../services/openai';
 
 interface FuriBotProps {
@@ -23,7 +23,22 @@ interface BotMemory {
   preferredGame?: string;
   lastInteraction?: Date;
   previousQueries?: string[];
+  hasSeenIntro?: boolean;
 }
+
+const INTRO_MESSAGE = `Olá, sou o FURIBOT, o assistente oficial da FURIA Esports!
+
+Estou aqui para ajudar você com:
+• Informações sobre jogadores e times
+• Estatísticas de partidas recentes e históricas
+• Calendário de torneios e jogos
+• Notícias da FURIA e do cenário competitivo
+• Responder dúvidas sobre nossos jogos (CS2, Valorant, etc)
+
+Como posso te ajudar hoje?`;
+
+// URL da nova logo do FURIBOT
+const FURIBOT_LOGO_URL = "/public/furibot-logo.png";
 
 const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onToggle }) => {
   const [userInput, setUserInput] = useState('');
@@ -35,11 +50,29 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onTog
     return savedMemory ? JSON.parse(savedMemory) : {};
   });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const firstOpen = useRef(true);
 
   useEffect(() => {
     // Save memory to localStorage whenever it changes
     localStorage.setItem('furibot_memory', JSON.stringify(memory));
   }, [memory]);
+
+  // Mostrar mensagem de boas-vindas quando o chat for aberto pela primeira vez
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      if (!memory.hasSeenIntro || firstOpen.current) {
+        const introMessage: Message = {
+          id: '0',
+          content: INTRO_MESSAGE,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        setMessages([introMessage]);
+        saveToMemory('hasSeenIntro', true);
+        firstOpen.current = false;
+      }
+    }
+  }, [isOpen, messages.length, memory.hasSeenIntro]);
 
   useEffect(() => {
     // Scroll to bottom when messages change or when opened
@@ -125,16 +158,28 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onTog
     }
   };
 
+  // Sugestões de perguntas para o usuário
+  const suggestedQuestions = [
+    "Quando é o próximo jogo da FURIA?",
+    "Quem é o melhor jogador da FURIA?",
+    "Como a FURIA está se preparando para o próximo Major?",
+    "Estatísticas do art nas últimas partidas"
+  ];
+
   return (
     <>
       {/* Botão flutuante para abrir o chat (sempre visível) */}
       <button 
         onClick={onToggle}
-        className="fixed bottom-8 right-8 bg-furia-purple hover:bg-furia-purple/90 text-white p-4 rounded-full shadow-lg z-50 transition-all duration-300 hover:scale-110 flex items-center justify-center"
+        className="fixed bottom-8 right-8 bg-furia-purple hover:bg-furia-purple/90 text-white p-3 rounded-full shadow-lg z-50 transition-all duration-300 hover:scale-110 flex items-center justify-center"
         aria-label="Abrir FURIBOT"
       >
         <div className="relative">
-          <Bot className="h-6 w-6" />
+          <img 
+            src={FURIBOT_LOGO_URL} 
+            alt="FURIBOT" 
+            className="h-8 w-8 object-contain"
+          />
           <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-900"></span>
         </div>
       </button>
@@ -145,7 +190,11 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onTog
           {/* Header */}
           <div className="bg-furia-purple p-3 flex items-center justify-between">
             <div className="flex items-center">
-              <Bot className="h-6 w-6 text-white mr-2" />
+              <img 
+                src={FURIBOT_LOGO_URL} 
+                alt="FURIBOT" 
+                className="h-6 w-6 object-contain mr-2"
+              />
               <h3 className="text-white font-bold">FURIBOT</h3>
               <span className="ml-2 h-2 w-2 rounded-full bg-green-400"></span>
               <span className="ml-1 text-xs text-gray-300">Online</span>
@@ -165,20 +214,62 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onTog
                 {/* Messages */}
                 {messages.map((message) => (
                   <div key={message.id} className={`flex mb-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    {message.sender === 'bot' && (
+                      <div className="flex-shrink-0 mr-2 self-end">
+                        <img 
+                          src={FURIBOT_LOGO_URL} 
+                          alt="FURIBOT" 
+                          className="h-6 w-6 object-contain rounded-full"
+                        />
+                      </div>
+                    )}
                     <div className={`rounded-lg p-3 max-w-[80%] ${message.sender === 'user' ? 'bg-gray-700' : 'bg-furia-purple'}`}>
-                      <p className="text-white">{message.content}</p>
+                      <p className="text-white whitespace-pre-line">{message.content}</p>
                       <span className="text-xs text-gray-400 mt-1 block">
                         {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
+                    {message.sender === 'user' && (
+                      <div className="flex-shrink-0 ml-2 self-end">
+                        <div className="bg-gray-700 p-1.5 rounded-full">
+                          <User size={12} className="text-white" />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </>
             ) : (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center text-gray-500">
-                  <MessageCircle className="h-10 w-10 mx-auto mb-2 opacity-50" />
+                  <img 
+                    src={FURIBOT_LOGO_URL} 
+                    alt="FURIBOT" 
+                    className="h-16 w-16 object-contain mx-auto mb-2"
+                  />
                   <p className="text-sm">Digite uma mensagem para iniciar a conversa</p>
+                </div>
+              </div>
+            )}
+
+            {/* Sugestões de perguntas - mostradas apenas quando não há mensagens */}
+            {messages.length === 0 && (
+              <div className="absolute bottom-2 left-0 w-full px-3">
+                <p className="text-xs text-gray-400 mb-2 text-center">Experimente perguntar:</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {suggestedQuestions.slice(0, 2).map((question, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setUserInput(question);
+                        const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
+                        setTimeout(() => handleSubmit(fakeEvent), 100);
+                      }}
+                      className="text-xs bg-gray-800 hover:bg-gray-700 py-1 px-2 rounded-full text-gray-300"
+                    >
+                      {question}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}

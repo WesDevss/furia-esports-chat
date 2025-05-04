@@ -39,13 +39,7 @@ const FuriBotWrapper: React.FC<{
   onClose: () => void;
   onToggle: () => void;
 }> = (props) => {
-  const location = useLocation();
-  
-  // Don't render FuriBot on the home page
-  if (location.pathname === '/') {
-    return null;
-  }
-  
+  // Mostrar o FURIBOT em todas as páginas, incluindo a home
   return <FuriBot {...props} />;
 };
 
@@ -95,7 +89,7 @@ const App: React.FC = () => {
             </main>
             <Footer />
             
-            {/* FURIBOT global disponível em todas as páginas exceto home */}
+            {/* FURIBOT global disponível em todas as páginas */}
             <FuriBotWrapper 
               onSendMessage={handleFuriBotMessage}
               isOpen={isFuriBotOpen}

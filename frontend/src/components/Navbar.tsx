@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, User, Search, Moon, Sun, Bot } from 'lucide-react';
+import { Menu, X, User, Search, Moon, Sun } from 'lucide-react';
 import { useTheme } from './theme-provider';
 import { useFuriBot } from '../hooks/useFuriBot';
 
@@ -79,18 +79,6 @@ const Navbar: React.FC = () => {
               </Link>
             ))}
             
-            {/* FURIBOT button */}
-            <button
-              onClick={openFuriBot}
-              className="p-2 rounded-full text-gray-300 hover:bg-gray-700 hover:text-furia-purple"
-              aria-label="Open FURIBOT"
-            >
-              <div className="relative">
-                <Bot className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></span>
-              </div>
-            </button>
-            
             {/* Theme toggle */}
             <button
               onClick={toggleTheme}
@@ -114,18 +102,6 @@ const Navbar: React.FC = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
-            {/* FURIBOT mobile button */}
-            <button
-              onClick={openFuriBot}
-              className="p-2 mr-2 rounded-full text-gray-300 hover:bg-gray-700 hover:text-furia-purple"
-              aria-label="Open FURIBOT"
-            >
-              <div className="relative">
-                <Bot className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></span>
-              </div>
-            </button>
-            
             <button
               onClick={toggleTheme}
               className="p-2 mr-2 rounded-full text-gray-300 hover:bg-gray-700 hover:text-white"
@@ -188,18 +164,6 @@ const Navbar: React.FC = () => {
                 {item.label}
               </Link>
             ))}
-            
-            {/* Add FURIBOT option to mobile menu */}
-            <button
-              onClick={() => {
-                openFuriBot();
-                setIsOpen(false);
-              }}
-              className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-            >
-              <Bot className="h-5 w-5 mr-2" />
-              FURIBOT
-            </button>
             
             <Link
               to="/profile"
