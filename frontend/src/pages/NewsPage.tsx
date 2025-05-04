@@ -47,7 +47,7 @@ const NewsPage: React.FC = () => {
             },
             date: new Date('2024-12-15T10:30:00'),
             category: 'CS2',
-            imageUrl: '/news/furia-roster-change.jpg',
+            imageUrl: '/news/mudanca-elenco-furia.png',
             isBreaking: true
           },
           {
@@ -61,7 +61,7 @@ const NewsPage: React.FC = () => {
             },
             date: new Date(Date.now() - 7200000), // 2 horas atrás
             category: 'CS2',
-            imageUrl: '/esl-furia-celebration.jpg',
+            imageUrl: '/news/furia-fase-de-grupos-iem-rio-2024.jpg',
             isBreaking: true
           },
           {
@@ -75,7 +75,7 @@ const NewsPage: React.FC = () => {
             },
             date: new Date('2024-12-20T09:15:00'),
             category: 'VALORANT',
-            imageUrl: '/news/furia-valorant-bootcamp.jpg'
+            imageUrl: '/news/furia-bootcamp-europa.jpg'
           },
           {
             id: '4',
@@ -88,7 +88,7 @@ const NewsPage: React.FC = () => {
             },
             date: new Date('2024-08-05T21:30:00'),
             category: 'LOL',
-            imageUrl: '/news/furia-cblol-viewership.jpg'
+            imageUrl: '/news/cblol-2024-final-1-split-recorde-audiencia.webp'
           },
           {
             id: '5',
@@ -101,7 +101,7 @@ const NewsPage: React.FC = () => {
             },
             date: new Date('2024-12-01T14:20:00'),
             category: 'GERAL',
-            imageUrl: '/news/furia-training-center.jpg'
+            imageUrl: '/news/centro-treinamento-furia.jpg'
           },
           {
             id: '6',
@@ -114,7 +114,7 @@ const NewsPage: React.FC = () => {
             },
             date: new Date('2024-11-28T11:00:00'),
             category: 'GERAL',
-            imageUrl: '/news/furia-partnership.jpg'
+            imageUrl: '/news/agon-furia.jpg'
           }
         ];
         

@@ -36,8 +36,8 @@ const HomeNewsList: React.FC = () => {
         <div className="mb-6 bg-gray-800 rounded-lg overflow-hidden">
           <div className="h-48 bg-gray-700 relative">
             <img 
-              src="/esl-furia-celebration.jpg" 
-              alt="FURIA vence NAVI"
+              src="/news/furia-2022.jpg" 
+              alt="FURIA vence NAVI na estreia do campeonato"
               className="w-full h-full object-cover"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
