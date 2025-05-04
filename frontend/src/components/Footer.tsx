@@ -81,16 +81,16 @@ const Footer: React.FC = () => {
             <h3 className="text-white font-bold mb-4">Times</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="https://furia.gg/cs" className="text-gray-400 hover:text-furia-purple transition-colors">CS2</a>
+                <a href="https://draft5.gg/equipe/330-FURIA" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-furia-purple transition-colors">CS2</a>
               </li>
               <li>
-                <a href="https://www.vlr.gg/team/2406/furia" className="text-gray-400 hover:text-furia-purple transition-colors">VALORANT</a>
+                <a href="https://www.vlr.gg/team/2406/furia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-furia-purple transition-colors">VALORANT</a>
               </li>
               <li>
-                <a href="https://furia.gg/r6" className="text-gray-400 hover:text-furia-purple transition-colors">Rainbow Six</a>
+                <a href="https://siege.gg/teams/568-furia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-furia-purple transition-colors">Rainbow Six</a>
               </li>
               <li>
-                <a href="https://furia.gg/apex" className="text-gray-400 hover:text-furia-purple transition-colors">Apex Legends</a>
+                <a href="https://apex.tracker.gg/apex/profile/origin/furia/overview" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-furia-purple transition-colors">Apex Legends</a>
               </li>
             </ul>
           </div>
