@@ -1,12 +1,95 @@
 import express from 'express';
 import axios from 'axios';
-import { config } from '../config';
+import { config, MODEL_LIMITS, OpenAIModelType } from '../config';
 
 const router = express.Router();
 
 // Cache para respostas
 const responseCache = new Map<string, { response: string, timestamp: number }>();
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
+
+// Contador diário de requisições
+class DailyRequestCounter {
+  private requestCount: number = 0;
+  private lastResetDay: number = new Date().getUTCDate();
+
+  incrementAndCheck(model: OpenAIModelType): boolean {
+    // Verifica se precisa resetar o contador (novo dia UTC)
+    const currentDay = new Date().getUTCDate();
+    if (currentDay !== this.lastResetDay) {
+      this.requestCount = 0;
+      this.lastResetDay = currentDay;
+    }
+
+    // Incrementa e verifica se excedeu o limite diário
+    this.requestCount++;
+    const dailyLimit = MODEL_LIMITS[model].requestsPerDay;
+    
+    if (this.requestCount > dailyLimit) {
+      console.warn(`Limite diário de requisições excedido para o modelo ${model}: ${this.requestCount}/${dailyLimit}`);
+      return false;
+    }
+    
+    return true;
+  }
+
+  getCount(): number {
+    return this.requestCount;
+  }
+}
+
+const dailyCounter = new DailyRequestCounter();
+
+// Implementação de token bucket para rate limiting
+class RateLimiter {
+  private tokens: number;
+  private lastRefill: number;
+  private maxTokens: number;
+  private refillRate: number; // tokens por segundo
+
+  constructor(maxTokens: number, refillRate: number) {
+    this.tokens = maxTokens;
+    this.lastRefill = Date.now();
+    this.maxTokens = maxTokens;
+    this.refillRate = refillRate;
+  }
+
+  async getToken(): Promise<boolean> {
+    this.refill();
+    
+    if (this.tokens >= 1) {
+      this.tokens -= 1;
+      return true;
+    }
+    
+    // Se não há tokens, espera um pouco e tenta novamente
+    const timeToWait = (1 / this.refillRate) * 1000;
+    console.log(`Sem tokens disponíveis. Aguardando ${timeToWait}ms para refill...`);
+    await new Promise(resolve => setTimeout(resolve, timeToWait));
+    return this.getToken();
+  }
+
+  private refill() {
+    const now = Date.now();
+    const timePassed = (now - this.lastRefill) / 1000; // em segundos
+    const tokensToAdd = timePassed * this.refillRate;
+    
+    if (tokensToAdd > 0) {
+      this.tokens = Math.min(this.maxTokens, this.tokens + tokensToAdd);
+      this.lastRefill = now;
+    }
+  }
+}
+
+// Cria rate limiters para cada modelo
+const rateLimiters: Record<OpenAIModelType, RateLimiter> = {
+  'gpt-4.1': new RateLimiter(MODEL_LIMITS['gpt-4.1'].requestsPerMinute, MODEL_LIMITS['gpt-4.1'].requestsPerMinute / 60),
+  'gpt-4.1-mini': new RateLimiter(MODEL_LIMITS['gpt-4.1-mini'].requestsPerMinute, MODEL_LIMITS['gpt-4.1-mini'].requestsPerMinute / 60),
+  'gpt-4.1-nano': new RateLimiter(MODEL_LIMITS['gpt-4.1-nano'].requestsPerMinute, MODEL_LIMITS['gpt-4.1-nano'].requestsPerMinute / 60),
+  'gpt-4o': new RateLimiter(MODEL_LIMITS['gpt-4o'].requestsPerMinute, MODEL_LIMITS['gpt-4o'].requestsPerMinute / 60),
+  'gpt-4o-mini': new RateLimiter(MODEL_LIMITS['gpt-4o-mini'].requestsPerMinute, MODEL_LIMITS['gpt-4o-mini'].requestsPerMinute / 60),
+  'gpt-3.5-turbo': new RateLimiter(MODEL_LIMITS['gpt-3.5-turbo'].requestsPerMinute, MODEL_LIMITS['gpt-3.5-turbo'].requestsPerMinute / 60)
+};
 
 // Sistema de pool de chaves de API
 class APIKeyPool {
@@ -61,20 +144,22 @@ class APIKeyPool {
 }
 
 // Verifica se a chave da API existe
+let apiKeyPool: APIKeyPool | null;
 if (!config.openaiApiKey) {
-  throw new Error('OpenAI API key não configurada');
+  console.warn('OpenAI API key não configurada. Usando apenas respostas alternativas.');
+  apiKeyPool = null;
+} else {
+  // Inicializa o pool de chaves
+  apiKeyPool = new APIKeyPool([config.openaiApiKey]);
 }
-
-// Inicializa o pool de chaves
-const apiKeyPool = new APIKeyPool([config.openaiApiKey]);
 
 // Configurações da API
 const API_CONFIG = {
-  MODEL: 'gpt-3.5-turbo', // Modelo padrão
-  MAX_TOKENS: 30, // Extremamente curto
+  MODEL: config.defaultModel, // Modelo padrão configurado
+  MAX_TOKENS: MODEL_LIMITS[config.defaultModel].maxTokensPerRequest / 2, // Metade do máximo disponível para o modelo
   TEMPERATURE: 0.1, // Quase determinístico
   TIMEOUT: 10000, // 10 segundos
-  REQUEST_INTERVAL: 6000 // 6 segundos entre requisições
+  REQUEST_INTERVAL: 60000 / MODEL_LIMITS[config.defaultModel].requestsPerMinute // Intervalo baseado no limite de RPM
 };
 
 // Respostas alternativas
@@ -145,6 +230,13 @@ let lastRequestTime = 0;
 
 // Função para fazer requisição à API
 async function makeOpenAIRequest(query: string): Promise<string> {
+  const model = config.defaultModel;
+
+  // Verifica o limite diário de requisições
+  if (!dailyCounter.incrementAndCheck(model)) {
+    throw new Error(`Limite diário de requisições excedido para o modelo ${model}`);
+  }
+
   // Garante o intervalo mínimo entre requisições
   const now = Date.now();
   const timeSinceLastRequest = now - lastRequestTime;
@@ -155,6 +247,10 @@ async function makeOpenAIRequest(query: string): Promise<string> {
   }
 
   // Obtém uma chave disponível do pool
+  if (!apiKeyPool) {
+    throw new Error('API Key Pool não inicializado');
+  }
+  
   const apiKey = await apiKeyPool.getAvailableKey();
   if (!apiKey) {
     throw new Error('Nenhuma chave de API disponível');
@@ -164,7 +260,7 @@ async function makeOpenAIRequest(query: string): Promise<string> {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: API_CONFIG.MODEL,
+        model: model,
         messages: [
           {
             role: 'system',
@@ -191,13 +287,48 @@ async function makeOpenAIRequest(query: string): Promise<string> {
     );
 
     lastRequestTime = Date.now();
-    apiKeyPool.markSuccess(apiKey);
+    if (apiKeyPool) {
+      apiKeyPool.markSuccess(apiKey);
+    }
     return response.data.choices[0].message.content;
   } catch (error: any) {
-    apiKeyPool.markFailure(apiKey);
+    if (apiKeyPool) {
+      apiKeyPool.markFailure(apiKey);
+    }
     console.error('Erro na requisição:', error.message);
     throw error;
   }
+}
+
+// Função para fazer requisição à API com rate limiting e retry
+async function makeOpenAIRequestWithRetry(query: string, maxRetries = config.apiRateLimit.maxRetries): Promise<string> {
+  let lastError;
+  const model = config.defaultModel;
+  
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      // Obtém um token do rate limiter antes de fazer a requisição
+      await rateLimiters[model].getToken();
+      
+      return await makeOpenAIRequest(query);
+    } catch (error: any) {
+      lastError = error;
+      
+      // Se for um erro 429 (Too Many Requests), tenta novamente com backoff exponencial
+      if (error.response && error.response.status === 429) {
+        const waitTime = Math.pow(2, attempt) * config.apiRateLimit.retryDelay;
+        console.log(`Erro 429 (Too Many Requests). Tentativa ${attempt + 1}/${maxRetries}. Aguardando ${waitTime/1000}s...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+        continue;
+      } else {
+        // Para outros tipos de erro, não tenta novamente
+        throw error;
+      }
+    }
+  }
+  
+  // Se chegou aqui, todas as tentativas falharam
+  throw lastError;
 }
 
 // Rota principal
@@ -216,8 +347,18 @@ router.post('/chat', async (req, res) => {
       return res.json({ content: cachedResponse });
     }
 
+    // Se não há API key configurada, usar diretamente resposta alternativa
+    if (!apiKeyPool) {
+      const respostaAlternativa = getRespostaAlternativa(query);
+      return res.json({ 
+        content: respostaAlternativa,
+        isFallback: true
+      });
+    }
+
     try {
-      const response = await makeOpenAIRequest(query);
+      // Usar a nova função com retry
+      const response = await makeOpenAIRequestWithRetry(query);
       saveToCache(query, response);
       return res.json({ content: response });
     } catch (error: any) {

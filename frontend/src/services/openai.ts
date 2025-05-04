@@ -16,6 +16,11 @@ export const getFuriaInformation = async (query: string): Promise<string> => {
       throw new Error(response.data.message || 'Erro ao processar a requisição');
     }
 
+    // Se recebemos uma resposta, mesmo que seja uma fallback, retornamos o conteúdo
+    if (response.data.isFallback) {
+      console.log('Usando resposta alternativa fornecida pelo backend');
+    }
+
     return response.data.content;
   } catch (error) {
     console.error('Erro ao consultar OpenAI:', error);
