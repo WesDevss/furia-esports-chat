@@ -38,7 +38,7 @@ Estou aqui para ajudar você com:
 Como posso te ajudar hoje?`;
 
 // URL da nova logo do FURIBOT
-const FURIBOT_LOGO_URL = "/public/furibot-logo.png";
+const FURIBOT_LOGO_URL = "/furibot-logo.png";
 
 const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onToggle }) => {
   const [userInput, setUserInput] = useState('');
