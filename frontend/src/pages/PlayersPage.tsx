@@ -17,29 +17,33 @@ interface Player {
     twitter?: string;
     instagram?: string;
     twitch?: string;
+    youtube?: string;
   };
+  emoji?: string;
 }
 
 const PlayersPage: React.FC = () => {
-  // Mock data for FURIA players
+  // Updated data for FURIA CS2 players
   const players: Player[] = [
     {
       id: '1',
-      name: 'Andrei Piovezan',
-      nickname: 'yuurih',
-      role: 'Rifler',
+      name: 'Gabriel Toledo',
+      nickname: 'FalleN',
+      role: 'IGL',
       country: 'Brasil',
-      image: 'https://via.placeholder.com/300x400',
+      image: '/players/fallen.jpg',
+      emoji: '🎯',
       stats: {
-        rating: '1.15',
-        kd: '1.12',
-        hs: '54%',
-        maps: 245
+        rating: '1.08',
+        kd: '1.05',
+        hs: '42%',
+        maps: 198
       },
       social: {
-        twitter: 'https://twitter.com/yuurihcs',
-        instagram: 'https://instagram.com/yuurihcs',
-        twitch: 'https://twitch.tv/yuurih'
+        twitter: 'https://twitter.com/FalleNCS',
+        instagram: 'https://instagram.com/fallen',
+        twitch: 'https://twitch.tv/gafallen',
+        youtube: 'https://youtube.com/fallenINSIDER'
       }
     },
     {
@@ -48,7 +52,8 @@ const PlayersPage: React.FC = () => {
       nickname: 'KSCERATO',
       role: 'Rifler',
       country: 'Brasil',
-      image: 'https://via.placeholder.com/300x400',
+      image: '/players/kscerato.jpg',
+      emoji: '🎯',
       stats: {
         rating: '1.18',
         kd: '1.20',
@@ -58,62 +63,71 @@ const PlayersPage: React.FC = () => {
       social: {
         twitter: 'https://twitter.com/kscerato',
         instagram: 'https://instagram.com/kscerato',
-        twitch: 'https://twitch.tv/kscerato'
+        twitch: 'https://twitch.tv/kscerato',
+        youtube: 'https://youtube.com/KSCERATO'
       }
     },
     {
       id: '3',
-      name: 'André Abreu',
-      nickname: 'drop',
+      name: 'Yuri Santos',
+      nickname: 'yuurih',
       role: 'Rifler',
       country: 'Brasil',
-      image: 'https://via.placeholder.com/300x400',
+      image: '/players/yuurih.jpg',
+      emoji: '🔥',
       stats: {
-        rating: '1.05',
-        kd: '1.02',
-        hs: '50%',
-        maps: 232
+        rating: '1.15',
+        kd: '1.12',
+        hs: '54%',
+        maps: 245
       },
       social: {
-        twitter: 'https://twitter.com/dropcs',
-        instagram: 'https://instagram.com/dropareu',
+        twitter: 'https://twitter.com/yuurih',
+        instagram: 'https://instagram.com/yuurihfps',
+        twitch: 'https://twitch.tv/yuurih',
+        youtube: 'https://youtube.com/yuurih'
       }
     },
     {
       id: '4',
-      name: 'Rafael Costa',
-      nickname: 'saffee',
-      role: 'AWPer',
-      country: 'Brasil',
-      image: 'https://via.placeholder.com/300x400',
+      name: 'Danil Golubenko',
+      nickname: 'molodoy',
+      role: 'Rifler',
+      country: 'Ucrânia',
+      image: '/players/molodoy.jpg',
+      emoji: '🧊',
       stats: {
-        rating: '1.10',
-        kd: '1.08',
-        hs: '38%',
-        maps: 198
+        rating: '1.09',
+        kd: '1.07',
+        hs: '52%',
+        maps: 86
       },
       social: {
-        twitter: 'https://twitter.com/saffeeCS',
-        instagram: 'https://instagram.com/saffeecs',
-        twitch: 'https://twitch.tv/saffee'
+        twitter: 'https://twitter.com/molodoy',
+        instagram: 'https://instagram.com/danil.molodoy_',
+        twitch: 'https://twitch.tv/molodoy1818',
+        youtube: 'https://youtube.com/molodoy'
       }
     },
     {
       id: '5',
-      name: 'Nicholas de Oliveira',
-      nickname: 'guerri',
-      role: 'Coach',
-      country: 'Brasil',
-      image: 'https://via.placeholder.com/300x400',
+      name: 'Mareks Gaļinskis',
+      nickname: 'YEKINDAR',
+      role: 'Stand-in',
+      country: 'Letônia',
+      image: '/players/yekindar.jpg',
+      emoji: '⚡',
       stats: {
-        rating: '-',
-        kd: '-',
-        hs: '-',
-        maps: 0
+        rating: '1.14',
+        kd: '1.10',
+        hs: '56%',
+        maps: 124
       },
       social: {
-        twitter: 'https://twitter.com/guerriCS',
-        instagram: 'https://instagram.com/guerrics',
+        twitter: 'https://twitter.com/YEKINDAR',
+        instagram: 'https://instagram.com/yek1ndar',
+        twitch: 'https://twitch.tv/yekindar',
+        youtube: 'https://youtube.com/YEKINDAR'
       }
     }
   ];
@@ -133,6 +147,10 @@ const PlayersPage: React.FC = () => {
                 src={player.image} 
                 alt={player.nickname} 
                 className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = `https://via.placeholder.com/300x400?text=${player.nickname}`;
+                }}
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-furia-black to-transparent h-1/2 pointer-events-none"></div>
               <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -144,7 +162,10 @@ const PlayersPage: React.FC = () => {
                     {player.country}
                   </span>
                 </div>
-                <h2 className="text-2xl font-bold mt-2">{player.nickname}</h2>
+                <h2 className="text-2xl font-bold mt-2">
+                  {player.emoji && <span className="mr-1">{player.emoji}</span>}
+                  {player.nickname}
+                </h2>
                 <p className="text-gray-400 text-sm">{player.name}</p>
               </div>
             </div>
@@ -188,6 +209,13 @@ const PlayersPage: React.FC = () => {
                   <a href={player.social.twitch} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-purple-500 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M2.149 0l-1.612 4.119v16.836h5.731v3.045h3.224l3.045-3.045h4.657l6.269-6.269v-14.686h-21.314zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045h-4.836v-15.045h17.194v11.463zm-3.582-7.343v6.262h-2.149v-6.262h2.149zm-5.731 0v6.262h-2.149v-6.262h2.149z" fillRule="evenodd" clipRule="evenodd" />
+                    </svg>
+                  </a>
+                )}
+                {player.social.youtube && (
+                  <a href={player.social.youtube} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
                     </svg>
                   </a>
                 )}

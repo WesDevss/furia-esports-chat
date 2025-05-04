@@ -18,6 +18,9 @@ import LiveMatchPage from './pages/LiveMatchPage';
 import StatsPage from './pages/StatsPage';
 import AchievementsPage from './pages/AchievementsPage';
 import LeaderboardPage from './pages/LeaderboardPage';
+import QuizzesPage from './pages/QuizzesPage';
+import MatchOverview from './pages/MatchOverview';
+import { QuizWidget } from './components/widgets';
 
 // Criando um contexto para o FURIBOT que será acessível em todas as páginas
 export const FuriBotContext = React.createContext<{
@@ -77,10 +80,12 @@ const App: React.FC = () => {
                 <Route path="/calendar" element={<CalendarPage />} />
                 <Route path="/results" element={<ResultsPage />} />
                 <Route path="/players" element={<PlayersPage />} />
-                <Route path="/quiz" element={<QuizPage />} />
+                <Route path="/quiz" element={<QuizzesPage />} />
+                <Route path="/quiz/:quizId" element={<QuizPage />} />
                 <Route path="/store" element={<StorePage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/live-match" element={<LiveMatchPage />} />
+                <Route path="/match/:matchId" element={<MatchOverview />} />
                 <Route path="/stats" element={<StatsPage />} />
                 <Route path="/achievements" element={<AchievementsPage />} />
                 <Route path="/leaderboard" element={<LeaderboardPage />} />

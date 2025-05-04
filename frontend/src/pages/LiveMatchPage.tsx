@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronRight, BarChart2, User, MessageCircle, Clock, Trophy } from 'lucide-react';
 import FuriBot from '../components/FuriBot';
+import LiveMatchScoreDisplay from '../components/LiveMatchScoreDisplay';
 
 interface Player {
   id: string;
@@ -179,97 +180,20 @@ const LiveMatchPage: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-4">
-      <div className="mb-6">
-        <div className="flex items-center text-sm text-gray-400 mb-2">
-          <span>Home</span>
-          <ChevronRight className="h-4 w-4 mx-1" />
-          <span>Partidas Ao Vivo</span>
-          <ChevronRight className="h-4 w-4 mx-1" />
-          <span className="text-furia-purple">{matchData.teams.home.name} vs {matchData.teams.away.name}</span>
-        </div>
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          <div className="w-6 h-6 bg-red-500 rounded-full animate-pulse"></div>
-          Partida Ao Vivo: {matchData.teams.home.name} vs {matchData.teams.away.name}
-        </h1>
-        <p className="text-gray-400">
-          {matchData.tournament} - {matchData.stage} | {matchData.game}
-        </p>
-      </div>
+      {/* Replace the match header section with our new component */}
+      <LiveMatchScoreDisplay 
+        homeTeam={matchData.teams.home}
+        awayTeam={matchData.teams.away}
+        tournament={matchData.tournament}
+        stage={matchData.stage}
+        game={matchData.game}
+        currentRound={matchData.currentRound}
+        maxRounds={matchData.maxRounds}
+        currentMap={matchData.currentMap}
+        isLive={matchData.status === 'live'}
+      />
 
-      {/* Match header */}
-      <div className="bg-gray-800 dark:bg-gray-900 rounded-xl p-6 mb-6">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <img 
-              src={matchData.teams.home.logo} 
-              alt={matchData.teams.home.name} 
-              className="h-16 w-16"
-              onError={(e) => {
-                // Fallback if image fails to load
-                (e.target as HTMLImageElement).src = 'https://via.placeholder.com/64?text=FURIA';
-              }}
-            />
-            <div>
-              <h2 className="text-2xl font-bold">{matchData.teams.home.name}</h2>
-              <p className="text-furia-purple">Home Team</p>
-            </div>
-          </div>
-          
-          <div className="text-center">
-            <div className="text-4xl font-bold">
-              <span className={matchData.teams.home.score > matchData.teams.away.score ? 'text-green-500' : ''}>
-                {matchData.teams.home.score}
-              </span>
-              <span className="mx-3">:</span>
-              <span className={matchData.teams.away.score > matchData.teams.home.score ? 'text-green-500' : ''}>
-                {matchData.teams.away.score}
-              </span>
-            </div>
-            <div className="flex items-center justify-center gap-2 mt-2">
-              <Clock className="h-4 w-4 text-gray-400" />
-              <span className="text-sm text-gray-400">
-                Round {matchData.currentRound}/{matchData.maxRounds}
-              </span>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <h2 className="text-2xl font-bold">{matchData.teams.away.name}</h2>
-              <p className="text-gray-400">Away Team</p>
-            </div>
-            <img 
-              src={matchData.teams.away.logo} 
-              alt={matchData.teams.away.name} 
-              className="h-16 w-16"
-              onError={(e) => {
-                // Fallback if image fails to load
-                (e.target as HTMLImageElement).src = 'https://via.placeholder.com/64?text=TEAM';
-              }}
-            />
-          </div>
-        </div>
-        
-        <div className="mt-6 grid grid-cols-5 gap-3 text-center">
-          {matchData.maps.map((map, index) => (
-            <div 
-              key={map} 
-              className={`py-2 px-4 rounded ${
-                map === matchData.currentMap 
-                  ? 'bg-furia-purple text-white' 
-                  : 'bg-gray-700 text-gray-300'
-              }`}
-            >
-              {map}
-              {map === matchData.currentMap && (
-                <div className="text-xs mt-1">Current</div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="mt-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Live stream embed */}
         <div className="lg:col-span-2">
           <div className="bg-black rounded-xl overflow-hidden aspect-video mb-6">
@@ -406,11 +330,14 @@ const LiveMatchPage: React.FC = () => {
       </div>
       
       {/* FURIBOT component */}
-      <FuriBot 
-        isOpen={isFuriBotOpen} 
-        onClose={() => setIsFuriBotOpen(false)} 
-        onSendMessage={handleFuriBotMessage} 
-      />
+      {isFuriBotOpen && (
+        <FuriBot 
+          isOpen={isFuriBotOpen} 
+          onClose={() => setIsFuriBotOpen(false)} 
+          onSendMessage={handleFuriBotMessage}
+          onToggle={() => setIsFuriBotOpen(!isFuriBotOpen)}
+        />
+      )}
     </div>
   );
 };

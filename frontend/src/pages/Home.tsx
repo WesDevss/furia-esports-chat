@@ -6,10 +6,12 @@ import {
   CardMatch, 
   CardResult, 
   CardPlayer, 
-  CardQuiz 
+  CardQuiz,
+  QuickQuizButton
 } from '../components/ui';
 import { ChevronRight } from 'lucide-react';
 import HomeNewsList from '../components/HomeNewsList';
+import PlayerProfileCard from '../components/PlayerProfileCard';
 
 const Home: React.FC = () => {
   const furiaLogoUrl = '/furia-logo.jpeg';
@@ -61,15 +63,15 @@ const Home: React.FC = () => {
   
   // Dados de exemplo para perfil de jogador
   const playerProfile = {
-    name: 'Andrei Piovezan',
-    nickname: 'yuurih',
-    role: 'Rifler',
-    image: 'https://via.placeholder.com/80',
+    name: 'Gabriel Toledo',
+    nickname: 'FalleN',
+    role: 'IGL',
+    image: '/players/fallen.jpg',
     stats: [
-      { label: 'K/D', value: '1.12' },
-      { label: 'HS%', value: '54%' },
-      { label: 'Rating', value: '1.15' },
-      { label: 'Maps', value: '245' },
+      { label: 'K/D', value: '1.05' },
+      { label: 'HS%', value: '42%' },
+      { label: 'Rating', value: '1.08' },
+      { label: 'Maps', value: '198' },
     ]
   };
 
@@ -89,7 +91,7 @@ const Home: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="text-4xl md:text-5xl font-bold mb-4"
+              className="text-5xl md:text-6xl font-bold mb-4"
             >
               Bem-vindo ao <span className="furia-gradient-text">FURIA Chat</span>
             </motion.h1>
@@ -173,7 +175,7 @@ const Home: React.FC = () => {
             <Link to="/players" className="text-sm text-furia-purple">Ver todos</Link>
           </div>
           
-          <CardPlayer
+          <PlayerProfileCard
             name={playerProfile.name}
             nickname={playerProfile.nickname}
             role={playerProfile.role}
@@ -207,13 +209,13 @@ const Home: React.FC = () => {
             <Link to="/quiz" className="text-sm text-furia-purple">Ver todos</Link>
           </div>
           
-          <CardQuiz 
+          <QuickQuizButton 
             title="Quiz FURIA" 
             description="Teste seus conhecimentos sobre a FURIA"
-            questionsCount={10}
-            difficulty="medium"
+            questionCount={10}
+            difficulty="Médio"
             completionRate={65}
-            onStart={() => console.log('Quiz iniciado')}
+            quizId="furia-conhecimentos"
           />
           
           <div className="flex items-center justify-between mt-8">

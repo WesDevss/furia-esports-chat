@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
           {/* Logo and About */}
           <div className="space-y-4">
             <Link to="/" className="inline-block">
-              <img src="/furia-logo.jpeg" alt="FURIA Logo" className="h-12" />
+              <img src="/furia-logo.jpeg" alt="FURIA Logo" className="h-16" />
             </Link>
             <p className="text-gray-400 text-sm">
               FURIA Chat é o canal oficial de interação da comunidade FURIA,

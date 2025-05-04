@@ -44,7 +44,7 @@ const CardMatch: React.FC<CardMatchProps> = ({
 
       <div className="flex items-center justify-between mb-4">
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 relative">
+          <div className="w-20 h-20 relative">
             <img 
               src={homeTeam.logo || '/team-logos/furia-logo.jpeg'} 
               alt={homeTeam.name} 
@@ -64,7 +64,7 @@ const CardMatch: React.FC<CardMatchProps> = ({
         </div>
 
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 relative">
+          <div className="w-20 h-20 relative">
             <img 
               src={awayTeam.logo} 
               alt={awayTeam.name} 

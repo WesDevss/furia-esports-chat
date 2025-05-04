@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import LiveMatchScoreDisplay from '../components/LiveMatchScoreDisplay';
 
 interface Map {
   name: string;
@@ -53,42 +54,35 @@ const LiveMatch: React.FC = () => {
     );
   }
 
+  // Calculate the total score based on maps
+  const totalFuriaScore = match.maps.filter(map => map.furiaScore > map.opponentScore).length;
+  const totalOpponentScore = match.maps.filter(map => map.opponentScore > map.furiaScore).length;
+
+  // Get the current map (where the match is being played)
+  const currentMapIndex = match.maps.findIndex(map => 
+    map.furiaScore < 16 && map.opponentScore < 16
+  );
+  const currentMap = currentMapIndex !== -1 ? match.maps[currentMapIndex].name : null;
+
   return (
     <div className="space-y-8">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-gray-800 rounded-lg p-6"
-      >
-        <div className="flex justify-between items-center">
-          <div className="text-center">
-            <img
-              src="/furia-logo.png"
-              alt="FURIA"
-              className="h-20 w-auto mx-auto mb-2"
-            />
-            <h3 className="text-xl font-bold">FURIA</h3>
-          </div>
-          
-          <div className="text-center">
-            <div className="text-3xl font-bold text-red-500 px-4">VS</div>
-            <div className="text-xs uppercase mt-2 text-gray-400">AO VIVO</div>
-          </div>
-          
-          <div className="text-center">
-            <div className="h-20 w-20 bg-gray-700 rounded-full mx-auto mb-2 flex items-center justify-center text-xl">
-              {match.opponent.substring(0, 1)}
-            </div>
-            <h3 className="text-xl font-bold">{match.opponent}</h3>
-          </div>
-        </div>
-        
-        <div className="mt-6 text-center">
-          <span className="bg-red-600 text-white py-1 px-3 rounded-full text-sm">
-            {match.tournament}
-          </span>
-        </div>
-      </motion.div>
+      <LiveMatchScoreDisplay 
+        homeTeam={{
+          name: 'FURIA',
+          logo: '/team-logos/furia-logo.jpeg',
+          score: totalFuriaScore
+        }}
+        awayTeam={{
+          name: match.opponent,
+          logo: `/team-logos/${match.opponent.toLowerCase()}-logo.png`,
+          score: totalOpponentScore
+        }}
+        tournament={match.tournament}
+        stage="Playoffs - Quarter Finals"
+        game="CS2"
+        currentMap={currentMap || undefined}
+        isLive={match.status === 'live'}
+      />
       
       <div className="space-y-4">
         <h2 className="text-xl font-bold">Mapas</h2>
@@ -107,9 +101,13 @@ const LiveMatch: React.FC = () => {
               </div>
               
               <div className="flex items-center space-x-4">
-                <div className="text-2xl font-bold text-red-500">{map.furiaScore}</div>
+                <div className={`text-2xl font-bold ${map.furiaScore > map.opponentScore ? 'text-green-500' : ''}`}>
+                  {map.furiaScore}
+                </div>
                 <div className="text-sm">-</div>
-                <div className="text-2xl font-bold">{map.opponentScore}</div>
+                <div className={`text-2xl font-bold ${map.opponentScore > map.furiaScore ? 'text-green-500' : ''}`}>
+                  {map.opponentScore}
+                </div>
               </div>
             </div>
           </motion.div>

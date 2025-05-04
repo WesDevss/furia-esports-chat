@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { MessageCircle, Trophy, Star, XCircle, Gift } from 'lucide-react';
 import { FuriBotContext } from '../App';
 import FuriBotButton from '../components/FuriBotButton';
+import { QuizWidget } from '../components/widgets';
 
 interface Message {
   id: string;
@@ -65,30 +66,103 @@ const ChatPage: React.FC = () => {
         setError('Failed to load messages. Please try again later.');
         setLoading(false);
         
-        // For demo purposes, set some mock messages
-        setMessages([
+        // Mock messages showing fans conversing during a match
+        const now = Date.now();
+        const mockMessages: Message[] = [
           {
             id: '1',
             user: { _id: 'system', username: 'Sistema', badges: ['Oficial'] },
             content: 'Bem-vindo ao chat da FURIA!',
             type: 'text',
-            timestamp: new Date()
+            timestamp: new Date(now - 1800000) // 30 minutes ago
           },
           {
             id: '2',
             user: { _id: 'mod', username: 'Moderador', badges: ['Mod', 'Veterano'] },
-            content: 'A partida FURIA vs NAVI começará em breve!',
+            content: 'A partida FURIA vs NAVI começou! Vamos torcer juntos!',
             type: 'match-update',
-            timestamp: new Date(Date.now() - 300000)
+            timestamp: new Date(now - 600000) // 10 minutes ago
           },
           {
             id: '3',
-            user: { _id: 'furibot', username: 'FURIBOT', badges: ['BOT', 'Verificado'] },
-            content: 'Olá torcedores! Estou aqui para responder suas perguntas sobre o time e estatísticas de jogadores. Basta me mencionar com @FURIBOT',
+            user: { _id: 'user1', username: 'CSGOMaster', level: 5, badges: ['Veterano'] },
+            content: 'Grande jogada do Art!',
             type: 'text',
-            timestamp: new Date(Date.now() - 200000)
+            timestamp: new Date(now - 420000) // 7 minutes ago
+          },
+          {
+            id: '4',
+            user: { _id: 'user2', username: 'FuriaFanatic', level: 4, badges: ['Membro Premium'] },
+            content: 'KSCERATO está jogando muito hoje! 🔥',
+            type: 'text',
+            timestamp: new Date(now - 380000) // 6.3 minutes ago
+          },
+          {
+            id: '5',
+            user: { _id: 'user3', username: 'NaviHater2023', level: 2, badges: [] },
+            content: 'A defesa da FURIA está muito sólida neste mapa',
+            type: 'text',
+            timestamp: new Date(now - 300000) // 5 minutes ago
+          },
+          {
+            id: '6',
+            user: { _id: 'user4', username: 'BRzao', level: 7, badges: ['Top Torcedor'] },
+            content: 'Alguém viu aquele clutch do FalleN? MONSTRO! 👏',
+            type: 'text',
+            timestamp: new Date(now - 250000) // 4.2 minutes ago
+          },
+          {
+            id: '7',
+            user: { _id: 'system', username: 'Sistema', badges: ['Oficial'] },
+            content: 'FURIA acaba de ganhar o round 15! Placar: 9-6',
+            type: 'match-update',
+            timestamp: new Date(now - 200000) // 3.3 minutes ago
+          },
+          {
+            id: '8',
+            user: { _id: 'user5', username: 'EsportsFan', level: 3, badges: [] },
+            content: 'Alguém tem o link da stream?',
+            type: 'text',
+            timestamp: new Date(now - 150000) // 2.5 minutes ago
+          },
+          {
+            id: '9',
+            user: { _id: 'user6', username: 'GreenWall', level: 6, badges: ['Membro desde 2020'] },
+            content: 'Esse S1mple está dando trabalho, mas a FURIA está sabendo controlar bem',
+            type: 'text',
+            timestamp: new Date(now - 120000) // 2 minutes ago
+          },
+          {
+            id: '10',
+            user: { _id: 'user7', username: 'CyberPunk77', level: 4, badges: [] },
+            content: 'Yuurih!!!! Que jogada! 🤯',
+            type: 'text',
+            timestamp: new Date(now - 100000) // 1.7 minutes ago
+          },
+          {
+            id: '11',
+            user: { _id: 'user8', username: 'HEADSHOTonly', level: 8, badges: ['Pro Analyst'] },
+            content: 'A rotação da FURIA no meio do mapa está fazendo toda a diferença',
+            type: 'text',
+            timestamp: new Date(now - 90000) // 1.5 minutes ago
+          },
+          {
+            id: '12',
+            user: { _id: 'user9', username: 'CS2Lover', level: 3, badges: [] },
+            content: 'Esse molodoy tá muito bem se adaptando ao time!',
+            type: 'text',
+            timestamp: new Date(now - 60000) // 1 minute ago
+          },
+          {
+            id: '13',
+            user: { _id: 'user10', username: 'FuriaFaithful', level: 9, badges: ['OG Fan'] },
+            content: 'VAMOOOOOOO FURIA!!!',
+            type: 'text',
+            timestamp: new Date(now - 30000) // 30 seconds ago
           }
-        ]);
+        ];
+        
+        setMessages(mockMessages);
       }
     };
 
@@ -201,6 +275,14 @@ const ChatPage: React.FC = () => {
     }
   };
 
+  // Format timestamp into readable time
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-4">
       <div className="mb-6">
@@ -229,45 +311,50 @@ const ChatPage: React.FC = () => {
           ) : (
             <div className="bg-gray-800 dark:bg-gray-900 rounded-lg overflow-hidden">
               {/* Chat messages area */}
-              <div className="h-[500px] overflow-y-auto p-4 space-y-4">
+              <div className="h-[500px] overflow-y-auto p-4 space-y-4 bg-gray-900">
                 {messages.map((message) => (
                   <div 
                     key={message.id} 
                     className={`${
                       message.user._id === currentUser._id ? 'text-right' : 'text-left'
-                    }`}
+                    } mb-3`}
                   >
-                    <div 
-                      className={`inline-block rounded-lg px-4 py-2 max-w-[85%] ${
-                        message.type === 'match-update' 
-                          ? 'bg-yellow-600/20 border border-yellow-600'
-                          : message.type === 'mission-complete'
-                          ? 'bg-green-600/20 border border-green-600'
-                          : message.user._id === currentUser._id
-                          ? 'bg-furia-purple/20 border border-furia-purple'
-                          : 'bg-gray-700 dark:bg-gray-800'
-                      }`}
-                    >
-                      {message.user._id !== currentUser._id && (
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold text-sm">
+                    <div className={`
+                      ${message.type === 'match-update' 
+                        ? 'inline-block w-full bg-furia-purple/20 border border-furia-purple/40 rounded-lg px-4 py-2 text-center'
+                        : message.user._id === currentUser._id
+                        ? 'inline-block bg-furia-purple/20 border border-furia-purple/40 rounded-lg px-4 py-2 max-w-[85%]'
+                        : 'inline-block bg-gray-800 rounded-lg px-4 py-2 max-w-[85%]'
+                      }
+                    `}>
+                      {message.type !== 'match-update' && (
+                        <div className="flex items-center mb-1">
+                          <span className={`font-bold ${
+                            message.user.username === 'FURIBOT' 
+                              ? 'text-furia-purple' 
+                              : message.user.username === 'Sistema' || message.user.username === 'Moderador'
+                              ? 'text-blue-400'
+                              : ''
+                          }`}>
                             {message.user.username}
                           </span>
-                          {message.user.badges?.map((badge, i) => (
-                            <span 
-                              key={i} 
-                              className="text-xs px-1.5 py-0.5 rounded-full bg-gray-600 text-gray-200"
-                            >
-                              {badge}
-                            </span>
-                          ))}
+                          <div className="flex ml-2 space-x-1">
+                            {message.user.badges?.map((badge, index) => (
+                              <span 
+                                key={index}
+                                className="bg-gray-700 text-xs px-1 py-0.5 rounded"
+                              >
+                                {badge}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       )}
-                      <p className={`${message.type === 'mission-complete' ? 'text-green-400' : ''}`}>
+                      <p className={`${message.type === 'match-update' ? 'text-yellow-300 font-medium' : ''}`}>
                         {message.content}
                       </p>
-                      <div className="text-xs text-gray-400 mt-1">
-                        {new Date(message.timestamp).toLocaleTimeString()}
+                      <div className="text-xs text-gray-500 mt-1">
+                        {formatTime(new Date(message.timestamp))}
                       </div>
                     </div>
                   </div>
@@ -391,6 +478,15 @@ const ChatPage: React.FC = () => {
           
           {/* FURIBOT shortcut */}
           <FuriBotButton variant="card" />
+          
+          {/* Add the Quiz Widget */}
+          <div className="mt-8">
+            <h3 className="text-lg font-bold mb-3">Quiz FURIA</h3>
+            <QuizWidget 
+              quizId="furia-conhecimentos"
+              className="mt-2"
+            />
+          </div>
         </div>
       </div>
     </div>

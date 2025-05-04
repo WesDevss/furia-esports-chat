@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <img
-                className="h-8 w-auto"
+                className="h-10 w-auto"
                 src="/furia-logo.jpeg"
                 alt="FURIA Logo"
               />
