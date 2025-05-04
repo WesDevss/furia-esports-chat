@@ -12,6 +12,8 @@ import {
 import { ChevronRight } from 'lucide-react';
 import HomeNewsList from '../components/HomeNewsList';
 import PlayerProfileCard from '../components/PlayerProfileCard';
+import RecentResults from '../components/RecentResults';
+import TeamStatsLinks from '../components/TeamStatsLinks';
 
 const Home: React.FC = () => {
   const furiaLogoUrl = '/furia-logo.jpeg';
@@ -159,16 +161,7 @@ const Home: React.FC = () => {
             <Link to="/results" className="text-sm text-furia-purple">Ver todos</Link>
           </div>
           
-          {recentResults.map((result, idx) => (
-            <CardResult
-              key={result.id}
-              homeTeam={result.homeTeam}
-              awayTeam={result.awayTeam}
-              tournament={result.tournament}
-              matchDate={result.matchDate}
-              delay={idx}
-            />
-          ))}
+          <RecentResults />
           
           <div className="flex items-center justify-between mt-8">
             <h2 className="text-xl font-bold">Perfil de Jogador</h2>
@@ -217,6 +210,13 @@ const Home: React.FC = () => {
             completionRate={65}
             quizId="furia-conhecimentos"
           />
+          
+          <div className="flex items-center justify-between mt-8">
+            <h2 className="text-xl font-bold">Estatísticas</h2>
+            <Link to="/stats" className="text-sm text-furia-purple">Ver todas</Link>
+          </div>
+          
+          <TeamStatsLinks />
           
           <div className="flex items-center justify-between mt-8">
             <h2 className="text-xl font-bold">Loja Oficial</h2>
