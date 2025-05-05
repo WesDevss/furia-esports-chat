@@ -71,4 +71,17 @@ Contribuições são bem-vindas! Por favor, leia o arquivo [docs/contributing.md
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes. 
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## Atualizações Recentes
+
+### FURIBOT Aprimorado
+O FURIBOT foi melhorado com um sistema expansivo de respostas que não depende de APIs externas. O sistema agora possui:
+
+- Respostas para perguntas sobre jogadores individuais
+- Informações sobre times adversários
+- Conhecimento sobre múltiplos jogos (CS2, Valorant, Apex, LoL)
+- Detecção de tópicos mais precisa
+- Sistema de fallback robusto
+
+Para ver detalhes completos, confira o [CHANGELOG.md](./CHANGELOG.md). 

@@ -104,12 +104,190 @@ const MatchChat: React.FC<MatchChatProps> = ({ matchId, height = '400px' }) => {
     return template;
   };
 
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    if (messages.length > 0) {
-      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // In a real app, fetch messages from API
+  const loadInitialMessages = () => {
+    const now = new Date().getTime();
+    
+    // Sample initial messages
+    const initialMessages: ChatMessage[] = [
+      {
+        id: '1',
+        username: 'Sistema',
+        content: 'Bem-vindo ao chat da FURIA! Interaja com outros torcedores durante as partidas. Respeite as regras da comunidade!',
+        timestamp: new Date(now - 240000),
+        badges: ['Oficial'],
+        isSystem: true,
+        isPinned: true
+      },
+      {
+        id: '2',
+        username: 'CSGOMaster',
+        content: 'Grande jogada do Art!',
+        timestamp: new Date(now - 180000),
+        badges: ['Veterano'],
+        reactions: { 'thumbs-up': ['User1', 'User2'], 'fire': ['User3'] }
+      },
+      {
+        id: '3',
+        username: 'FuriaFanatic',
+        content: 'KSCERATO está jogando muito hoje! 🔥',
+        timestamp: new Date(now - 120000),
+        badges: ['Membro Premium'],
+        reactions: { 'fire': ['User1', 'User2', 'User3', 'User4'] }
+      },
+      {
+        id: '4',
+        username: 'NaviHater2023',
+        content: 'A defesa da FURIA está muito sólida neste mapa',
+        timestamp: new Date(now - 90000)
+      },
+      {
+        id: '5',
+        username: 'BRzao',
+        content: 'Alguém viu aquele clutch do FalleN? MONSTRO! 👏',
+        timestamp: new Date(now - 60000),
+        badges: ['Top Torcedor']
+      },
+      {
+        id: '6',
+        username: 'Sistema',
+        content: 'FURIA acaba de ganhar o round 15! Placar: 9-6',
+        timestamp: new Date(now - 50000),
+        badges: ['Oficial'],
+        isSystem: true,
+        isHighlighted: true
+      },
+      {
+        id: '7',
+        username: 'EsportsFan',
+        content: 'Alguém tem o link da stream?',
+        timestamp: new Date(now - 40000)
+      },
+      {
+        id: '8',
+        username: 'GreenWall',
+        content: 'Esse S1mple está dando trabalho, mas a FURIA está sabendo controlar bem',
+        timestamp: new Date(now - 30000),
+        badges: ['Membro desde 2020']
+      },
+      {
+        id: '9',
+        username: 'CyberPunk77',
+        content: 'Yuurih!!!! Que jogada! 🤯',
+        timestamp: new Date(now - 20000)
+      },
+      {
+        id: '10',
+        username: 'HEADSHOTonly',
+        content: 'A rotação da FURIA no meio do mapa está fazendo toda a diferença',
+        timestamp: new Date(now - 15000),
+        badges: ['Pro Analyst']
+      },
+      {
+        id: '11',
+        username: 'CS2Lover',
+        content: 'Esse molodoy tá muito bem se adaptando ao time!',
+        timestamp: new Date(now - 10000)
+      },
+      {
+        id: '12',
+        username: 'FuriaFaithful',
+        content: 'VAMOOOOOOO FURIA!!!',
+        timestamp: new Date(now - 5000),
+        badges: ['OG Fan']
+      }
+    ];
+
+    setMessages(initialMessages);
+
+    // Add 15 more random messages to make chat look more active
+    const extraMessages: ChatMessage[] = [];
+    for (let i = 0; i < 15; i++) {
+      const randomUsername = [
+        'FuriaFan23', 'CSLover', 'GabrielBR', 'AlexandreZ', 
+        'LucasGamer', 'PedroCS', 'RafaelM', 'BrunoTorcer'
+      ][Math.floor(Math.random() * 8)];
+      
+      const randomBadge = Math.random() > 0.7 ? ['Membro Premium', 'BR Pride', 'Top Torcedor'][Math.floor(Math.random() * 3)] : undefined;
+      
+      extraMessages.push({
+        id: `extra-${i}`,
+        username: randomUsername,
+        content: generateRandomMessage(),
+        timestamp: new Date(now - Math.floor(Math.random() * 300000)),
+        badges: randomBadge ? [randomBadge] : undefined
+      });
     }
-  }, [messages]);
+    
+    // Mix extra messages with initial ones
+    const allMessages = [...initialMessages, ...extraMessages].sort((a, b) => 
+      a.timestamp.getTime() - b.timestamp.getTime()
+    );
+    
+    setMessages(allMessages);
+  };
+
+  // Periodic function to add new messages
+  const startMessageInterval = () => {
+    // 30% chance for a user to start typing
+    if (Math.random() < 0.3) {
+      const typingUser = {
+        username: [
+          'CSPlayer', 'FuriaSupporter', 'Gaming4Life', 'BR_Pride',
+          'TwitchViewer', 'ESportsFan', 'HeadshotKing', 'AWP_Main'
+        ][Math.floor(Math.random() * 8)],
+        startTime: Date.now()
+      };
+      
+      setTypingUsers(prev => {
+        // Only add if not already typing
+        if (!prev.some(u => u.username === typingUser.username)) {
+          return [...prev, typingUser];
+        }
+        return prev;
+      });
+      
+      // Remove typing indicator after 2-5 seconds
+      const timeout = setTimeout(() => {
+        setTypingUsers(prev => prev.filter(u => u.username !== typingUser.username));
+        
+        // 70% chance to actually send a message after typing
+        if (Math.random() < 0.7) {
+          const newMessage: ChatMessage = {
+            id: Date.now().toString(),
+            username: typingUser.username,
+            content: generateRandomMessage(),
+            timestamp: new Date(),
+            badges: Math.random() > 0.7 ? [['Membro Premium', 'BR Pride', 'Top Torcedor'][Math.floor(Math.random() * 3)]] : undefined
+          };
+          
+          setMessages(prev => [...prev, newMessage]);
+        }
+      }, 2000 + Math.random() * 3000);
+      
+      typingTimeoutsRef.current.push(timeout);
+    }
+    
+    // Start the periodic message addition
+    messageIntervalRef.current = window.setInterval(startMessageInterval, 3000);
+  };
+
+  // Modificado para remover a rolagem automática quando as mensagens mudam
+  useEffect(() => {
+    // Apenas inicializar com mensagens iniciais
+    if (messages.length === 0) {
+      loadInitialMessages();
+      startMessageInterval();
+    }
+    
+    // Limpar os intervalos na desmontagem
+    return () => {
+      if (messageIntervalRef.current) {
+        clearInterval(messageIntervalRef.current);
+      }
+      typingTimeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+    };
+  }, []);
 
   // Simulate user count changes
   useEffect(() => {
@@ -121,180 +299,6 @@ const MatchChat: React.FC<MatchChatProps> = ({ matchId, height = '400px' }) => {
     
     return () => clearInterval(userInterval);
   }, []);
-
-  // Load initial messages and set up polling for new ones
-  useEffect(() => {
-    // In a real app, fetch messages from API
-    const loadInitialMessages = () => {
-      const now = Date.now();
-      const initialMessages: ChatMessage[] = [
-        {
-          id: '1',
-          username: 'Sistema',
-          content: 'Bem-vindo ao chat da FURIA! Interaja com outros torcedores durante as partidas. Respeite as regras da comunidade!',
-          timestamp: new Date(now - 240000),
-          badges: ['Oficial'],
-          isSystem: true,
-          isPinned: true
-        },
-        {
-          id: '2',
-          username: 'CSGOMaster',
-          content: 'Grande jogada do Art!',
-          timestamp: new Date(now - 180000),
-          badges: ['Veterano'],
-          reactions: { 'thumbs-up': ['User1', 'User2'], 'fire': ['User3'] }
-        },
-        {
-          id: '3',
-          username: 'FuriaFanatic',
-          content: 'KSCERATO está jogando muito hoje! 🔥',
-          timestamp: new Date(now - 120000),
-          badges: ['Membro Premium'],
-          reactions: { 'fire': ['User1', 'User2', 'User3', 'User4'] }
-        },
-        {
-          id: '4',
-          username: 'NaviHater2023',
-          content: 'A defesa da FURIA está muito sólida neste mapa',
-          timestamp: new Date(now - 90000)
-        },
-        {
-          id: '5',
-          username: 'BRzao',
-          content: 'Alguém viu aquele clutch do FalleN? MONSTRO! 👏',
-          timestamp: new Date(now - 60000),
-          badges: ['Top Torcedor']
-        },
-        {
-          id: '6',
-          username: 'Sistema',
-          content: 'FURIA acaba de ganhar o round 15! Placar: 9-6',
-          timestamp: new Date(now - 50000),
-          badges: ['Oficial'],
-          isSystem: true,
-          isHighlighted: true
-        },
-        {
-          id: '7',
-          username: 'EsportsFan',
-          content: 'Alguém tem o link da stream?',
-          timestamp: new Date(now - 40000)
-        },
-        {
-          id: '8',
-          username: 'GreenWall',
-          content: 'Esse S1mple está dando trabalho, mas a FURIA está sabendo controlar bem',
-          timestamp: new Date(now - 30000),
-          badges: ['Membro desde 2020']
-        },
-        {
-          id: '9',
-          username: 'CyberPunk77',
-          content: 'Yuurih!!!! Que jogada! 🤯',
-          timestamp: new Date(now - 20000)
-        },
-        {
-          id: '10',
-          username: 'HEADSHOTonly',
-          content: 'A rotação da FURIA no meio do mapa está fazendo toda a diferença',
-          timestamp: new Date(now - 15000),
-          badges: ['Pro Analyst']
-        },
-        {
-          id: '11',
-          username: 'CS2Lover',
-          content: 'Esse molodoy tá muito bem se adaptando ao time!',
-          timestamp: new Date(now - 10000)
-        },
-        {
-          id: '12',
-          username: 'FuriaFaithful',
-          content: 'VAMOOOOOOO FURIA!!!',
-          timestamp: new Date(now - 5000),
-          badges: ['OG Fan']
-        }
-      ];
-
-      setMessages(initialMessages);
-
-      // Add 15 more random messages to make chat look more active
-      const extraMessages: ChatMessage[] = [];
-      for (let i = 0; i < 15; i++) {
-        const randomUser = brazilianUsernames[Math.floor(Math.random() * brazilianUsernames.length)];
-        const randomTime = now - Math.floor(Math.random() * 200000); // Random time in last ~3 minutes
-        const hasBadge = Math.random() > 0.7;
-        
-        extraMessages.push({
-          id: `extra-${i}`,
-          username: randomUser,
-          content: generateRandomMessage(),
-          timestamp: new Date(randomTime),
-          badges: hasBadge ? [['Veterano', 'Fã Dedicado', 'BR Pride', 'Membro Premium'][Math.floor(Math.random() * 4)]] : [],
-          reactions: Math.random() > 0.8 ? { 
-            [emojiOptions[Math.floor(Math.random() * emojiOptions.length)].name]: 
-            Array.from({length: Math.floor(Math.random() * 3) + 1}, (_, i) => `User${i}`) 
-          } : {}
-        });
-      }
-      
-      // Sort all messages by timestamp
-      const allMessages = [...initialMessages, ...extraMessages].sort((a, b) => 
-        a.timestamp.getTime() - b.timestamp.getTime()
-      );
-      
-      setMessages(allMessages);
-    };
-
-    loadInitialMessages();
-
-    // Periodic function to add new messages
-    const addPeriodicMessages = () => {
-      // 30% chance for a user to start typing
-      if (Math.random() < 0.3) {
-        const username = brazilianUsernames[Math.floor(Math.random() * brazilianUsernames.length)];
-        addTypingIndicator(username);
-      }
-      
-      // 20% chance to add a system message
-      if (Math.random() < 0.2) {
-        const systemUpdates = [
-          'FURIA vence mais um round! 14-10',
-          'S1mple eliminado por KSCERATO com AWP!',
-          'FalleN com um clutch 1v2! Incrível!',
-          'FURIA está dominando o half CT',
-          'Yuurih com 24 kills até agora!',
-          'Grande retake da FURIA! Salvaram o round impossível!',
-          'Time-out técnico para NAVI, precisam se reorganizar',
-          'Já são 5 rounds consecutivos da FURIA!',
-          'Art com uma jogada agressiva, conseguiu 2 abates!'
-        ];
-        
-        const randomUpdate = systemUpdates[Math.floor(Math.random() * systemUpdates.length)];
-        
-        addMessage({
-          id: Date.now().toString(),
-          username: 'Sistema',
-          content: randomUpdate,
-          timestamp: new Date(),
-          badges: ['Oficial'],
-          isSystem: true,
-          isHighlighted: Math.random() > 0.5
-        });
-      }
-    };
-
-    // Start the periodic message addition
-    messageIntervalRef.current = window.setInterval(addPeriodicMessages, 3000);
-    
-    // Clean up on component unmount
-    return () => {
-      if (messageIntervalRef.current) {
-        clearInterval(messageIntervalRef.current);
-      }
-      typingTimeoutsRef.current.forEach(timeout => clearTimeout(timeout));
-    };
-  }, [matchId]);
 
   // Add typing indicator
   const addTypingIndicator = (username: string) => {
@@ -398,14 +402,29 @@ const MatchChat: React.FC<MatchChatProps> = ({ matchId, height = '400px' }) => {
     setShowEmojiPicker(null);
   };
 
+  // Função para rolar para o final manualmente
+  const scrollToBottom = () => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800">
       {/* Header */}
       <div className="bg-furia-purple/20 p-3 border-b border-gray-800">
-        <h2 className="text-lg font-bold">Chat da FURIA</h2>
-        <p className="text-sm text-gray-400">
-          Interaja com outros torcedores durante as partidas. Respeite as regras da comunidade!
-        </p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-lg font-bold">Chat da FURIA</h2>
+            <p className="text-sm text-gray-400">
+              Interaja com outros torcedores durante as partidas. Respeite as regras da comunidade!
+            </p>
+          </div>
+          <button 
+            onClick={scrollToBottom}
+            className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white py-1 px-2 rounded-full flex items-center gap-1"
+          >
+            <span>Ir ao fim</span>
+          </button>
+        </div>
       </div>
       
       {/* Online indicator */}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, BarChart2, User, MessageCircle, Clock, Trophy, Send } from 'lucide-react';
+import { ChevronRight, BarChart2, User, MessageCircle, Clock, Trophy, Info, Star, Send } from 'lucide-react';
 import FuriBot from '../components/FuriBot';
 import LiveMatchScoreDisplay from '../components/LiveMatchScoreDisplay';
 
@@ -51,6 +51,31 @@ const LiveMatchPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'stats' | 'chat'>('stats');
   const [isFuriBotOpen, setIsFuriBotOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
+
+  // Simula chegada de novas mensagens sem rolar automaticamente
+  useEffect(() => {
+    if (!loading && matchData) {
+      const interval = setInterval(() => {
+        const newMessage = {
+          id: Date.now().toString(),
+          username: ['CyberPunk77', 'CS2Lover', 'FuriaFaithful', 'OneShot_BR', 'GaroloDoHeadshot'][Math.floor(Math.random() * 5)],
+          content: [
+            "INACREDITÁVEL!!!",
+            "Que jogada do yuurih!",
+            "VAMO FURIA!!!",
+            "Essa rotação foi perfeita",
+            "Clutch insano do drop!"
+          ][Math.floor(Math.random() * 5)],
+          timestamp: new Date()
+        };
+        
+        setChatMessages(prev => [...prev, newMessage]);
+      }, 10000); // Nova mensagem a cada 10 segundos
+      
+      return () => clearInterval(interval);
+    }
+  }, [loading, matchData]);
 
   useEffect(() => {
     // In a real application, this would be an API call
@@ -307,12 +332,26 @@ const LiveMatchPage: React.FC = () => {
         {/* Chat panel (visible on desktop or when chat tab is active) */}
         {(activeTab === 'chat' || window.innerWidth >= 1024) && (
           <div className="bg-[#111827] rounded-xl overflow-hidden lg:col-span-2 h-[500px] flex flex-col">
-            <div className="py-2 px-4 border-b border-gray-800 flex items-center">
-              <MessageCircle className="h-5 w-5 text-furia-purple mr-2" />
-              <h2 className="font-bold text-sm">Chat da partida</h2>
+            <div className="py-2 px-4 border-b border-gray-800 flex items-center justify-between">
+              <div className="flex items-center">
+                <MessageCircle className="h-5 w-5 text-furia-purple mr-2" />
+                <h2 className="font-bold text-sm">Chat da partida</h2>
+              </div>
+              <button 
+                className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white py-1 px-2 rounded-full flex items-center gap-1"
+                onClick={() => {
+                  const chatArea = document.querySelector('.chat-area');
+                  if (chatArea) {
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                  }
+                }}
+              >
+                <ChevronRight className="h-3 w-3 transform rotate-90" />
+                <span>Ir ao fim</span>
+              </button>
             </div>
             
-            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700">
+            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 chat-area">
               <div className="px-2">
                 <div className="pt-2 pb-1 px-2">
                   <div className="flex items-start">
@@ -385,6 +424,29 @@ const LiveMatchPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Mensagens simuladas dinamicamente */}
+                {chatMessages.map(message => (
+                  <div key={message.id} className="py-1 px-2">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 mr-2">
+                        <div className="bg-yellow-500 rounded-full h-6 w-6 flex items-center justify-center">
+                          <span className="text-xs font-bold text-white">{message.username.charAt(0)}</span>
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center">
+                          <span className="text-white text-sm font-medium mr-1">{message.username}</span>
+                          <span className="bg-gray-700 text-xs px-1.5 py-0.5 rounded text-white">BR Pride</span>
+                        </div>
+                        <p className="text-sm text-white mt-1">{message.content}</p>
+                        <span className="text-xs text-gray-500 block">
+                          {message.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
             

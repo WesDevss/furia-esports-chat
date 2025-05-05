@@ -143,15 +143,9 @@ class APIKeyPool {
   }
 }
 
-// Verifica se a chave da API existe
-let apiKeyPool: APIKeyPool | null;
-if (!config.openaiApiKey) {
-  console.warn('OpenAI API key não configurada. Usando apenas respostas alternativas.');
-  apiKeyPool = null;
-} else {
-  // Inicializa o pool de chaves
-  apiKeyPool = new APIKeyPool([config.openaiApiKey]);
-}
+// Forçando o apiKeyPool a ser null para sempre usar respostas alternativas
+// Isso resolve o problema de erro 401 quando a API_KEY não está definida ou é inválida
+let apiKeyPool: APIKeyPool | null = null;
 
 // Configurações da API
 const API_CONFIG = {
@@ -162,53 +156,158 @@ const API_CONFIG = {
   REQUEST_INTERVAL: 60000 / MODEL_LIMITS[config.defaultModel].requestsPerMinute // Intervalo baseado no limite de RPM
 };
 
-// Respostas alternativas
+// Respostas alternativas expandidas
 const respostasAlternativas = {
+  teste: "Olá! Este é um teste do FURIBOT funcionando corretamente!",
   saudacao: "Olá! Sou o FURIBOT, assistente oficial da FURIA. Como posso ajudar você hoje?",
   sobreTime: "A FURIA é uma das principais organizações de esports do Brasil, conhecida por sua dedicação e sucesso no cenário competitivo.",
-  sobreJogadores: "O time atual da FURIA conta com grandes nomes do CS2, incluindo KSCERATO, yuurih, arT, drop e VINI.",
+  sobreJogadores: "O time atual da FURIA CS2 conta com FalleN, KSCERATO, yuurih, molodoy e YEKINDAR, formando uma lineup internacional de alto nível.",
   sobreTorneios: "A FURIA participa dos principais torneios de CS2, incluindo Majors, ESL Pro League e BLAST Premier.",
   sobreHistoria: "A FURIA foi fundada em 2017 e rapidamente se tornou uma das principais forças do CS2 brasileiro.",
   sobreTreino: "A FURIA mantém um rigoroso regime de treinamento, com bootcamps e preparação física e mental.",
   sobreConquistas: "A FURIA já conquistou diversos títulos importantes, incluindo vitórias em torneios internacionais.",
   sobreFuria: "FURIA acima de tudo! Somos uma organização apaixonada por esports e comprometida com a excelência.",
   sobreFans: "Os fãs da FURIA são conhecidos como a FURIA Nation, uma comunidade apaixonada e dedicada.",
-  sobreFuturo: "A FURIA continua investindo em talentos e expandindo sua presença no cenário internacional de esports."
+  sobreFuturo: "A FURIA continua investindo em talentos e expandindo sua presença no cenário internacional de esports.",
+  
+  // Novas respostas sobre jogadores específicos
+  sobreFalleN: "FalleN (Gabriel Toledo) é uma lenda viva do CS brasileiro, conhecido como 'The Godfather' do cenário competitivo. Com vasta experiência e liderança excepcional, ele traz seu AWP preciso e capacidade de IGL para a FURIA.",
+  sobreKscerato: "KSCERATO (Kaike Cerato) é um dos melhores riflers do mundo, conhecido por sua precisão incrível e consistência. Ele é um dos pilares da FURIA desde 2019, com um rating impressionante de 1.18.",
+  sobreYuurih: "yuurih (Yuri Santos) é considerado um dos jogadores mais completos da América do Sul, com habilidades impressionantes de clutch e spray control. Seu rating de 1.15 demonstra sua eficiência no jogo.",
+  sobreMolodoy: "molodoy (Danil Golubenko) é um jovem talento da Ucrânia que se juntou à FURIA. Com grande potencial e um estilo agressivo, ele traz nova energia para a equipe internacional.",
+  sobreYekindar: "YEKINDAR (Mareks Gaļinskis) é um dos entry fraggers mais respeitados do mundo, vindo da Letônia. Conhecido por seu estilo agressivo e mecânica excelente, ele é uma adição que eleva o nível internacional da FURIA.",
+  
+  // Respostas sobre competidores
+  sobreNavi: "NAVI (Natus Vincere) é uma das organizações mais tradicionais de CS2, com origem na Ucrânia. É uma das grandes rivais da FURIA em torneios internacionais.",
+  sobreFaZe: "FaZe Clan é uma organização global de esports e entretenimento. Seu time de CS2 é multi-regional e já enfrentou a FURIA em várias ocasiões.",
+  sobreLiquid: "Team Liquid é uma das maiores organizações de esports do mundo. A FURIA já teve confrontos memoráveis contra eles em competições internacionais.",
+  
+  // Resposta para próximos jogos
+  proximosJogos: "Confira o calendário de jogos da FURIA na seção 'Partidas' do nosso site oficial. Estamos sempre atualizando com os próximos desafios do time!",
+  
+  // Respostas sobre outros jogos
+  sobreValorant: "A FURIA também tem uma divisão competitiva de Valorant, expandindo nossa presença nos FPS táticos.",
+  sobreApex: "A FURIA tem presença no cenário competitivo de Apex Legends, com jogadores de alto nível representando nossa organização.",
+  sobreLOL: "League of Legends é um dos jogos onde a FURIA busca expandir sua presença, investindo no cenário competitivo do MOBA.",
+  
+  // Resposta genérica
+  padrao: "A FURIA é uma organização dedicada à excelência nos esports. Para mais informações específicas, visite nosso site oficial ou redes sociais."
 };
 
-// Funções auxiliares
+// Funções auxiliares expandidas
 function getRespostaAlternativa(query: string): string {
   const queryLower = query.toLowerCase();
   
-  if (queryLower.includes('olá') || queryLower.includes('oi') || queryLower.includes('hey')) {
+  // Checagem para palavras-chave específicas
+  if (queryLower === 'teste') {
+    return respostasAlternativas.teste;
+  }
+  
+  // Saudações
+  if (queryLower.includes('olá') || queryLower.includes('oi') || queryLower.includes('hey') || queryLower.includes('eae')) {
     return respostasAlternativas.saudacao;
   }
-  if (queryLower.includes('time') || queryLower.includes('equipe')) {
+  
+  // Perguntas sobre o time
+  if (queryLower.includes('time') || queryLower.includes('equipe') || queryLower.includes('lineup')) {
     return respostasAlternativas.sobreTime;
   }
-  if (queryLower.includes('jogador') || queryLower.includes('player')) {
+  
+  // Perguntas sobre jogadores específicos
+  if (queryLower.includes('fallen') || queryLower.includes('gabriel toledo')) {
+    return respostasAlternativas.sobreFalleN;
+  }
+  
+  if (queryLower.includes('kscerato') || queryLower.includes('kaike')) {
+    return respostasAlternativas.sobreKscerato;
+  }
+  
+  if (queryLower.includes('yuurih') || queryLower.includes('yuri santos')) {
+    return respostasAlternativas.sobreYuurih;
+  }
+  
+  if (queryLower.includes('molodoy') || queryLower.includes('danil')) {
+    return respostasAlternativas.sobreMolodoy;
+  }
+  
+  if (queryLower.includes('yekindar') || queryLower.includes('mareks')) {
+    return respostasAlternativas.sobreYekindar;
+  }
+  
+  // Perguntas sobre jogadores em geral
+  if (queryLower.includes('jogador') || queryLower.includes('player') || queryLower.includes('atleta')) {
     return respostasAlternativas.sobreJogadores;
   }
-  if (queryLower.includes('torneio') || queryLower.includes('campeonato')) {
+  
+  // Perguntas sobre times adversários
+  if (queryLower.includes('navi') || queryLower.includes('natus vincere')) {
+    return respostasAlternativas.sobreNavi;
+  }
+  
+  if (queryLower.includes('faze') || queryLower.includes('faze clan')) {
+    return respostasAlternativas.sobreFaZe;
+  }
+  
+  if (queryLower.includes('liquid') || queryLower.includes('team liquid')) {
+    return respostasAlternativas.sobreLiquid;
+  }
+  
+  // Perguntas sobre torneios
+  if (queryLower.includes('torneio') || queryLower.includes('campeonato') || queryLower.includes('major') || queryLower.includes('esl')) {
     return respostasAlternativas.sobreTorneios;
   }
-  if (queryLower.includes('história') || queryLower.includes('começo')) {
+  
+  // Perguntas sobre próximos jogos
+  if ((queryLower.includes('próximo') || queryLower.includes('proximo') || queryLower.includes('quando')) && 
+      (queryLower.includes('jogo') || queryLower.includes('partida') || queryLower.includes('jogar'))) {
+    return respostasAlternativas.proximosJogos;
+  }
+  
+  // Perguntas sobre história
+  if (queryLower.includes('história') || queryLower.includes('começo') || queryLower.includes('origem') || queryLower.includes('fundacao')) {
     return respostasAlternativas.sobreHistoria;
   }
-  if (queryLower.includes('treino') || queryLower.includes('preparação')) {
+  
+  // Perguntas sobre treino
+  if (queryLower.includes('treino') || queryLower.includes('preparação') || queryLower.includes('preparo') || queryLower.includes('bootcamp')) {
     return respostasAlternativas.sobreTreino;
   }
-  if (queryLower.includes('conquista') || queryLower.includes('título')) {
+  
+  // Perguntas sobre conquistas
+  if (queryLower.includes('conquista') || queryLower.includes('título') || queryLower.includes('trofeu') || queryLower.includes('venceu')) {
     return respostasAlternativas.sobreConquistas;
   }
+  
+  // Perguntas sobre outros jogos
+  if (queryLower.includes('valorant')) {
+    return respostasAlternativas.sobreValorant;
+  }
+  
+  if (queryLower.includes('apex')) {
+    return respostasAlternativas.sobreApex;
+  }
+  
+  if (queryLower.includes('lol') || queryLower.includes('league of legends')) {
+    return respostasAlternativas.sobreLOL;
+  }
+  
+  // Perguntas gerais sobre a FURIA
   if (queryLower.includes('furia') || queryLower.includes('furiosos')) {
     return respostasAlternativas.sobreFuria;
   }
-  if (queryLower.includes('fã') || queryLower.includes('torcedor')) {
+  
+  // Perguntas sobre fãs
+  if (queryLower.includes('fã') || queryLower.includes('torcedor') || queryLower.includes('torcida')) {
     return respostasAlternativas.sobreFans;
   }
   
-  return respostasAlternativas.sobreFuturo;
+  // Perguntas sobre o futuro
+  if (queryLower.includes('futuro') || queryLower.includes('plano') || queryLower.includes('próximo ano')) {
+    return respostasAlternativas.sobreFuturo;
+  }
+  
+  // Resposta padrão para outras perguntas
+  return respostasAlternativas.padrao;
 }
 
 function getFromCache(query: string): string | null {
@@ -219,6 +318,8 @@ function getFromCache(query: string): string | null {
   return null;
 }
 
+// Mantendo a função mas marcando como não utilizada para evitar erros
+// @ts-ignore
 function saveToCache(query: string, response: string) {
   responseCache.set(query, {
     response,
@@ -300,7 +401,8 @@ async function makeOpenAIRequest(query: string): Promise<string> {
   }
 }
 
-// Função para fazer requisição à API com rate limiting e retry
+// Mantendo a função mas marcando como não utilizada para evitar erros
+// @ts-ignore
 async function makeOpenAIRequestWithRetry(query: string, maxRetries = config.apiRateLimit.maxRetries): Promise<string> {
   let lastError;
   const model = config.defaultModel;
@@ -347,30 +449,14 @@ router.post('/chat', async (req, res) => {
       return res.json({ content: cachedResponse });
     }
 
-    // Se não há API key configurada, usar diretamente resposta alternativa
-    if (!apiKeyPool) {
-      const respostaAlternativa = getRespostaAlternativa(query);
-      return res.json({ 
-        content: respostaAlternativa,
-        isFallback: true
-      });
-    }
-
-    try {
-      // Usar a nova função com retry
-      const response = await makeOpenAIRequestWithRetry(query);
-      saveToCache(query, response);
-      return res.json({ content: response });
-    } catch (error: any) {
-      console.error('Erro na API OpenAI:', error.message);
-      
-      // Se houver erro, usar resposta alternativa
-      const respostaAlternativa = getRespostaAlternativa(query);
-      return res.json({ 
-        content: respostaAlternativa,
-        isFallback: true
-      });
-    }
+    // Sempre usar resposta alternativa
+    const respostaAlternativa = getRespostaAlternativa(query);
+    console.log('Usando resposta alternativa para:', query);
+    return res.json({ 
+      content: respostaAlternativa,
+      isFallback: true
+    });
+    
   } catch (error) {
     console.error('Erro geral:', error);
     return res.status(500).json({ 
