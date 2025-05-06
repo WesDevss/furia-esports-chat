@@ -88,7 +88,7 @@ const matches: SearchResult[] = [
     title: 'FURIA vs NAVI - Major Rio 2024', 
     description: 'Partida de abertura do Major Rio 2024',
     image: '/match-furia-navi.jpg', 
-    url: '/matches/furia-navi' 
+    url: '/match/furia-navi-major-rio' 
   },
   { 
     id: 'match-2', 
@@ -96,7 +96,7 @@ const matches: SearchResult[] = [
     title: 'FURIA vs Liquid - Major Rio 2024', 
     description: 'Segunda partida do Major Rio 2024',
     image: '/match-furia-liquid.jpg', 
-    url: '/matches/furia-liquid' 
+    url: '/match/furia-liquid-major-rio' 
   },
   { 
     id: 'match-3', 
@@ -104,7 +104,7 @@ const matches: SearchResult[] = [
     title: 'FURIA vs G2 - BLAST Premier', 
     description: 'Final da BLAST Premier Spring Finals',
     image: '/match-furia-g2.jpg', 
-    url: '/matches/furia-g2' 
+    url: '/match/furia-g2-blast' 
   }
 ];
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Player {
   id: string;
@@ -138,8 +139,9 @@ const PlayersPage: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {players.map(player => (
-          <div 
+          <Link 
             key={player.id} 
+            to={`/players/${player.nickname.toLowerCase()}`}
             className="bg-furia-darker rounded-xl overflow-hidden shadow-lg hover:shadow-neon-sm transition-all duration-300"
           >
             <div className="aspect-[3/4] overflow-hidden relative">
@@ -221,7 +223,7 @@ const PlayersPage: React.FC = () => {
                 )}
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

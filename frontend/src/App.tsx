@@ -7,9 +7,11 @@ import FuriBot from './components/FuriBot';
 import Home from './pages/Home';
 import ChatPage from './pages/ChatPage';
 import NewsPage from './pages/NewsPage';
+import NewsDetailPage from './pages/NewsDetailPage';
 import CalendarPage from './pages/CalendarPage';
 import ResultsPage from './pages/ResultsPage';
 import PlayersPage from './pages/PlayersPage';
+import PlayerProfilePage from './pages/PlayerProfilePage';
 import QuizPage from './pages/QuizPage';
 import StorePage from './pages/StorePage';
 import ProfilePage from './pages/ProfilePage';
@@ -74,9 +76,11 @@ const App: React.FC = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/chat" element={<ChatPage />} />
                 <Route path="/news" element={<NewsPage />} />
+                <Route path="/news/:newsSlug" element={<NewsDetailPage />} />
                 <Route path="/calendar" element={<CalendarPage />} />
                 <Route path="/results" element={<ResultsPage />} />
                 <Route path="/players" element={<PlayersPage />} />
+                <Route path="/players/:playerId" element={<PlayerProfilePage />} />
                 <Route path="/quiz" element={<QuizzesPage />} />
                 <Route path="/quiz/:quizId" element={<QuizPage />} />
                 <Route path="/store" element={<StorePage />} />
