@@ -5,6 +5,7 @@
   "installCommand": "npm install",
   "regions": ["iad1"],
   "routes": [
+    { "src": "/api/(.*)", "dest": "https://furia-chat-api.onrender.com/api/$1" },
     { "handle": "filesystem" },
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
     { "src": "/(.*)", "dest": "/index.html" }

@@ -4,6 +4,12 @@
   command = "cd frontend && npm install --legacy-peer-deps && npm run build"
 
 [[redirects]]
+  from = "/api/*"
+  to = "https://furia-chat-api.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200 

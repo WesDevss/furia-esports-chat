@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, HelpCircle, ChevronRight, X } from 'lucide-react';
+import { fallbackQuizzes } from '../data/fallbackQuizzes';
 
 interface Question {
   id: string;
@@ -50,7 +51,14 @@ const QuizPage: React.FC = () => {
         setQuiz(data);
       } catch (error) {
         console.error('Erro ao carregar quiz:', error);
-        setError('Erro ao carregar quiz. Tente novamente mais tarde.');
+        
+        // Try to find fallback quiz data
+        const fallbackQuiz = fallbackQuizzes.find((q: Quiz) => q.id === quizId);
+        if (fallbackQuiz) {
+          setQuiz(fallbackQuiz);
+        } else {
+          setError('Erro ao carregar quiz. Tente novamente mais tarde.');
+        }
       } finally {
         setLoading(false);
       }

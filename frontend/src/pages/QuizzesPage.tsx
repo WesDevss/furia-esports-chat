@@ -12,6 +12,58 @@ interface Quiz {
   completionRate?: number;
 }
 
+// Static fallback quiz data
+const FALLBACK_QUIZZES: Quiz[] = [
+  {
+    id: 'furia-conhecimentos',
+    title: 'Quiz FURIA',
+    description: 'Teste seus conhecimentos sobre a FURIA',
+    questionCount: 10,
+    difficulty: 'Médio',
+    completionRate: 65
+  },
+  {
+    id: 'cs2-tactics',
+    title: 'Táticas de CS2',
+    description: 'Quanto você sabe sobre táticas competitivas de CS2?',
+    questionCount: 12,
+    difficulty: 'Difícil',
+    completionRate: 32
+  },
+  {
+    id: 'valorant-agentes',
+    title: 'Agentes do VALORANT',
+    description: 'Teste seus conhecimentos sobre agentes e habilidades',
+    questionCount: 8,
+    difficulty: 'Fácil',
+    completionRate: 78
+  },
+  {
+    id: 'lol-campeoes',
+    title: 'Campeões de LoL',
+    description: 'Teste seu conhecimento sobre campeões de League of Legends',
+    questionCount: 10,
+    difficulty: 'Médio',
+    completionRate: 45
+  },
+  {
+    id: 'historia-furia',
+    title: 'História da FURIA',
+    description: 'Quanto você sabe sobre a história da FURIA?',
+    questionCount: 8,
+    difficulty: 'Fácil',
+    completionRate: 82
+  },
+  {
+    id: 'cenario-esports',
+    title: 'Cenário de Esports',
+    description: 'Teste seus conhecimentos sobre o cenário competitivo de esports',
+    questionCount: 12,
+    difficulty: 'Difícil',
+    completionRate: 29
+  }
+];
+
 const QuizzesPage: React.FC = () => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +101,8 @@ const QuizzesPage: React.FC = () => {
         setQuizzes(quizzesWithRates);
       } catch (error) {
         console.error('Erro ao carregar quizzes:', error);
-        setError('Erro ao carregar quizzes. Tente novamente mais tarde.');
+        // Use fallback data when API fails
+        setQuizzes(FALLBACK_QUIZZES);
       } finally {
         setLoading(false);
       }
