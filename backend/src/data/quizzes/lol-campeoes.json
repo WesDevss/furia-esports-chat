@@ -1,0 +1,173 @@
+{
+  "id": "lol-campeoes",
+  "title": "Campeões de LoL",
+  "description": "Teste seu conhecimento sobre os campeões de League of Legends",
+  "difficulty": "Médio",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Qual campeão é conhecido como 'O Poder de Demacia'?",
+      "options": [
+        { "id": "a", "text": "Garen" },
+        { "id": "b", "text": "Jarvan IV" },
+        { "id": "c", "text": "Lux" },
+        { "id": "d", "text": "Xin Zhao" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q2",
+      "text": "Qual campeão a FURIA costuma priorizar na rota superior (top) em 2024?",
+      "options": [
+        { "id": "a", "text": "Darius" },
+        { "id": "b", "text": "Aatrox" },
+        { "id": "c", "text": "Gnar" },
+        { "id": "d", "text": "Ornn" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q3",
+      "text": "Qual campeão possui a habilidade 'Tempestade de Lâminas'?",
+      "options": [
+        { "id": "a", "text": "Yasuo" },
+        { "id": "b", "text": "Katarina" },
+        { "id": "c", "text": "Master Yi" },
+        { "id": "d", "text": "Irelia" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q4",
+      "text": "Qual destes campeões é um jungler popular no meta de 2024?",
+      "options": [
+        { "id": "a", "text": "Briar" },
+        { "id": "b", "text": "Rek'Sai" },
+        { "id": "c", "text": "Udyr" },
+        { "id": "d", "text": "Lillia" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q5",
+      "text": "Qual é o nome do campeão brasileiro em League of Legends?",
+      "options": [
+        { "id": "a", "text": "Qiyana" },
+        { "id": "b", "text": "Samira" },
+        { "id": "c", "text": "Nilah" },
+        { "id": "d", "text": "Neeko" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q6",
+      "text": "Qual campeão é considerado o mais difícil de dominar em League of Legends?",
+      "options": [
+        { "id": "a", "text": "Yuumi" },
+        { "id": "b", "text": "Azir" },
+        { "id": "c", "text": "Garen" },
+        { "id": "d", "text": "Annie" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q7",
+      "text": "Quais campeões formam o duo de bot lane mais comum na FURIA em 2025?",
+      "options": [
+        { "id": "a", "text": "Jinx e Lulu" },
+        { "id": "b", "text": "Kai'Sa e Nautilus" },
+        { "id": "c", "text": "Zeri e Yuumi" },
+        { "id": "d", "text": "Caitlyn e Lux" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q8",
+      "text": "Qual campeão foi lançado em 2023 e é conhecido por sua habilidade de corromper o Vazio?",
+      "options": [
+        { "id": "a", "text": "Bel'Veth" },
+        { "id": "b", "text": "Briar" },
+        { "id": "c", "text": "Nilah" },
+        { "id": "d", "text": "K'Sante" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q9",
+      "text": "Qual é a função principal do campeão Thresh?",
+      "options": [
+        { "id": "a", "text": "Jungler" },
+        { "id": "b", "text": "Mid laner" },
+        { "id": "c", "text": "Suporte" },
+        { "id": "d", "text": "Top laner" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q10",
+      "text": "Qual campeão possui a habilidade 'Expurgar', que remove efeitos de controle?",
+      "options": [
+        { "id": "a", "text": "Gangplank" },
+        { "id": "b", "text": "Olaf" },
+        { "id": "c", "text": "Alistar" },
+        { "id": "d", "text": "Dr. Mundo" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q11",
+      "text": "Qual é o jogador que atua como midlaner na FURIA em 2025?",
+      "options": [
+        { "id": "a", "text": "Envy" },
+        { "id": "b", "text": "Guigo" },
+        { "id": "c", "text": "Jojo" },
+        { "id": "d", "text": "Tinowns" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q12",
+      "text": "Quais campeões são considerados os 'irmãos Darkin' em League of Legends?",
+      "options": [
+        { "id": "a", "text": "Kayn e Rhaast" },
+        { "id": "b", "text": "Yasuo e Yone" },
+        { "id": "c", "text": "Aatrox, Varus e Rhaast" },
+        { "id": "d", "text": "Nasus e Renekton" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q13",
+      "text": "Qual campeão é conhecido por ter a mecânica de 'stacks infinitos'?",
+      "options": [
+        { "id": "a", "text": "Veigar" },
+        { "id": "b", "text": "Nasus" },
+        { "id": "c", "text": "Thresh" },
+        { "id": "d", "text": "Todos os anteriores" }
+      ],
+      "correctOptionId": "d"
+    },
+    {
+      "id": "q14",
+      "text": "Em que região de Runeterra nasceu o campeão Pyke?",
+      "options": [
+        { "id": "a", "text": "Águas de Sentina" },
+        { "id": "b", "text": "Ionia" },
+        { "id": "c", "text": "Shurima" },
+        { "id": "d", "text": "Demacia" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q15",
+      "text": "Qual campeão foi o primeiro a ser criado para League of Legends?",
+      "options": [
+        { "id": "a", "text": "Annie" },
+        { "id": "b", "text": "Ryze" },
+        { "id": "c", "text": "Singed" },
+        { "id": "d", "text": "Ashe" }
+      ],
+      "correctOptionId": "c"
+    }
+  ]
+} 

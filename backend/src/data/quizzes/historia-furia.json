@@ -1,0 +1,118 @@
+{
+  "id": "historia-furia",
+  "title": "História da FURIA",
+  "description": "Quanto você sabe sobre a história da organização FURIA Esports?",
+  "difficulty": "Fácil",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Quem são os fundadores da FURIA Esports?",
+      "options": [
+        { "id": "a", "text": "Gabriel FalleN Toledo e Jaime Pádua" },
+        { "id": "b", "text": "André Akkari e Jaime Pádua" },
+        { "id": "c", "text": "André Akkari e Bruno Foster" },
+        { "id": "d", "text": "Jaime Pádua e Cris Guedes" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q2",
+      "text": "Em que ano a FURIA foi fundada?",
+      "options": [
+        { "id": "a", "text": "2016" },
+        { "id": "b", "text": "2017" },
+        { "id": "c", "text": "2018" },
+        { "id": "d", "text": "2019" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q3",
+      "text": "Em que cidade a FURIA inaugurou sua primeira gaming house?",
+      "options": [
+        { "id": "a", "text": "Rio de Janeiro" },
+        { "id": "b", "text": "São Paulo" },
+        { "id": "c", "text": "Miami" },
+        { "id": "d", "text": "Belo Horizonte" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q4",
+      "text": "Qual foi o primeiro grande torneio internacional de CS:GO que a FURIA participou?",
+      "options": [
+        { "id": "a", "text": "ESL One Cologne 2019" },
+        { "id": "b", "text": "IEM Katowice 2019" },
+        { "id": "c", "text": "BLAST Pro Series São Paulo 2019" },
+        { "id": "d", "text": "DreamHack Masters Dallas 2019" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q5",
+      "text": "Em que ano a FURIA expandiu para o cenário de League of Legends?",
+      "options": [
+        { "id": "a", "text": "2017" },
+        { "id": "b", "text": "2018" },
+        { "id": "c", "text": "2020" },
+        { "id": "d", "text": "2021" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q6",
+      "text": "Em que cidade brasileira a FURIA inaugurou uma nova sede em 2023?",
+      "options": [
+        { "id": "a", "text": "Rio de Janeiro" },
+        { "id": "b", "text": "São Paulo" },
+        { "id": "c", "text": "Belo Horizonte" },
+        { "id": "d", "text": "Salvador" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q7",
+      "text": "Qual foi o primeiro Major de CS:GO que a FURIA participou?",
+      "options": [
+        { "id": "a", "text": "FACEIT Major London 2018" },
+        { "id": "b", "text": "IEM Katowice Major 2019" },
+        { "id": "c", "text": "StarLadder Berlin Major 2019" },
+        { "id": "d", "text": "PGL Stockholm Major 2021" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q8",
+      "text": "Qual jogador lendário do CS:GO se juntou à FURIA em 2023?",
+      "options": [
+        { "id": "a", "text": "Gabriel 'FalleN' Toledo" },
+        { "id": "b", "text": "Marcelo 'coldzera' David" },
+        { "id": "c", "text": "Fernando 'fer' Alvarenga" },
+        { "id": "d", "text": "Epitácio 'TACO' de Melo" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q9",
+      "text": "Qual foi o primeiro título internacional de CS:GO conquistado pela FURIA?",
+      "options": [
+        { "id": "a", "text": "BLAST Pro Series Los Angeles 2019" },
+        { "id": "b", "text": "ESL Pro League Season 12" },
+        { "id": "c", "text": "ECS Season 7 Finals" },
+        { "id": "d", "text": "Elisa Masters Espoo 2023" }
+      ],
+      "correctOptionId": "d"
+    },
+    {
+      "id": "q10",
+      "text": "Em qual jogo a FURIA conquistou o título da Elisa Masters Espoo 2023?",
+      "options": [
+        { "id": "a", "text": "VALORANT" },
+        { "id": "b", "text": "Counter-Strike 2 (CS2)" },
+        { "id": "c", "text": "League of Legends" },
+        { "id": "d", "text": "Apex Legends" }
+      ],
+      "correctOptionId": "b"
+    }
+  ]
+} 

@@ -1,0 +1,140 @@
+{
+  "id": "cenario-esports",
+  "title": "Cenário de Esports",
+  "description": "Teste seus conhecimentos sobre o cenário competitivo de esports",
+  "difficulty": "Difícil",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Qual equipe venceu o primeiro Major de CS:GO da história?",
+      "options": [
+        { "id": "a", "text": "Ninjas in Pyjamas" },
+        { "id": "b", "text": "Fnatic" },
+        { "id": "c", "text": "Virtus.Pro" },
+        { "id": "d", "text": "Team LDLC" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q2",
+      "text": "Qual é o maior torneio anual de League of Legends?",
+      "options": [
+        { "id": "a", "text": "MSI (Mid-Season Invitational)" },
+        { "id": "b", "text": "Worlds (Campeonato Mundial)" },
+        { "id": "c", "text": "LCS Finals" },
+        { "id": "d", "text": "LEC Finals" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q3",
+      "text": "Qual equipe brasileira foi a primeira a participar de um Major de CS:GO?",
+      "options": [
+        { "id": "a", "text": "FURIA" },
+        { "id": "b", "text": "MIBR" },
+        { "id": "c", "text": "Luminosity Gaming" },
+        { "id": "d", "text": "paiN Gaming" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q4",
+      "text": "Em que ano foi lançado o VALORANT, jogo competitivo da Riot Games?",
+      "options": [
+        { "id": "a", "text": "2019" },
+        { "id": "b", "text": "2020" },
+        { "id": "c", "text": "2021" },
+        { "id": "d", "text": "2022" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q5",
+      "text": "Qual organização brasileira venceu um Major de CS:GO?",
+      "options": [
+        { "id": "a", "text": "FURIA" },
+        { "id": "b", "text": "Luminosity Gaming" },
+        { "id": "c", "text": "SK Gaming" },
+        { "id": "d", "text": "Luminosity Gaming e SK Gaming" }
+      ],
+      "correctOptionId": "d"
+    },
+    {
+      "id": "q6",
+      "text": "Qual o maior prêmio da história dos esports em um único torneio?",
+      "options": [
+        { "id": "a", "text": "The International de Dota 2" },
+        { "id": "b", "text": "Fortnite World Cup" },
+        { "id": "c", "text": "Worlds de League of Legends" },
+        { "id": "d", "text": "PUBG Global Championship" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q7",
+      "text": "Qual equipe é considerada a maior rival da FURIA no cenário brasileiro de CS2?",
+      "options": [
+        { "id": "a", "text": "MIBR" },
+        { "id": "b", "text": "paiN Gaming" },
+        { "id": "c", "text": "Imperial" },
+        { "id": "d", "text": "00Nation" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q8",
+      "text": "Qual jogador é considerado o maior de todos os tempos em CS:GO?",
+      "options": [
+        { "id": "a", "text": "s1mple" },
+        { "id": "b", "text": "device" },
+        { "id": "c", "text": "coldzera" },
+        { "id": "d", "text": "ZywOo" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q9",
+      "text": "Qual equipe detém o recorde de mais títulos de Worlds em League of Legends?",
+      "options": [
+        { "id": "a", "text": "T1 (SKT T1)" },
+        { "id": "b", "text": "Gen.G (Samsung)" },
+        { "id": "c", "text": "EDG" },
+        { "id": "d", "text": "DWG KIA" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q10",
+      "text": "Quais times brasileiros já ganharam o CBLOL?",
+      "options": [
+        { "id": "a", "text": "Apenas paiN Gaming e RED Canids" },
+        { "id": "b", "text": "Apenas INTZ, paiN Gaming e Kabum" },
+        { "id": "c", "text": "INTZ, paiN Gaming, RED Canids, Kabum, Flamengo e LOUD" },
+        { "id": "d", "text": "Apenas FURIA e paiN Gaming" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q11",
+      "text": "Qual equipe venceu a primeira edição do VALORANT Champions?",
+      "options": [
+        { "id": "a", "text": "Sentinels" },
+        { "id": "b", "text": "Acend" },
+        { "id": "c", "text": "Gambit" },
+        { "id": "d", "text": "LOUD" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q12",
+      "text": "Quantas vezes a FURIA participou de Majors de CS:GO entre 2019 e 2023?",
+      "options": [
+        { "id": "a", "text": "4 vezes" },
+        { "id": "b", "text": "5 vezes" },
+        { "id": "c", "text": "6 vezes" },
+        { "id": "d", "text": "7 vezes" }
+      ],
+      "correctOptionId": "c"
+    }
+  ]
+} 

@@ -1,0 +1,118 @@
+{
+  "id": "furia-conhecimentos",
+  "title": "Quiz FURIA",
+  "description": "Teste seus conhecimentos sobre a FURIA",
+  "difficulty": "Médio",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Qual é o nome completo da organização FURIA?",
+      "options": [
+        { "id": "a", "text": "FURIA Gaming" },
+        { "id": "b", "text": "FURIA Esports" },
+        { "id": "c", "text": "FURIA Team" },
+        { "id": "d", "text": "FURIA Club" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q2",
+      "text": "Em que ano a FURIA foi fundada?",
+      "options": [
+        { "id": "a", "text": "2016" },
+        { "id": "b", "text": "2017" },
+        { "id": "c", "text": "2018" },
+        { "id": "d", "text": "2019" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q3",
+      "text": "Qual é o animal representado no logotipo da FURIA?",
+      "options": [
+        { "id": "a", "text": "Um tigre" },
+        { "id": "b", "text": "Um leão" },
+        { "id": "c", "text": "Uma pantera" },
+        { "id": "d", "text": "Um lobo" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q4",
+      "text": "Em qual jogo a FURIA conquistou o título da Elisa Masters Espoo 2023?",
+      "options": [
+        { "id": "a", "text": "VALORANT" },
+        { "id": "b", "text": "Counter-Strike 2 (CS2)" },
+        { "id": "c", "text": "League of Legends" },
+        { "id": "d", "text": "Apex Legends" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q5",
+      "text": "Quem é o famoso jogador que se juntou à FURIA em julho de 2023?",
+      "options": [
+        { "id": "a", "text": "Gabriel 'FalleN' Toledo" },
+        { "id": "b", "text": "Marcelo 'coldzera' David" },
+        { "id": "c", "text": "Fernando 'fer' Alvarenga" },
+        { "id": "d", "text": "Epitácio 'TACO' de Melo" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q6",
+      "text": "Qual foi a colocação da FURIA na ESL Pro League Season 18 em 2023?",
+      "options": [
+        { "id": "a", "text": "1º a 4º lugar" },
+        { "id": "b", "text": "5º a 8º lugar" },
+        { "id": "c", "text": "9º a 12º lugar" },
+        { "id": "d", "text": "13º a 16º lugar" }
+      ],
+      "correctOptionId": "d"
+    },
+    {
+      "id": "q7",
+      "text": "Quais jogadores renovaram contrato com a FURIA por mais três anos em julho de 2024?",
+      "options": [
+        { "id": "a", "text": "KSCERATO e molodoy" },
+        { "id": "b", "text": "KSCERATO e yuurih" },
+        { "id": "c", "text": "FalleN e YEKINDAR" },
+        { "id": "d", "text": "yuurih e molodoy" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q8",
+      "text": "Em qual torneio a FURIA conquistou seu primeiro título com FalleN na equipe?",
+      "options": [
+        { "id": "a", "text": "IEM Katowice" },
+        { "id": "b", "text": "BLAST Premier" },
+        { "id": "c", "text": "Elisa Masters Espoo 2023" },
+        { "id": "d", "text": "ESL Pro League" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q9",
+      "text": "Qual jogador foi movido para o banco de reservas em abril de 2024 após estar na equipe desde 2018?",
+      "options": [
+        { "id": "a", "text": "Kaike 'KSCERATO' Cerato" },
+        { "id": "b", "text": "Yuri 'yuurih' Santos" },
+        { "id": "c", "text": "Andrei 'arT' Piovezan" },
+        { "id": "d", "text": "André 'drop' Abreu" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q10",
+      "text": "Quem assumiu a posição de Head de Esports da FURIA em abril de 2024?",
+      "options": [
+        { "id": "a", "text": "Nicholas 'guerri' Nogueira" },
+        { "id": "b", "text": "André Akkari" },
+        { "id": "c", "text": "Jaime Pádua" },
+        { "id": "d", "text": "Gabriel 'FalleN' Toledo" }
+      ],
+      "correctOptionId": "a"
+    }
+  ]
+} 

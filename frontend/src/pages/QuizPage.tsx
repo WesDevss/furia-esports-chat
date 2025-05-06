@@ -26,153 +26,40 @@ const QuizPage: React.FC = () => {
   
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [answers, setAnswers] = useState<{ questionId: string; selectedOptionId: string }[]>([]);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [score, setScore] = useState(0);
   
-  // Mock fetch quiz data
+  // Fetch quiz data from API
   useEffect(() => {
     const fetchQuiz = async () => {
       setLoading(true);
+      setError(null);
+      
       try {
-        // Simulating API call
-        await new Promise(resolve => setTimeout(resolve, 800));
+        const response = await fetch(`/api/quizzes/${quizId}`);
         
-        // Mock data for the FURIA quiz
-        if (quizId === 'furia-conhecimentos') {
-          setQuiz({
-            id: 'furia-conhecimentos',
-            title: 'Quiz FURIA',
-            description: 'Teste seus conhecimentos sobre a FURIA',
-            difficulty: 'Médio',
-            questions: [
-              {
-                id: 'q1',
-                text: 'Em que ano a FURIA Esports foi fundada?',
-                options: [
-                  { id: 'a', text: '2016' },
-                  { id: 'b', text: '2017' },
-                  { id: 'c', text: '2018' },
-                  { id: 'd', text: '2019' }
-                ],
-                correctOptionId: 'b'
-              },
-              {
-                id: 'q2',
-                text: 'Quem é um dos co-fundadores da FURIA?',
-                options: [
-                  { id: 'a', text: 'Fallen' },
-                  { id: 'b', text: 'André Akkari' },
-                  { id: 'c', text: 'Gaules' },
-                  { id: 'd', text: 'Coldzera' }
-                ],
-                correctOptionId: 'b'
-              },
-              {
-                id: 'q3',
-                text: 'Qual jogador é conhecido como o capitão do time de CS2 da FURIA?',
-                options: [
-                  { id: 'a', text: 'KSCERATO' },
-                  { id: 'b', text: 'yuurih' },
-                  { id: 'c', text: 'FalleN' },
-                  { id: 'd', text: 'YEKINDAR' }
-                ],
-                correctOptionId: 'c'
-              },
-              {
-                id: 'q4',
-                text: 'Em qual Major de CS:GO a FURIA alcançou sua primeira classificação para os playoffs?',
-                options: [
-                  { id: 'a', text: 'Katowice 2019' },
-                  { id: 'b', text: 'Berlin 2019' },
-                  { id: 'c', text: 'StarLadder Berlin 2019' },
-                  { id: 'd', text: 'PGL Stockholm 2021' }
-                ],
-                correctOptionId: 'c'
-              },
-              {
-                id: 'q5',
-                text: 'Qual é a cor principal do logo da FURIA?',
-                options: [
-                  { id: 'a', text: 'Vermelho' },
-                  { id: 'b', text: 'Preto' },
-                  { id: 'c', text: 'Azul' },
-                  { id: 'd', text: 'Roxo' }
-                ],
-                correctOptionId: 'd'
-              },
-              {
-                id: 'q6',
-                text: 'Em qual modalidade a FURIA iniciou suas operações?',
-                options: [
-                  { id: 'a', text: 'Counter-Strike' },
-                  { id: 'b', text: 'League of Legends' },
-                  { id: 'c', text: 'Dota 2' },
-                  { id: 'd', text: 'Rainbow Six Siege' }
-                ],
-                correctOptionId: 'a'
-              },
-              {
-                id: 'q7',
-                text: 'Qual famoso streamer brasileiro faz parte da FURIA como content creator?',
-                options: [
-                  { id: 'a', text: 'Gaules' },
-                  { id: 'b', text: 'Alanzoka' },
-                  { id: 'c', text: 'Nobru' },
-                  { id: 'd', text: 'Jukes' }
-                ],
-                correctOptionId: 'a'
-              },
-              {
-                id: 'q8',
-                text: 'Qual empresa global de periféricos é parceira da FURIA?',
-                options: [
-                  { id: 'a', text: 'Logitech' },
-                  { id: 'b', text: 'Razer' },
-                  { id: 'c', text: 'HyperX' },
-                  { id: 'd', text: 'SteelSeries' }
-                ],
-                correctOptionId: 'b'
-              },
-              {
-                id: 'q9',
-                text: 'Onde fica o centro de treinamento principal da FURIA?',
-                options: [
-                  { id: 'a', text: 'Rio de Janeiro' },
-                  { id: 'b', text: 'São Paulo' },
-                  { id: 'c', text: 'Miami' },
-                  { id: 'd', text: 'Las Vegas' }
-                ],
-                correctOptionId: 'b'
-              },
-              {
-                id: 'q10',
-                text: 'Em qual jogo a FURIA NÃO possui uma equipe competitiva atualmente?',
-                options: [
-                  { id: 'a', text: 'Valorant' },
-                  { id: 'b', text: 'CS2' },
-                  { id: 'c', text: 'Dota 2' },
-                  { id: 'd', text: 'League of Legends' }
-                ],
-                correctOptionId: 'c'
-              }
-            ]
-          });
-        } else {
-          // Hardcode other quiz data or redirect back
-          navigate('/');
+        if (!response.ok) {
+          throw new Error('Quiz não encontrado');
         }
+        
+        const data = await response.json();
+        setQuiz(data);
       } catch (error) {
         console.error('Erro ao carregar quiz:', error);
+        setError('Erro ao carregar quiz. Tente novamente mais tarde.');
       } finally {
         setLoading(false);
       }
     };
     
-    fetchQuiz();
-  }, [quizId, navigate]);
+    if (quizId) {
+      fetchQuiz();
+    }
+  }, [quizId]);
   
   const currentQuestion = quiz?.questions[currentQuestionIndex];
   

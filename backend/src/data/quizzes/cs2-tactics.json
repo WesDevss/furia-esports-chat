@@ -1,0 +1,140 @@
+{
+  "id": "cs2-tactics",
+  "title": "Táticas de CS2",
+  "description": "Quanto você sabe sobre táticas competitivas de CS2?",
+  "difficulty": "Difícil",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Qual tática é conhecida como 'execução em pinça' no mapa Mirage?",
+      "options": [
+        { "id": "a", "text": "Split A" },
+        { "id": "b", "text": "Split B" },
+        { "id": "c", "text": "Mid to B" },
+        { "id": "d", "text": "Rush B" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q2",
+      "text": "Qual utilitário é essencial para executar uma tática 'Fake' bem-sucedida?",
+      "options": [
+        { "id": "a", "text": "Apenas smokes" },
+        { "id": "b", "text": "Apenas molotovs" },
+        { "id": "c", "text": "Apenas flashbangs" },
+        { "id": "d", "text": "Combinação de smokes e flashbangs" }
+      ],
+      "correctOptionId": "d"
+    },
+    {
+      "id": "q3",
+      "text": "Qual é o nome da tática onde todos os terroristas vão juntos para o bombsite A no início do round?",
+      "options": [
+        { "id": "a", "text": "Default" },
+        { "id": "b", "text": "Split A" },
+        { "id": "c", "text": "Rush A" },
+        { "id": "d", "text": "Contact play" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q4",
+      "text": "Qual jogador da FURIA é conhecido por suas jogadas agressivas e de entrada como rifler?",
+      "options": [
+        { "id": "a", "text": "KSCERATO" },
+        { "id": "b", "text": "FalleN" },
+        { "id": "c", "text": "yuurih" },
+        { "id": "d", "text": "YEKINDAR" }
+      ],
+      "correctOptionId": "d"
+    },
+    {
+      "id": "q5",
+      "text": "Qual tática é frequentemente usada pela FURIA no mapa Nuke quando estão no lado CT?",
+      "options": [
+        { "id": "a", "text": "3A-2B setup" },
+        { "id": "b", "text": "Stack A" },
+        { "id": "c", "text": "4-1 setup (4 jogadores em A, 1 em B)" },
+        { "id": "d", "text": "Jogadores agressivos em yard e lobby" }
+      ],
+      "correctOptionId": "d"
+    },
+    {
+      "id": "q6",
+      "text": "Qual é o conceito da tática 'Contact Play'?",
+      "options": [
+        { "id": "a", "text": "Usar muitas granadas para entrar no bombsite" },
+        { "id": "b", "text": "Avançar silenciosamente até fazer contato visual com os inimigos" },
+        { "id": "c", "text": "Todos os jogadores disparando ao mesmo tempo" },
+        { "id": "d", "text": "Usar apenas granadas para causar dano" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q7",
+      "text": "Qual é o papel principal do IGL (In-Game Leader) em CS2?",
+      "options": [
+        { "id": "a", "text": "Ter o maior número de abates" },
+        { "id": "b", "text": "Apenas usar a AWP" },
+        { "id": "c", "text": "Coordenar as estratégias e fazer calls durante a partida" },
+        { "id": "d", "text": "Apenas defender bombsites" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q8",
+      "text": "Qual é a principal vantagem da tática 'Default' para o lado terrorista?",
+      "options": [
+        { "id": "a", "text": "Garantir uma entrada rápida no bombsite" },
+        { "id": "b", "text": "Obter controle de mapa e informação" },
+        { "id": "c", "text": "Usar todas as granadas de uma vez" },
+        { "id": "d", "text": "Sempre funciona contra qualquer defesa" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q9",
+      "text": "Quando é geralmente mais apropriado fazer um 'eco round' em CS2?",
+      "options": [
+        { "id": "a", "text": "Quando se tem dinheiro suficiente para comprar rifles" },
+        { "id": "b", "text": "Após vencer um round" },
+        { "id": "c", "text": "Quando não há dinheiro suficiente para uma compra completa" },
+        { "id": "d", "text": "Apenas no primeiro round" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q10",
+      "text": "Qual é a tática conhecida como 'Stack' em CS2?",
+      "options": [
+        { "id": "a", "text": "Quando todos os jogadores compram a mesma arma" },
+        { "id": "b", "text": "Quando todos os jogadores pulam juntos" },
+        { "id": "c", "text": "Quando vários jogadores defendem o mesmo bombsite" },
+        { "id": "d", "text": "Quando jogadores ficam um em cima do outro" }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q11",
+      "text": "O que é uma 'Eco Pistol' em CS2?",
+      "options": [
+        { "id": "a", "text": "Quando jogadores usam apenas pistolas para economizar dinheiro" },
+        { "id": "b", "text": "Quando jogadores compram rifles no primeiro round" },
+        { "id": "c", "text": "Quando apenas um jogador compra uma arma cara" },
+        { "id": "d", "text": "Quando o time compra utilitários sem armas" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q12",
+      "text": "Qual tática a FURIA ficou conhecida por executar de forma agressiva no seu auge em 2019-2020?",
+      "options": [
+        { "id": "a", "text": "Tática lenta e metodológica" },
+        { "id": "b", "text": "Pushes agressivos em defesa (CT)" },
+        { "id": "c", "text": "Apenas defesa passiva" },
+        { "id": "d", "text": "Apenas usar AWPs" }
+      ],
+      "correctOptionId": "b"
+    }
+  ]
+} 

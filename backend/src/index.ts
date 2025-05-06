@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/users';
 import matchRoutes from './routes/matches';
 import messageRoutes from './routes/messages';
-import openaiRoutes from './routes/openai';
+import quizRoutes from './routes/quizzes';
 import { MockData, Message } from './types';
 import { config, validateConfig } from './config';
 
@@ -47,7 +47,7 @@ app.get('/', (_req, res) => {
 app.use('/api/users', userRoutes);
 app.use('/api/matches', matchRoutes);
 app.use('/api/messages', messageRoutes);
-app.use('/api/openai', openaiRoutes);
+app.use('/api/quizzes', quizRoutes);
 
 // Socket.IO connection handling
 io.on('connection', (socket) => {

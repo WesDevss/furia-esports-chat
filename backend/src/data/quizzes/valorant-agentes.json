@@ -1,0 +1,96 @@
+{
+  "id": "valorant-agentes",
+  "title": "Agentes do VALORANT",
+  "description": "Teste seus conhecimentos sobre agentes e habilidades",
+  "difficulty": "Fácil",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Qual agente possui a habilidade 'Curar Área', que cura aliados em uma área específica?",
+      "options": [
+        { "id": "a", "text": "Jett" },
+        { "id": "b", "text": "Sage" },
+        { "id": "c", "text": "Phoenix" },
+        { "id": "d", "text": "Viper" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q2",
+      "text": "Qual é a função principal de Omen no jogo?",
+      "options": [
+        { "id": "a", "text": "Controlador" },
+        { "id": "b", "text": "Sentinela" },
+        { "id": "c", "text": "Duelista" },
+        { "id": "d", "text": "Iniciador" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q3",
+      "text": "Qual agente possui a ultimate 'Empress', que aumenta a velocidade de disparo e recarga?",
+      "options": [
+        { "id": "a", "text": "Reyna" },
+        { "id": "b", "text": "Raze" },
+        { "id": "c", "text": "Jett" },
+        { "id": "d", "text": "Killjoy" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q4",
+      "text": "Qual agente da FURIA VALORANT se especializou em jogar com Jett em 2023?",
+      "options": [
+        { "id": "a", "text": "mazin" },
+        { "id": "b", "text": "Quick" },
+        { "id": "c", "text": "Khalil" },
+        { "id": "d", "text": "Nozwerr" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q5",
+      "text": "Qual agente possui a habilidade 'Alarmbot', que persegue inimigos e os deixa vulneráveis?",
+      "options": [
+        { "id": "a", "text": "Cypher" },
+        { "id": "b", "text": "Killjoy" },
+        { "id": "c", "text": "Raze" },
+        { "id": "d", "text": "Breach" }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q6",
+      "text": "Qual agente foi adicionado ao jogo em 2023 com a habilidade de criar portais dimensionais?",
+      "options": [
+        { "id": "a", "text": "Iso" },
+        { "id": "b", "text": "Deadlock" },
+        { "id": "c", "text": "Harbor" },
+        { "id": "d", "text": "Gekko" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q7",
+      "text": "Qual agente usa habilidades de cura e ressuscitação para apoiar a equipe?",
+      "options": [
+        { "id": "a", "text": "Sage" },
+        { "id": "b", "text": "Skye" },
+        { "id": "c", "text": "Brimstone" },
+        { "id": "d", "text": "Astra" }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q8",
+      "text": "Qual é a nacionalidade do agente Raze no universo de VALORANT?",
+      "options": [
+        { "id": "a", "text": "Brasileira" },
+        { "id": "b", "text": "Mexicana" },
+        { "id": "c", "text": "Colombiana" },
+        { "id": "d", "text": "Espanhola" }
+      ],
+      "correctOptionId": "a"
+    }
+  ]
+} 
