@@ -124,7 +124,15 @@ const SearchPage: React.FC = () => {
                     >
                       <div className="flex items-start p-4">
                         {player.image ? (
-                          <img src={player.image} alt={player.title} className="w-16 h-16 rounded-md object-cover" />
+                          <img 
+                            src={player.image} 
+                            alt={player.title} 
+                            className="w-16 h-16 rounded-md object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = `https://via.placeholder.com/64x64?text=${player.title.charAt(0)}`;
+                            }}
+                          />
                         ) : (
                           <div className="w-16 h-16 bg-gray-700 rounded-md flex items-center justify-center">
                             <User className="h-8 w-8 text-gray-400" />
@@ -160,7 +168,15 @@ const SearchPage: React.FC = () => {
                       <div className="flex md:flex-row flex-col">
                         {news.image && (
                           <div className="md:w-1/4 w-full h-48 md:h-auto">
-                            <img src={news.image} alt={news.title} className="w-full h-full object-cover" />
+                            <img 
+                              src={news.image} 
+                              alt={news.title} 
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = `/news-placeholder.jpg`;
+                              }}
+                            />
                           </div>
                         )}
                         <div className="p-4 md:w-3/4 w-full">
@@ -193,7 +209,15 @@ const SearchPage: React.FC = () => {
                       <div className="flex items-center">
                         <div className="flex-shrink-0">
                           {match.image ? (
-                            <img src={match.image} alt={match.title} className="w-16 h-16 rounded-md object-cover" />
+                            <img 
+                              src={match.image} 
+                              alt={match.title} 
+                              className="w-16 h-16 rounded-md object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = `/match-placeholder.jpg`;
+                              }}
+                            />
                           ) : (
                             <div className="w-16 h-16 bg-gray-700 rounded-md flex items-center justify-center">
                               <Calendar className="h-8 w-8 text-gray-400" />

@@ -35,7 +35,24 @@ const ResultItem: React.FC<{ result: SearchResult; onClose: () => void }> = ({ r
     >
       <div className="flex-shrink-0 mr-3">
         {result.image ? (
-          <img src={result.image} alt={result.title} className="h-10 w-10 rounded-md object-cover" />
+          <img 
+            src={result.image} 
+            alt={result.title} 
+            className="h-10 w-10 rounded-md object-cover" 
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              // Tentar usar um fallback baseado no tipo de resultado
+              if (result.type === 'player') {
+                target.src = `https://via.placeholder.com/40x40?text=${result.title.charAt(0)}`;
+              } else if (result.type === 'news') {
+                target.src = '/news-placeholder.jpg';
+              } else if (result.type === 'match') {
+                target.src = '/match-placeholder.jpg';
+              } else {
+                target.src = `https://via.placeholder.com/40x40?text=${result.title.charAt(0)}`;
+              }
+            }}
+          />
         ) : (
           <div className="h-10 w-10 bg-gray-700 rounded-md flex items-center justify-center">
             {getIcon()}

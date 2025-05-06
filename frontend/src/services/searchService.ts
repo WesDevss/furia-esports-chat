@@ -15,7 +15,7 @@ const players: SearchResult[] = [
     type: 'player', 
     title: 'FalleN', 
     description: 'Gabriel Toledo - Capitão e AWPer da FURIA', 
-    image: '/player-fallen.jpg',
+    image: '/players/fallen.jpg',
     url: '/players/fallen'
   },
   { 
@@ -23,7 +23,7 @@ const players: SearchResult[] = [
     type: 'player', 
     title: 'KSCERATO', 
     description: 'Kaike Cerato - Rifler da FURIA', 
-    image: '/player-kscerato.jpg',
+    image: '/players/kscerato.jpg',
     url: '/players/kscerato'
   },
   { 
@@ -31,7 +31,7 @@ const players: SearchResult[] = [
     type: 'player', 
     title: 'yuurih', 
     description: 'Yuri Santos - Entry fragger da FURIA', 
-    image: '/player-yuurih.jpg', 
+    image: '/players/yuurih.jpg', 
     url: '/players/yuurih' 
   },
   { 
@@ -39,7 +39,7 @@ const players: SearchResult[] = [
     type: 'player', 
     title: 'molodoy', 
     description: 'Alexander Melekhin - Rifler da FURIA', 
-    image: '/player-molodoy.jpg', 
+    image: '/players/molodoy.jpg', 
     url: '/players/molodoy' 
   },
   { 
@@ -47,7 +47,7 @@ const players: SearchResult[] = [
     type: 'player', 
     title: 'YEKINDAR', 
     description: 'Mareks Gaļinskis - Rifler da FURIA', 
-    image: '/player-yekindar.jpg', 
+    image: '/players/yekindar.jpg', 
     url: '/players/yekindar' 
   }
 ];
