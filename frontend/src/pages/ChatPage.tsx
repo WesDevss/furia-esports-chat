@@ -372,40 +372,47 @@ const ChatPage: React.FC = () => {
     let messageClasses = "mb-3 break-words text-sm";
     
     if (isSystemMessage) {
-      messageClasses += " mx-auto bg-gray-700 rounded-lg py-1.5 px-3 text-center max-w-[85%]";
+      messageClasses += " mr-auto bg-gray-700 rounded-lg py-1.5 px-3 max-w-[85%] text-left";
     } else if (isCurrentUser) {
-      messageClasses += " ml-auto bg-purple-600 rounded-l-lg rounded-tr-lg py-1.5 px-3 max-w-[55%]";
+      messageClasses += " ml-auto bg-purple-600 rounded-l-lg rounded-tr-lg py-1.5 px-3 max-w-[55%] text-left";
     } else {
-      messageClasses += " mr-auto bg-gray-700 rounded-r-lg rounded-tl-lg py-1.5 px-3 max-w-[65%]";
+      messageClasses += " mr-auto bg-gray-700 rounded-r-lg rounded-tl-lg py-1.5 px-3 max-w-[65%] text-left";
     }
     
     // Renderizar o conteúdo baseado no tipo
     const renderContent = () => {
       switch (message.type) {
         case 'match-update':
-          return <div className="text-green-400 font-medium text-sm">{message.content}</div>;
+          return <div className="text-green-400 font-medium text-sm text-left">{message.content}</div>;
           
         case 'highlight':
-          return <div className="text-yellow-400 font-medium text-sm">🔥 {message.content}</div>;
+          return <div className="text-yellow-400 font-medium text-sm text-left">🔥 {message.content}</div>;
           
         case 'mission-complete':
-          return <div className="text-purple-400 font-medium text-sm">{message.content}</div>;
+          return <div className="text-purple-400 font-medium text-sm text-left">{message.content}</div>;
           
         case 'poll':
           // Renderização de enquete (não implementada neste exemplo)
-          return <div className="text-sm">{message.content}</div>;
+          return <div className="text-sm text-left">{message.content}</div>;
           
         case 'system':
-          return <div className="text-blue-300 text-sm">{message.content}</div>;
+          return <div className="text-blue-300 text-sm text-left">{message.content}</div>;
           
         default:
-          return <div className="text-sm">{message.content}</div>;
+          return <div className="text-sm text-left">{message.content}</div>;
       }
     };
     
     return (
-      <div key={message.id} className={`${isSystemMessage ? 'w-full' : ''} animate-fade-in`}>
-        {!isSystemMessage && (
+      <div key={message.id} className="animate-fade-in">
+        {isSystemMessage ? (
+          <div className="flex items-center gap-1 text-xs justify-start ml-1 mb-0.5">
+            <span className="font-semibold">{message.user.username}</span>
+            {message.user.badges && message.user.badges.map((badge, idx) => (
+              <span key={idx} className="bg-gray-800 text-gray-300 rounded px-1">{badge}</span>
+            ))}
+          </div>
+        ) : (
           <div className={`flex items-center gap-1 text-xs ${isCurrentUser ? 'justify-end mr-1' : 'justify-start ml-1'} mb-0.5`}>
             <span className="font-semibold">{message.user.username}</span>
             {message.user.level && (
@@ -427,7 +434,7 @@ const ChatPage: React.FC = () => {
           
           {renderContent()}
           
-          <div className="text-right mt-0.5">
+          <div className="text-left mt-0.5">
             <span className="text-xs text-gray-400">{formatTime(new Date(message.timestamp))}</span>
           </div>
         </div>
@@ -949,7 +956,7 @@ const ChatPage: React.FC = () => {
         {/* Área principal de chat */}
         <div className="flex-1 flex flex-col">
           {/* Mensagens */}
-          <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-600">
+          <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-600 text-left">
             {loading ? (
               <div className="text-center py-6">
                 <div className="animate-pulse">Carregando mensagens...</div>

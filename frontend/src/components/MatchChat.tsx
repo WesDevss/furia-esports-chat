@@ -407,6 +407,26 @@ const MatchChat: React.FC<MatchChatProps> = ({ matchId, height = '400px' }) => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Removendo centralização e alinhando mensagens à esquerda
+  const systemMessage = (content, timestamp) => (
+    <div className="flex flex-col items-start mb-2">
+      <div className="bg-gray-800 text-left rounded-lg py-1.5 px-3 text-sm text-blue-300">
+        {content}
+      </div>
+      <span className="text-xs text-gray-500 mt-0.5">{timestamp}</span>
+    </div>
+  );
+
+  // Atualizações de partida alinhadas à esquerda
+  const matchUpdateMessage = (content, timestamp) => (
+    <div className="flex flex-col items-start mb-2">
+      <div className="bg-gray-800 text-left rounded-lg py-1.5 px-3 text-sm text-green-400 font-medium">
+        {content}
+      </div>
+      <span className="text-xs text-gray-500 mt-0.5">{timestamp}</span>
+    </div>
+  );
+
   return (
     <div className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800">
       {/* Header */}
