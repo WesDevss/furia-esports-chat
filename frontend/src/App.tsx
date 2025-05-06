@@ -20,6 +20,7 @@ import AchievementsPage from './pages/AchievementsPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import QuizzesPage from './pages/QuizzesPage';
 import MatchOverview from './pages/MatchOverview';
+import SearchPage from './pages/SearchPage';
 
 type FuriBotContextType = {
   isOpen: boolean; 
@@ -85,6 +86,7 @@ const App: React.FC = () => {
                 <Route path="/stats" element={<StatsPage />} />
                 <Route path="/achievements" element={<AchievementsPage />} />
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
+                <Route path="/search" element={<SearchPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </main>

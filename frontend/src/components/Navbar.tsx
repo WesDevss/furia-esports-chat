@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, User, Search, Moon, Sun } from 'lucide-react';
 import { useTheme } from './theme-provider';
 import { useFuriBot } from '../hooks/useFuriBot';
+import { searchContent, SearchResult } from '../services/searchService';
+import SearchResults from './SearchResults';
 
 type NavItem = {
   path: string;
@@ -35,6 +37,7 @@ type SearchBoxProps = {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   onSubmit: (e: React.FormEvent) => void;
+  showResults: boolean;
   className?: string;
 };
 
@@ -42,23 +45,42 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   searchQuery, 
   setSearchQuery, 
   onSubmit,
+  showResults,
   className
-}) => (
-  <form onSubmit={onSubmit} className={`w-full ${className || ''}`}>
-    <div className="relative">
-      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <Search className="h-5 w-5 text-gray-400" />
+}) => {
+  // Referência para o input para foco automático
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Realizar pesquisa ao digitar
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // Focar no input quando o componente montar
+  useEffect(() => {
+    if (showResults && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [showResults]);
+
+  return (
+    <form onSubmit={onSubmit} className={`w-full ${className || ''}`}>
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Search className="h-5 w-5 text-gray-400" />
+        </div>
+        <input
+          ref={inputRef}
+          type="text"
+          className="block w-full pl-10 pr-3 py-2 rounded-md bg-gray-700 dark:bg-gray-800 text-gray-200 border border-transparent focus:border-furia-purple focus:ring-1 focus:ring-furia-purple"
+          placeholder="Jogadores, notícias, partidas..."
+          value={searchQuery}
+          onChange={handleChange}
+        />
       </div>
-      <input
-        type="text"
-        className="block w-full pl-10 pr-3 py-2 rounded-md bg-gray-700 dark:bg-gray-800 text-gray-200 border border-transparent focus:border-furia-purple focus:ring-1 focus:ring-furia-purple"
-        placeholder="Jogadores, notícias, partidas..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-    </div>
-  </form>
-);
+    </form>
+  );
+};
 
 type ThemeToggleProps = {
   theme: string;
@@ -83,14 +105,62 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ theme, toggleTheme, className
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showResults, setShowResults] = useState(false);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
   const { openFuriBot } = useFuriBot();
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // Pesquisar quando a query mudar
+  useEffect(() => {
+    if (searchQuery.trim().length >= 2) {
+      const results = searchContent(searchQuery);
+      setSearchResults(results);
+      setShowResults(true);
+    } else {
+      setSearchResults([]);
+      setShowResults(false);
+    }
+  }, [searchQuery]);
+
+  // Fechar resultados ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current && 
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Fechar resultados ao navegar
+  useEffect(() => {
+    setShowResults(false);
+    setSearchQuery('');
+  }, [location.pathname]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implementação futura: funcionalidade de busca
-    setSearchQuery('');
+    
+    if (searchQuery.trim()) {
+      // Navegar para página de pesquisa completa
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery('');
+      setShowResults(false);
+    }
+  };
+
+  const closeSearchResults = () => {
+    setShowResults(false);
   };
 
   const toggleTheme = () => {
@@ -130,7 +200,8 @@ const Navbar: React.FC = () => {
         <SearchBox 
           searchQuery={searchQuery} 
           setSearchQuery={setSearchQuery} 
-          onSubmit={handleSearch} 
+          onSubmit={handleSearch}
+          showResults={showResults}
         />
       </div>
       
@@ -169,12 +240,22 @@ const Navbar: React.FC = () => {
             <NavbarLogo />
           </div>
 
-          <div className="hidden md:flex items-center flex-1 max-w-md mx-4">
+          <div className="hidden md:flex items-center flex-1 max-w-md mx-4 relative" ref={searchContainerRef}>
             <SearchBox 
               searchQuery={searchQuery} 
               setSearchQuery={setSearchQuery} 
-              onSubmit={handleSearch} 
+              onSubmit={handleSearch}
+              showResults={showResults}
             />
+            
+            {/* Exibir resultados da pesquisa */}
+            {showResults && searchResults.length > 0 && (
+              <SearchResults 
+                results={searchResults} 
+                onClose={closeSearchResults} 
+                searchQuery={searchQuery}
+              />
+            )}
           </div>
 
           {renderDesktopNav()}
@@ -196,7 +277,22 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {isOpen && renderMobileNav()}
+      {isOpen && (
+        <div ref={searchContainerRef}>
+          {renderMobileNav()}
+          
+          {/* Resultados da pesquisa em mobile */}
+          {showResults && searchResults.length > 0 && (
+            <div className="px-2 pb-3">
+              <SearchResults 
+                results={searchResults} 
+                onClose={closeSearchResults} 
+                searchQuery={searchQuery}
+              />
+            </div>
+          )}
+        </div>
+      )}
     </nav>
   );
 };
