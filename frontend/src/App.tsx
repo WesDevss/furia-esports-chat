@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './components/theme-provider';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -20,45 +20,41 @@ import AchievementsPage from './pages/AchievementsPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import QuizzesPage from './pages/QuizzesPage';
 import MatchOverview from './pages/MatchOverview';
-import { QuizWidget } from './components/widgets';
 
-// Criando um contexto para o FURIBOT que será acessível em todas as páginas
-export const FuriBotContext = React.createContext<{
+type FuriBotContextType = {
   isOpen: boolean; 
   openFuriBot: () => void;
   closeFuriBot: () => void;
   toggleFuriBot: () => void;
-}>({
+};
+
+export const FuriBotContext = React.createContext<FuriBotContextType>({
   isOpen: false,
   openFuriBot: () => {},
   closeFuriBot: () => {},
   toggleFuriBot: () => {}
 });
 
-// Wrapper component to conditionally render FuriBot
-const FuriBotWrapper: React.FC<{
+type FuriBotWrapperProps = {
   onSendMessage: (message: string) => void;
   isOpen: boolean;
   onClose: () => void;
   onToggle: () => void;
-}> = (props) => {
-  // Mostrar o FURIBOT em todas as páginas, incluindo a home
+};
+
+const FuriBotWrapper: React.FC<FuriBotWrapperProps> = (props) => {
   return <FuriBot {...props} />;
 };
 
 const App: React.FC = () => {
   const [isFuriBotOpen, setIsFuriBotOpen] = useState(false);
 
-  // Manipuladores de estado do FURIBOT
   const openFuriBot = () => setIsFuriBotOpen(true);
   const closeFuriBot = () => setIsFuriBotOpen(false);
   const toggleFuriBot = () => setIsFuriBotOpen(prev => !prev);
 
-  // Manipulador de mensagens do FURIBOT
   const handleFuriBotMessage = (message: string) => {
-    console.log("Mensagem do FURIBOT:", message);
-    // Aqui você pode adicionar lógica para lidar com as mensagens
-    // como exibir notificações, atualizar o estado global, etc.
+    // Implementação futura: sistema de logging, notificações, etc.
   };
 
   return (
@@ -94,7 +90,6 @@ const App: React.FC = () => {
             </main>
             <Footer />
             
-            {/* FURIBOT global disponível em todas as páginas */}
             <FuriBotWrapper 
               onSendMessage={handleFuriBotMessage}
               isOpen={isFuriBotOpen}

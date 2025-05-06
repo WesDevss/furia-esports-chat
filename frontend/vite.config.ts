@@ -4,6 +4,7 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  base: '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -20,11 +21,20 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:5002',
         changeOrigin: true,
+        secure: false,
       },
       '/socket.io': {
         target: 'http://localhost:5002',
         changeOrigin: true,
       },
     },
+  },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    sourcemap: true,
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
   },
 }) 
