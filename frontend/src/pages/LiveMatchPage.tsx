@@ -126,7 +126,7 @@ const LiveMatchPage: React.FC = () => {
             },
             {
               id: 'player-2',
-              name: 'kscerato',
+              name: 'KSCERATO',
               avatar: '/avatars/kscerato.png',
               role: 'Rifler',
               team: 'FURIA',
@@ -141,8 +141,8 @@ const LiveMatchPage: React.FC = () => {
             },
             {
               id: 'player-3',
-              name: 'fall3n',
-              avatar: '/avatars/fall3n.png',
+              name: 'FalleN',
+              avatar: '/avatars/fallen.png',
               role: 'AWPer',
               team: 'FURIA',
               stats: {
@@ -152,6 +152,36 @@ const LiveMatchPage: React.FC = () => {
                 adr: 72.1,
                 hs: 42,
                 rating: 1.11
+              }
+            },
+            {
+              id: 'player-4',
+              name: 'molodoy',
+              avatar: '/avatars/molodoy.png',
+              role: 'Rifler',
+              team: 'FURIA',
+              stats: {
+                kills: 12,
+                deaths: 13,
+                assists: 6,
+                adr: 68.5,
+                hs: 59,
+                rating: 1.05
+              }
+            },
+            {
+              id: 'player-5',
+              name: 'YEKINDAR',
+              avatar: '/avatars/yekindar.png',
+              role: 'Entry Fragger',
+              team: 'FURIA',
+              stats: {
+                kills: 17,
+                deaths: 11,
+                assists: 5,
+                adr: 81.2,
+                hs: 64,
+                rating: 1.28
               }
             }
             // In real app, would include all 10 players (5 per team)
@@ -222,16 +252,13 @@ const LiveMatchPage: React.FC = () => {
         {/* Live stream embed */}
         <div className="lg:col-span-2">
           <div className="bg-black rounded-xl overflow-hidden aspect-video mb-6">
-            <div className="w-full h-full flex items-center justify-center">
-              {/* In a real app, this would be an actual embed */}
-              <div className="text-center">
-                <Trophy className="h-16 w-16 text-furia-purple mx-auto mb-4" />
-                <p className="text-xl">Transmissão ao vivo indisponível no modo de demonstração</p>
-                <p className="text-gray-400 mt-2">
-                  Em produção, um embed da Twitch ou YouTube seria exibido aqui
-                </p>
-              </div>
-            </div>
+            <iframe 
+              src="https://www.youtube.com/embed/vFPo6WiBrXw" 
+              title="FURIA CS2 Match"
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowFullScreen
+            ></iframe>
           </div>
           
           {/* Tabs for statistics or chat on mobile */}
@@ -419,7 +446,7 @@ const LiveMatchPage: React.FC = () => {
                         <span className="text-white text-sm font-medium mr-1">Almeida22</span>
                         <span className="bg-gray-700 text-xs px-1.5 py-0.5 rounded text-white">Torcedor</span>
                       </div>
-                      <p className="text-sm text-white mt-1">art está imparável hoje!</p>
+                      <p className="text-sm text-white mt-1">YEKINDAR está imparável hoje!</p>
                       <span className="text-xs text-gray-500 block">14:30</span>
                     </div>
                   </div>

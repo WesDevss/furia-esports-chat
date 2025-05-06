@@ -76,8 +76,8 @@ const QuizPage: React.FC = () => {
                 options: [
                   { id: 'a', text: 'KSCERATO' },
                   { id: 'b', text: 'yuurih' },
-                  { id: 'c', text: 'arT' },
-                  { id: 'd', text: 'drop' }
+                  { id: 'c', text: 'FalleN' },
+                  { id: 'd', text: 'YEKINDAR' }
                 ],
                 correctOptionId: 'c'
               },

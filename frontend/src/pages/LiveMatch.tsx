@@ -135,10 +135,10 @@ const LiveMatch: React.FC = () => {
         <h2 className="text-xl font-bold mb-4">Destaques</h2>
         <div className="space-y-3">
           <div className="bg-gray-700 rounded p-3">
-            <span className="text-red-500 font-bold">Art</span> fez um clutch 1v3 no round 24!
+            <span className="text-red-500 font-bold">FalleN</span> fez um clutch 1v3 no round 24!
           </div>
           <div className="bg-gray-700 rounded p-3">
-            <span className="text-red-500 font-bold">KSCERATO</span> fez 4 abates no round 18!
+            <span className="text-red-500 font-bold">molodoy</span> fez 4 abates no round 18!
           </div>
         </div>
       </motion.div>

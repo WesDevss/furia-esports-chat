@@ -126,7 +126,7 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onTog
       const lowerInput = userInput.toLowerCase();
       
       if (lowerInput.includes('jogador favorito') || lowerInput.includes('favorite player')) {
-        const players = ['yuurih', 'kscerato', 'art', 'fall3n', 'chelo', 'saffee'];
+        const players = ['yuurih', 'KSCERATO', 'FalleN', 'molodoy', 'YEKINDAR'];
         const playerMatch = players.find(player => lowerInput.includes(player.toLowerCase()));
         if (playerMatch) {
           saveToMemory('favoritePlayer', playerMatch);
@@ -141,6 +141,23 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onTog
             break;
           }
         }
+      }
+
+      // If user is asking about a specific player
+      if (lowerInput.includes('estatística') || lowerInput.includes('estatisticas') || lowerInput.includes('stats')) {
+        if (lowerInput.includes('yuurih')) {
+          return "Yuurih tem uma média de 1.24 de rating nas últimas 3 partidas. Ele é conhecido por suas habilidades com rifles e jogadas de clutch.";
+        } else if (lowerInput.includes('kscerato')) {
+          return "KSCERATO está com um rating médio de 1.25 e é o jogador com mais abates da equipe no último mês.";
+        } else if (lowerInput.includes('fallen')) {
+          return "FalleN tem sido um grande líder para a equipe com seu AWP e estratégias. Seu rating médio é 1.07 nas últimas partidas.";
+        } else if (lowerInput.includes('yekindar')) {
+          return "YEKINDAR está com um rating de 1.18 nas últimas partidas e tem sido fundamental como entry fragger.";
+        } else if (lowerInput.includes('molodoy')) {
+          return "molodoy é um jogador promissor com rating de 1.09 nas últimas partidas. Ele tem se adaptado bem ao estilo da FURIA.";
+        }
+        
+        return "Qual jogador específico você gostaria de saber as estatísticas? Posso te informar sobre yuurih, KSCERATO, FalleN, molodoy ou YEKINDAR.";
       }
     } catch (error) {
       // Add error message
@@ -158,12 +175,14 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onTog
     }
   };
 
-  // Sugestões de perguntas para o usuário
-  const suggestedQuestions = [
+  // Example messages that could be shown to the user as suggestions
+  const exampleMessages = [
     "Quando é o próximo jogo da FURIA?",
-    "Quem é o melhor jogador da FURIA?",
-    "Como a FURIA está se preparando para o próximo Major?",
-    "Estatísticas do art nas últimas partidas"
+    "Quem são os jogadores atuais do time de CS2?",
+    "Qual foi o último título da FURIA?",
+    "Estatísticas do YEKINDAR nas últimas partidas",
+    "Qual é a posição da FURIA no ranking mundial?",
+    "Qual é o próximo torneio que a FURIA vai participar?"
   ];
 
   return (
@@ -257,7 +276,7 @@ const FuriBot: React.FC<FuriBotProps> = ({ onSendMessage, isOpen, onClose, onTog
               <div className="absolute bottom-2 left-0 w-full px-3">
                 <p className="text-xs text-gray-400 mb-2 text-center">Experimente perguntar:</p>
                 <div className="flex flex-wrap gap-2 justify-center">
-                  {suggestedQuestions.slice(0, 2).map((question, index) => (
+                  {exampleMessages.slice(0, 2).map((question, index) => (
                     <button
                       key={index}
                       onClick={() => {

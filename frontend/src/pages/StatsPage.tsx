@@ -68,9 +68,9 @@ const StatsPage: React.FC = () => {
         const mockPlayers: PlayerStats[] = [
           {
             id: 'player-1',
-            name: 'Andrei Piovezan',
-            nickname: 'arT',
-            avatar: '/avatars/art.png',
+            name: 'Gabriel Toledo',
+            nickname: 'FalleN',
+            avatar: '/avatars/fallen.png',
             role: 'IGL/AWPer',
             game: 'CS2',
             stats: {
@@ -143,9 +143,9 @@ const StatsPage: React.FC = () => {
           },
           {
             id: 'player-4',
-            name: 'André Abreu',
-            nickname: 'drop',
-            avatar: '/avatars/drop.png',
+            name: 'Danil Golubenko',
+            nickname: 'molodoy',
+            avatar: '/avatars/molodoy.png',
             role: 'Rifler',
             game: 'CS2',
             stats: {
@@ -168,10 +168,10 @@ const StatsPage: React.FC = () => {
           },
           {
             id: 'player-5',
-            name: 'Rafael Costa',
-            nickname: 'saffee',
-            avatar: '/avatars/saffee.png',
-            role: 'AWPer',
+            name: 'Mareks Gaļinskis',
+            nickname: 'YEKINDAR',
+            avatar: '/avatars/yekindar.png',
+            role: 'Entry Fragger',
             game: 'CS2',
             stats: {
               kills: 3120,

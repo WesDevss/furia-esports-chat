@@ -37,7 +37,7 @@ const emojiOptions = [
 // Brazilian usernames for FURIA fans
 const brazilianUsernames = [
   'BrasilFan2023', 'FuriaArmada', 'GarotoDoHeadshot', 'CSGOBrasileiro', 
-  'MatadorDeGringo', 'FallenDiscipulo', 'KSCERATO_FAN', 'ArtMaster', 
+  'MatadorDeGringo', 'FallenDiscipulo', 'KSCERATO_FAN', 'YEKINDARmaster', 
   'YuurihStyle', 'MolotovKing', 'AwpDoMorro', 'GauchoGamer', 
   'TorcedorFuria', 'BRzinho', 'FlamengoEFuria', 'OneShot_BR',
   'CariocaGamer', 'AceNaMesa', 'BrDeAco', 'FuriaAteOMorrer'
@@ -87,7 +87,7 @@ const MatchChat: React.FC<MatchChatProps> = ({ matchId, height = '400px' }) => {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const messageIntervalRef = useRef<number | null>(null);
   const typingTimeoutsRef = useRef<NodeJS.Timeout[]>([]);
-  const playerNames = ['yuurih', 'KSCERATO', 'FalleN', 'art', 'drop'];
+  const playerNames = ['yuurih', 'KSCERATO', 'FalleN', 'molodoy', 'YEKINDAR'];
   const opponentNames = ['s1mple', 'electronic', 'b1t', 'Perfecto', 'Boombl4'];
 
   // Function to generate a random message from templates
@@ -122,7 +122,7 @@ const MatchChat: React.FC<MatchChatProps> = ({ matchId, height = '400px' }) => {
       {
         id: '2',
         username: 'CSGOMaster',
-        content: 'Grande jogada do Art!',
+        content: 'Grande jogada do YEKINDAR!',
         timestamp: new Date(now - 180000),
         badges: ['Veterano'],
         reactions: { 'thumbs-up': ['User1', 'User2'], 'fire': ['User3'] }
