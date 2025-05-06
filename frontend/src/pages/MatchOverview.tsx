@@ -225,7 +225,7 @@ const MatchOverview: React.FC = () => {
                           <td className="py-3">
                             <div className="flex items-center">
                               <div className="w-2 h-2 rounded-full bg-furia-purple mr-2"></div>
-                              <span className="font-medium">art</span>
+                              <span className="font-medium">YEKINDAR</span>
                             </div>
                           </td>
                           <td className="text-center py-3">15</td>

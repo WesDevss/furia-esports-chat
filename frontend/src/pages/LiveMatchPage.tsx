@@ -65,7 +65,7 @@ const LiveMatchPage: React.FC = () => {
             "Que jogada do yuurih!",
             "VAMO FURIA!!!",
             "Essa rotação foi perfeita",
-            "Clutch insano do drop!"
+            "Clutch insano do molodoy!"
           ][Math.floor(Math.random() * 5)],
           timestamp: new Date()
         };

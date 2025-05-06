@@ -94,7 +94,7 @@ const ProfilePage: React.FC = () => {
       {
         id: '4',
         type: 'reaction',
-        content: 'Reagiu a uma mensagem de arT',
+        content: 'Reagiu a uma mensagem de FalleN',
         timestamp: new Date(Date.now() - 604800000) // 7 days ago
       }
     ]

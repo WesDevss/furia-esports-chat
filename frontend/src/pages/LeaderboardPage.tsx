@@ -117,7 +117,7 @@ const LeaderboardPage: React.FC = () => {
           },
           {
             id: '8',
-            username: 'ArtMaster',
+            username: 'FalleNMaster',
             level: 15,
             totalPoints: 7890,
             region: 'América do Sul',
@@ -129,7 +129,7 @@ const LeaderboardPage: React.FC = () => {
           },
           {
             id: '9',
-            username: 'DropFan',
+            username: 'YEKINDARFan',
             level: 14,
             totalPoints: 7340,
             region: 'Europa',

@@ -41,4 +41,4 @@ export function useFallbackData<T>(
   });
 }
 
-export default api; 
+export default api;

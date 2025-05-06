@@ -61,10 +61,6 @@ A documentação completa está disponível na pasta `docs/` do projeto e inclui
 - [Contribuição](./docs/contributing.md): Como contribuir para o projeto
 - [Deployment](./docs/deployment.md): Instruções para deploy em produção
 
-## 🎥 Apresentação
-
-Um vídeo de demonstração de aproximadamente 3 minutos está disponível, mostrando como os fãs podem interagir e acompanhar o time através do FURIA Chat. Você pode assistir ao vídeo [neste link](https://www.youtube.com/seu-link-do-video).
-
 ## 🤝 Contribuição
 
 Contribuições são bem-vindas! Por favor, leia o arquivo [docs/contributing.md](./docs/contributing.md) para detalhes sobre nosso código de conduta e processo de submissão de pull requests.
